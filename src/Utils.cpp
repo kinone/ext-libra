@@ -8,16 +8,16 @@ namespace libra {
     float Utils::maxTop = 0.1f;
     float Utils::maxLeft = 0.1f;
 
-    Mat Utils::genFrameH(const Mat &a, const Mat &b, int step, int total) {
+    cv::Mat Utils::genFrameH(const cv::Mat &a, const cv::Mat &b, int step, int total) {
         float d = 1.0f / float(total + 1) * float(step + 1);
         float colRate, topRate, top, ltop, rtop;
 
-        Point2f srcTri[4];
-        Point2f dstTri[4];
+        cv::Point2f srcTri[4];
+        cv::Point2f dstTri[4];
 
-        Mat warp_left(3, 3, a.type());
-        Mat warp_right(3, 3, a.type());
-        Mat dst_left, dst_right;
+        cv::Mat warp_left(3, 3, a.type());
+        cv::Mat warp_right(3, 3, a.type());
+        cv::Mat dst_left, dst_right;
 
         colRate = evaluate(d);
 
@@ -28,19 +28,19 @@ namespace libra {
         topRate = currentTopRate(d);
         top = topRate * float(a.rows);
 
-        srcTri[0] = Point2f(0, 0);
-        srcTri[1] = Point2f(x, 0);
-        srcTri[2] = Point2f(x, y);
-        srcTri[3] = Point2f(0, y);
+        srcTri[0] = cv::Point2f(0, 0);
+        srcTri[1] = cv::Point2f(x, 0);
+        srcTri[2] = cv::Point2f(x, y);
+        srcTri[3] = cv::Point2f(0, y);
 
         ltop = (1 - colRate) * float(a.cols) * maxTop;
         if (delimiter > 25) {
-            dst_left = Mat::zeros(a.rows, a.cols, a.type());
+            dst_left = cv::Mat::zeros(a.rows, a.cols, a.type());
 
-            dstTri[0] = Point2f(0, ltop);
-            dstTri[1] = Point2f(delimiter - 1, -top);
-            dstTri[2] = Point2f(delimiter - 1, float(y) + top);
-            dstTri[3] = Point2f(0, float(y) - ltop);
+            dstTri[0] = cv::Point2f(0, ltop);
+            dstTri[1] = cv::Point2f(delimiter - 1, -top);
+            dstTri[2] = cv::Point2f(delimiter - 1, float(y) + top);
+            dstTri[3] = cv::Point2f(0, float(y) - ltop);
 
             warp_left = getPerspectiveTransform(srcTri, dstTri);
             warpPerspective(a, dst_left, warp_left, dst_left.size());
@@ -50,12 +50,12 @@ namespace libra {
 
         rtop = colRate * float(a.cols) * maxTop;
         if (a.cols - delimiter > 25) {
-            dst_right = Mat::zeros(b.rows, b.cols, a.type());
+            dst_right = cv::Mat::zeros(b.rows, b.cols, a.type());
 
-            dstTri[0] = Point2f(delimiter, -top);
-            dstTri[1] = Point2f(x, rtop);
-            dstTri[2] = Point2f(x, float(y) - rtop);
-            dstTri[3] = Point2f(delimiter, float(y) + top);
+            dstTri[0] = cv::Point2f(delimiter, -top);
+            dstTri[1] = cv::Point2f(x, rtop);
+            dstTri[2] = cv::Point2f(x, float(y) - rtop);
+            dstTri[3] = cv::Point2f(delimiter, float(y) + top);
 
             warp_right = getPerspectiveTransform(srcTri, dstTri);
             warpPerspective(b, dst_right, warp_right, dst_right.size());
@@ -71,24 +71,24 @@ namespace libra {
             return dst_right;
         }
 
-        Mat dst;
-        Rect rect_left(0, 0, delimiter, b.rows);
-        Rect rect_right(delimiter, 0, b.cols - delimiter, b.rows);
+        cv::Mat dst;
+        cv::Rect rect_left(0, 0, delimiter, b.rows);
+        cv::Rect rect_right(delimiter, 0, b.cols - delimiter, b.rows);
         hconcat(dst_left(rect_left), dst_right(rect_right), dst);
 
         return dst;
     }
 
-    Mat Utils::genFrameV(const Mat &a, const Mat &b, int step, int total) {
+    cv::Mat Utils::genFrameV(const cv::Mat &a, const cv::Mat &b, int step, int total) {
         float d = 1.0f / float(total + 1) * float(step + 1);
         float rowRate, leftRate, left, topLeft, bottomLeft;
 
-        Point2f srcTri[4];
-        Point2f dstTri[4];
+        cv::Point2f srcTri[4];
+        cv::Point2f dstTri[4];
 
-        Mat warp_top(3, 3, a.type());
-        Mat warp_bottom(3, 3, a.type());
-        Mat dst_top, dst_bottom;
+        cv::Mat warp_top(3, 3, a.type());
+        cv::Mat warp_bottom(3, 3, a.type());
+        cv::Mat dst_top, dst_bottom;
 
         rowRate = 1 - evaluate(d);
 
@@ -99,19 +99,19 @@ namespace libra {
         leftRate = currentLeftRate(d);
         left = leftRate * float(a.cols);
 
-        srcTri[0] = Point2f(0, 0);
-        srcTri[1] = Point2f(x, 0);
-        srcTri[2] = Point2f(x, y);
-        srcTri[3] = Point2f(0, y);
+        srcTri[0] = cv::Point2f(0, 0);
+        srcTri[1] = cv::Point2f(x, 0);
+        srcTri[2] = cv::Point2f(x, y);
+        srcTri[3] = cv::Point2f(0, y);
 
         topLeft = (1 - rowRate) * float(b.rows) * maxLeft;
         if (delimiter > 25) {
-            dst_top = Mat::zeros(b.rows, b.cols, b.type());
+            dst_top = cv::Mat::zeros(b.rows, b.cols, b.type());
 
-            dstTri[0] = Point2f(topLeft, 0);
-            dstTri[1] = Point2f(float(x) - topLeft, 0);
-            dstTri[2] = Point2f(float(x) + left, delimiter - 1);
-            dstTri[3] = Point2f(-left, delimiter - 1);
+            dstTri[0] = cv::Point2f(topLeft, 0);
+            dstTri[1] = cv::Point2f(float(x) - topLeft, 0);
+            dstTri[2] = cv::Point2f(float(x) + left, delimiter - 1);
+            dstTri[3] = cv::Point2f(-left, delimiter - 1);
 
             warp_top = getPerspectiveTransform(srcTri, dstTri);
             warpPerspective(b, dst_top, warp_top, dst_top.size());
@@ -121,12 +121,12 @@ namespace libra {
 
         bottomLeft = rowRate * float(a.rows) * maxLeft;
         if (a.rows - delimiter > 25) {
-            dst_bottom = Mat::zeros(a.rows, a.cols, a.type());
+            dst_bottom = cv::Mat::zeros(a.rows, a.cols, a.type());
 
-            dstTri[0] = Point2f(-left, delimiter);
-            dstTri[1] = Point2f(float(x) + left, delimiter);
-            dstTri[2] = Point2f(float(x) - bottomLeft, y);
-            dstTri[3] = Point2f(bottomLeft, y);
+            dstTri[0] = cv::Point2f(-left, delimiter);
+            dstTri[1] = cv::Point2f(float(x) + left, delimiter);
+            dstTri[2] = cv::Point2f(float(x) - bottomLeft, y);
+            dstTri[3] = cv::Point2f(bottomLeft, y);
 
             warp_bottom = getPerspectiveTransform(srcTri, dstTri);
             warpPerspective(a, dst_bottom, warp_bottom, dst_bottom.size());
@@ -142,28 +142,28 @@ namespace libra {
             return dst_bottom;
         }
 
-        Mat dst;
-        Rect rect_top(0, 0, b.cols, delimiter);
-        Rect rect_bottom(0, delimiter, a.cols, a.rows - delimiter);
+        cv::Mat dst;
+        cv::Rect rect_top(0, 0, b.cols, delimiter);
+        cv::Rect rect_bottom(0, delimiter, a.cols, a.rows - delimiter);
 
         vconcat(dst_top(rect_top), dst_bottom(rect_bottom), dst);
 
         return dst;
     }
 
-    void Utils::mat2WebPPicture(const Mat &mat, WebPPicture *pic, int quality) {
+    void Utils::mat2WebPPicture(const cv::Mat &src, WebPPicture *pic, int quality) {
         std::vector<uchar> buff;
 
         // 设置图片质量
         std::vector<int> params = std::vector<int>();
-        params.push_back(IMWRITE_WEBP_QUALITY);
+        params.push_back(cv::IMWRITE_WEBP_QUALITY);
         params.push_back(quality);
 
-        imencode(".webp", mat, buff, params);
+        imencode(".webp", src, buff, params);
 
         WebPPictureInit(pic);
-        pic->width = mat.cols;
-        pic->height = mat.rows;
+        pic->width = src.cols;
+        pic->height = src.rows;
         pic->use_argb = 1;
 
         WebPPictureAlloc(pic);

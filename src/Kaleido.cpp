@@ -9,7 +9,7 @@
 namespace libra {
     Kaleido::Kaleido(uint32_t width, uint32_t height, uint8_t direction) : width(width), height(height),
                                                                            direction(direction) {
-        this->images = std::vector<Mat>();
+        this->images = std::vector<cv::Mat>();
         this->animateFrameCount = 10;
         this->animateTime = 1000;
         this->eachImageStay = 1000;
@@ -20,7 +20,7 @@ namespace libra {
     }
 
     bool Kaleido::add(const std::string &file) {
-        Mat image = imread(file, IMREAD_UNCHANGED);
+        cv::Mat image = imread(file, cv::IMREAD_UNCHANGED);
 
         if (image.cols == 0 || image.rows == 0) {
             return false;
@@ -104,7 +104,7 @@ namespace libra {
 
             int next = (i + 1) % count; // 下一张位置
             for (int j = 0; j < this->animateFrameCount; j++) {
-                Mat dst;
+                cv::Mat dst;
                 if (this->direction == Kaleido::Vertical) {
                     dst = Utils::genFrameV(this->images[i], this->images[next], j, this->animateFrameCount);
                 } else {

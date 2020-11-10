@@ -10,8 +10,6 @@
 #include <webp/encode.h>
 #include <webp/decode.h>
 
-using namespace cv;
-
 namespace libra {
     class Utils {
     private:
@@ -29,11 +27,11 @@ namespace libra {
         static float currentLeftRate(float x);
 
     public:
-        static void mat2WebPPicture(const Mat &mat, WebPPicture *pic, int quality = 100);
+        static void mat2WebPPicture(const cv::Mat &src, WebPPicture *pic, int quality = 100);
 
-        static Mat genFrameH(const Mat &a, const Mat &b, int step, int total);
+        static cv::Mat genFrameH(const cv::Mat &a, const cv::Mat &b, int step, int total);
 
-        static Mat genFrameV(const Mat &a, const Mat &b, int step, int total);
+        static cv::Mat genFrameV(const cv::Mat &a, const cv::Mat &b, int step, int total);
     };
 }
 

@@ -10,7 +10,6 @@
 #include <opencv2/imgproc.hpp>
 
 namespace libra {
-
     class Image {
     public:
         Image(const std::string &file);

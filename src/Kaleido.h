@@ -10,8 +10,6 @@
 #include <opencv2/imgproc.hpp>
 #include <webp/mux.h>
 
-using namespace cv;
-
 namespace libra {
     class Kaleido {
     public:
@@ -37,7 +35,7 @@ namespace libra {
         bool setQuality(int q);
 
     private:
-        std::vector<Mat> images;
+        std::vector<cv::Mat> images;
         uint8_t direction;
         int animateFrameCount;
         int animateTime;
