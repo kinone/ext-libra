@@ -33,6 +33,9 @@ ZEND_BEGIN_ARG_INFO_EX(kaleido_animate_frame_count, 0, 0, 1)
     ZEND_ARG_INFO(0, count)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_INFO_EX(kaleido_no_args, 0, 0, 0)
+ZEND_END_ARG_INFO()
+
 PHP_METHOD(kaleido, __construct) {
     int64 width;
     int64 height;
@@ -137,8 +140,8 @@ static const zend_function_entry kaleido_functions[] = {
     PHP_ME(kaleido, imageDelay, kaleido_image_delay, ZEND_ACC_PUBLIC)
     PHP_ME(kaleido, animateTime, kaleido_animate_time, ZEND_ACC_PUBLIC)
     PHP_ME(kaleido, animateFrameCount, kaleido_animate_frame_count, ZEND_ACC_PUBLIC)
-    PHP_ME(kaleido, clear, NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(kaleido, __destruct, NULL, ZEND_ACC_PUBLIC|ZEND_ACC_DTOR)
+    PHP_ME(kaleido, clear, kaleido_no_args, ZEND_ACC_PUBLIC)
+    PHP_ME(kaleido, __destruct, kaleido_no_args, ZEND_ACC_PUBLIC|ZEND_ACC_DTOR)
     {NULL, NULL, NULL}
 };
 

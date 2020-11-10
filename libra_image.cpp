@@ -7,6 +7,30 @@ zend_class_entry *libra_image_ce;
 
 zend_object_handlers libra_image_object_handlers;
 
+ZEND_BEGIN_ARG_INFO_EX(image_construct, 0, 0, 1)
+    ZEND_ARG_INFO(0, file)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(image_no_args, 0, 0, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(image_resize, 0, 0, 1)
+    ZEND_ARG_INFO(0, width)
+    ZEND_ARG_INFO(0, height)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(image_download, 0, 0, 1)
+    ZEND_ARG_INFO(0, file)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(image_compress_jpg, 0, 0, 1)
+    ZEND_ARG_INFO(0, file)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(image_comperss_png, 0, 0, 1)
+    ZEND_ARG_INFO(0, file)
+ZEND_END_ARG_INFO()
+
 PHP_METHOD(image, __construct) {
     char *file;
     size_t len;
@@ -104,14 +128,14 @@ PHP_METHOD(image, getHeight) {
 }
 
 static const zend_function_entry libra_image_functions[] = {
-    PHP_ME(image, __construct, NULL, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
-    PHP_ME(image, __destruct, NULL, ZEND_ACC_PUBLIC|ZEND_ACC_DTOR)
-    PHP_ME(image, compressPng, NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(image, compressJpeg, NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(image, getWidth, NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(image, getHeight, NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(image, resize, NULL, ZEND_ACC_PUBLIC)
-    PHP_ME(image, download, NULL, ZEND_ACC_PUBLIC)
+    PHP_ME(image, __construct, image_construct, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
+    PHP_ME(image, __destruct, image_no_args, ZEND_ACC_PUBLIC|ZEND_ACC_DTOR)
+    PHP_ME(image, compressPng, image_comperss_png, ZEND_ACC_PUBLIC)
+    PHP_ME(image, compressJpeg, image_compress_jpg, ZEND_ACC_PUBLIC)
+    PHP_ME(image, getWidth, image_no_args, ZEND_ACC_PUBLIC)
+    PHP_ME(image, getHeight, image_no_args, ZEND_ACC_PUBLIC)
+    PHP_ME(image, resize, image_resize, ZEND_ACC_PUBLIC)
+    PHP_ME(image, download, image_download, ZEND_ACC_PUBLIC)
     {NULL, NULL, NULL}
 };
 
