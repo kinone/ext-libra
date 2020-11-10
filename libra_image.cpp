@@ -14,7 +14,7 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_INFO_EX(image_no_args, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(image_resize, 0, 0, 1)
+ZEND_BEGIN_ARG_INFO_EX(image_resize, 0, 0, 2)
     ZEND_ARG_INFO(0, width)
     ZEND_ARG_INFO(0, height)
 ZEND_END_ARG_INFO()
