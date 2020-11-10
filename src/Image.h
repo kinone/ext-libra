@@ -27,9 +27,9 @@ namespace libra {
 
         void download(const std::string& file);
 
-        int getWidth();
+        int getWidth() const;
 
-        int getHeight();
+        int getHeight() const;
 
     private:
         cv::Mat src;

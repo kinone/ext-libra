@@ -71,11 +71,11 @@ namespace libra {
         }
     }
 
-    int Image::getWidth() {
+    int Image::getWidth() const {
         return this->width;
     }
 
-    int Image::getHeight() {
+    int Image::getHeight() const {
         return this->height;
     }
 }
