@@ -11,7 +11,7 @@
 extern zend_object_handlers kaleido_object_handlers;
 
 typedef struct {
-    libra::Kaleido *origin;
+    libra::Kaleido *proto;
     zend_object std;
 } kaleido_t;
 

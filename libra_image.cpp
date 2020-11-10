@@ -23,7 +23,7 @@ ZEND_BEGIN_ARG_INFO_EX(image_download, 0, 0, 1)
     ZEND_ARG_INFO(0, file)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(image_compress_jpg, 0, 0, 1)
+ZEND_BEGIN_ARG_INFO_EX(image_compress_jpeg, 0, 0, 1)
     ZEND_ARG_INFO(0, file)
 ZEND_END_ARG_INFO()
 
@@ -40,12 +40,12 @@ PHP_METHOD(image, __construct) {
     ZEND_PARSE_PARAMETERS_END();
 
     libra_image_t *obj = Z_LIBRA_IMAGE_P(getThis());
-    obj->origin = new libra::Image(file);
+    obj->proto = new libra::Image(file);
 }
 
 PHP_METHOD(image, __destruct) {
     libra_image_t *obj = Z_LIBRA_IMAGE_P(getThis());
-    delete(obj->origin);
+    delete(obj->proto);
 }
 
 PHP_METHOD(image, resize) {
@@ -58,7 +58,7 @@ PHP_METHOD(image, resize) {
     ZEND_PARSE_PARAMETERS_END();
 
     libra_image_t *obj = Z_LIBRA_IMAGE_P(getThis());
-    obj->origin->resize(width, height);
+    obj->proto->resize(width, height);
 
     RETURN_NULL();
 }
@@ -72,7 +72,7 @@ PHP_METHOD(image, download) {
     ZEND_PARSE_PARAMETERS_END();
 
     libra_image_t *obj = Z_LIBRA_IMAGE_P(getThis());
-    obj->origin->download(file);
+    obj->proto->download(file);
 
     RETURN_NULL();
 }
@@ -88,7 +88,23 @@ PHP_METHOD(image, compressJpeg) {
     ZEND_PARSE_PARAMETERS_END();
 
     libra_image_t *obj = Z_LIBRA_IMAGE_P(getThis());
-    obj->origin->compressJpeg(file, q);
+    obj->proto->compressJpeg(file, q);
+
+    RETURN_NULL();
+}
+
+PHP_METHOD(image, compressWebp) {
+    char *file;
+    size_t len;
+    int64 q;
+
+    ZEND_PARSE_PARAMETERS_START(2, 2)
+            Z_PARAM_STRING(file, len)
+            Z_PARAM_LONG(q);
+    ZEND_PARSE_PARAMETERS_END();
+
+    libra_image_t *obj = Z_LIBRA_IMAGE_P(getThis());
+    obj->proto->compressWebp(file, q);
 
     RETURN_NULL();
 }
@@ -104,7 +120,7 @@ PHP_METHOD(image, compressPng) {
     ZEND_PARSE_PARAMETERS_END();
 
     libra_image_t *obj = Z_LIBRA_IMAGE_P(getThis());
-    obj->origin->compressPng(file, level);
+    obj->proto->compressPng(file, level);
 
     RETURN_NULL();
 }
@@ -115,7 +131,7 @@ PHP_METHOD(image, getWidth) {
 
     libra_image_t *obj = Z_LIBRA_IMAGE_P(getThis());
 
-    RETURN_LONG(obj->origin->getWidth());
+    RETURN_LONG(obj->proto->getWidth());
 }
 
 PHP_METHOD(image, getHeight) {
@@ -124,14 +140,15 @@ PHP_METHOD(image, getHeight) {
 
     libra_image_t *obj = Z_LIBRA_IMAGE_P(getThis());
 
-    RETURN_LONG(obj->origin->getHeight());
+    RETURN_LONG(obj->proto->getHeight());
 }
 
 static const zend_function_entry libra_image_functions[] = {
     PHP_ME(image, __construct, image_construct, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
     PHP_ME(image, __destruct, image_no_args, ZEND_ACC_PUBLIC|ZEND_ACC_DTOR)
     PHP_ME(image, compressPng, image_comperss_png, ZEND_ACC_PUBLIC)
-    PHP_ME(image, compressJpeg, image_compress_jpg, ZEND_ACC_PUBLIC)
+    PHP_ME(image, compressJpeg, image_compress_jpeg, ZEND_ACC_PUBLIC)
+    PHP_ME(image, compressWebp, image_compress_jpeg, ZEND_ACC_PUBLIC)
     PHP_ME(image, getWidth, image_no_args, ZEND_ACC_PUBLIC)
     PHP_ME(image, getHeight, image_no_args, ZEND_ACC_PUBLIC)
     PHP_ME(image, resize, image_resize, ZEND_ACC_PUBLIC)

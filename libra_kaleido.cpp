@@ -33,6 +33,10 @@ ZEND_BEGIN_ARG_INFO_EX(kaleido_animate_frame_count, 0, 0, 1)
     ZEND_ARG_INFO(0, count)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_INFO_EX(kaleido_set_quality, 0, 0, 1)
+    ZEND_ARG_INFO(0, quality)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_INFO_EX(kaleido_no_args, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
@@ -49,12 +53,12 @@ PHP_METHOD(kaleido, __construct) {
     ZEND_PARSE_PARAMETERS_END();
 
     kaleido_t *obj = Z_KALEIDO_P(getThis());
-    obj->origin = new libra::Kaleido(width, height, direction);
+    obj->proto = new libra::Kaleido(width, height, direction);
 }
 
 PHP_METHOD(kaleido, __destruct) {
     kaleido_t *obj = Z_KALEIDO_P(getThis());
-    delete obj->origin;
+    delete obj->proto;
 }
 
 PHP_METHOD(kaleido, add) {
@@ -66,9 +70,22 @@ PHP_METHOD(kaleido, add) {
     ZEND_PARSE_PARAMETERS_END();
 
     kaleido_t *k = Z_KALEIDO_P(getThis());
-    zend_bool ret = k->origin->add(file);
+    zend_bool ret = k->proto->add(file);
 
     RETURN_BOOL(ret);
+}
+
+PHP_METHOD(kaleido, quality) {
+    int64 q;
+
+    ZEND_PARSE_PARAMETERS_START(1, 1)
+        Z_PARAM_LONG(q)
+    ZEND_PARSE_PARAMETERS_END();
+
+    kaleido_t *k = Z_KALEIDO_P(getThis());
+    bool b = k->proto->setQuality(q);
+
+    RETURN_BOOL(b);
 }
 
 PHP_METHOD(kaleido, imageDelay) {
@@ -79,9 +96,9 @@ PHP_METHOD(kaleido, imageDelay) {
     ZEND_PARSE_PARAMETERS_END();
 
     kaleido_t *k = Z_KALEIDO_P(getThis());
-    k->origin->setImageStay(delay);
+    bool b = k->proto->setImageStay(delay);
 
-    RETURN_NULL();
+    RETURN_BOOL(b);
 }
 
 PHP_METHOD(kaleido, animateTime) {
@@ -92,9 +109,9 @@ PHP_METHOD(kaleido, animateTime) {
     ZEND_PARSE_PARAMETERS_END();
 
     kaleido_t *k = Z_KALEIDO_P(getThis());
-    k->origin->setAnimateTime(time);
+    bool b = k->proto->setAnimateTime(time);
 
-    RETURN_NULL();
+    RETURN_BOOL(b);
 }
 
 PHP_METHOD(kaleido, animateFrameCount) {
@@ -105,9 +122,9 @@ PHP_METHOD(kaleido, animateFrameCount) {
     ZEND_PARSE_PARAMETERS_END();
 
     kaleido_t *k = Z_KALEIDO_P(getThis());
-    k->origin->setFrameCount(count);
+    bool b = k->proto->setFrameCount(count);
 
-    RETURN_NULL();
+    RETURN_BOOL(b);
 }
 
 PHP_METHOD(kaleido, generate) {
@@ -119,7 +136,7 @@ PHP_METHOD(kaleido, generate) {
     ZEND_PARSE_PARAMETERS_END();
 
     kaleido_t *k = Z_KALEIDO_P(getThis());
-    k->origin->generate(dst);
+    k->proto->generate(dst);
 
     RETURN_NULL();
 }
@@ -128,7 +145,7 @@ PHP_METHOD(kaleido, clear) {
     ZEND_PARSE_PARAMETERS_NONE();
 
     kaleido_t *k = Z_KALEIDO_P(getThis());
-    k->origin->clear();
+    k->proto->clear();
 
     RETURN_NULL();
 }
@@ -137,6 +154,7 @@ static const zend_function_entry kaleido_functions[] = {
     PHP_ME(kaleido, __construct, kaleido_construct, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
     PHP_ME(kaleido, add, kaleido_add, ZEND_ACC_PUBLIC)
     PHP_ME(kaleido, generate, kaleido_generate, ZEND_ACC_PUBLIC)
+    PHP_ME(kaleido, quality, kaleido_set_quality, ZEND_ACC_PUBLIC)
     PHP_ME(kaleido, imageDelay, kaleido_image_delay, ZEND_ACC_PUBLIC)
     PHP_ME(kaleido, animateTime, kaleido_animate_time, ZEND_ACC_PUBLIC)
     PHP_ME(kaleido, animateFrameCount, kaleido_animate_frame_count, ZEND_ACC_PUBLIC)
@@ -173,8 +191,8 @@ LIBRA_STARTUP_FUNCTION(kaleido) {
     kaleido_object_handlers.free_obj = libra_kaleido_free;
     kaleido_object_handlers.clone_obj = NULL;
 
-    zend_declare_class_constant_long(kaleido_ce, "Horizontal", sizeof("Horizontal") - 1, libra::Kaleido::Horizontal TSRMLS_CC);
-    zend_declare_class_constant_long(kaleido_ce, "Vertical", sizeof("Vertical") - 1, libra::Kaleido::Vertical TSRMLS_CC);
+    zend_declare_class_constant_long(kaleido_ce, "HORIZENTAL", sizeof("HORIZENTAL") - 1, libra::Kaleido::Horizontal TSRMLS_CC);
+    zend_declare_class_constant_long(kaleido_ce, "VERTICAL", sizeof("VERTICAL") - 1, libra::Kaleido::Vertical TSRMLS_CC);
 
     return SUCCESS;
 }

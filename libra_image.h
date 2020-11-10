@@ -11,7 +11,7 @@
 extern zend_object_handlers libra_image_object_handlers;
 
 typedef struct {
-    libra::Image *origin;
+    libra::Image *proto;
     zend_object std;
 } libra_image_t;
 
