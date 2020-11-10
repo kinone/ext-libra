@@ -18,15 +18,9 @@ namespace libra {
         static const uint8_t Horizontal = 0;
         static const uint8_t Vertical = 1;
 
-        Kaleido(uint32_t width, uint32_t height, uint8_t direction) : width(width), height(height),
-                                                                      direction(direction) {
-            this->images = std::vector<Mat>();
-            this->animateFrameCount = 10;
-            this->animateTime = 1000;
-            this->eachImageStay = 1000;
-        }
+        Kaleido(uint32_t width, uint32_t height, uint8_t direction);
 
-        ~Kaleido() {};
+        ~Kaleido();
 
         bool add(const std::string &file);
 
