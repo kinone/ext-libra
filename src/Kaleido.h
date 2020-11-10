@@ -34,14 +34,17 @@ namespace libra {
 
         bool setImageStay(int time);
 
+        bool setQuality(int q);
+
     private:
-        std::vector <Mat> images;
+        std::vector<Mat> images;
         uint8_t direction;
         int animateFrameCount;
         int animateTime;
         int eachImageStay;
         int width;
         int height;
+        int quality;
     };
 }
 

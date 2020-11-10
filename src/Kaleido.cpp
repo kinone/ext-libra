@@ -13,6 +13,7 @@ namespace libra {
         this->animateFrameCount = 10;
         this->animateTime = 1000;
         this->eachImageStay = 1000;
+        this->quality = 100;
     }
 
     Kaleido::~Kaleido() {
@@ -71,6 +72,16 @@ namespace libra {
         return true;
     }
 
+    bool Kaleido::setQuality(int q) {
+        if (q < 1 || q > 100) {
+            return false;
+        }
+
+        this->quality = q;
+
+        return true;
+    }
+
     void Kaleido::generate(const std::string &result) {
         int count = this->images.size();
 
@@ -86,7 +97,7 @@ namespace libra {
         WebPPicture pic;
         for (int i = 0; i < count; i++) {
             // 添加第一张图片
-            Utils::mat2WebPPicture(this->images[i], &pic);
+            Utils::mat2WebPPicture(this->images[i], &pic, this->quality);
             WebPAnimEncoderAdd(enc, &pic, timestamp, &config);
             timestamp += this->eachImageStay;
             WebPPictureFree(&pic);
@@ -99,7 +110,7 @@ namespace libra {
                 } else {
                     dst = Utils::genFrameH(this->images[i], this->images[next], j, this->animateFrameCount);
                 }
-                Utils::mat2WebPPicture(dst, &pic);
+                Utils::mat2WebPPicture(dst, &pic, this->quality);
                 WebPAnimEncoderAdd(enc, &pic, timestamp, &config);
                 timestamp += eachFrameStay;
                 WebPPictureFree(&pic);

@@ -29,7 +29,7 @@ namespace libra {
         static float currentLeftRate(float x);
 
     public:
-        static void mat2WebPPicture(const Mat &mat, WebPPicture *pic);
+        static void mat2WebPPicture(const Mat &mat, WebPPicture *pic, int quality = 100);
 
         static Mat genFrameH(const Mat &a, const Mat &b, int step, int total);
 

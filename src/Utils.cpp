@@ -151,9 +151,15 @@ namespace libra {
         return dst;
     }
 
-    void Utils::mat2WebPPicture(const Mat &mat, WebPPicture *pic) {
+    void Utils::mat2WebPPicture(const Mat &mat, WebPPicture *pic, int quality) {
         std::vector<uchar> buff;
-        imencode(".webp", mat, buff);
+
+        // 设置图片质量
+        std::vector<int> params = std::vector<int>();
+        params.push_back(IMWRITE_WEBP_QUALITY);
+        params.push_back(quality);
+
+        imencode(".webp", mat, buff, params);
 
         WebPPictureInit(pic);
         pic->width = mat.cols;

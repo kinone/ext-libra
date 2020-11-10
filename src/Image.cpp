@@ -5,13 +5,13 @@
 #include "Image.h"
 
 namespace libra {
-    Image::Image(const std::string& file) {
+    Image::Image(const std::string &file) {
         this->src = cv::imread(file, cv::IMREAD_UNCHANGED);
         this->width = this->src.cols;
         this->height = this->src.rows;
     }
 
-    Image::Image(const cv::Mat& src) {
+    Image::Image(const cv::Mat &src) {
         this->src = src;
         this->width = this->src.cols;
         this->height = this->src.rows;
@@ -43,7 +43,7 @@ namespace libra {
         this->height = fy;
     }
 
-    void Image::compressJpeg(const std::string& file, int q) {
+    void Image::compressJpeg(const std::string &file, int q) {
         std::vector<int> params;
         params.push_back(cv::IMWRITE_JPEG_QUALITY);
         params.push_back(q);
@@ -51,7 +51,15 @@ namespace libra {
         cv::imwrite(file, this->src, params);
     }
 
-    void Image::compressPng(const std::string& file, int level) {
+    void Image::compressWebp(const std::string &file, int q) {
+        std::vector<int> params;
+        params.push_back(cv::IMWRITE_WEBP_QUALITY);
+        params.push_back(q);
+
+        cv::imwrite(file, this->src, params);
+    }
+
+    void Image::compressPng(const std::string &file, int level) {
         std::vector<int> params;
         params.push_back(cv::IMWRITE_PNG_COMPRESSION);
         params.push_back(level);
@@ -63,7 +71,7 @@ namespace libra {
         return this->dst;
     }
 
-    void Image::download(const std::string& file) {
+    void Image::download(const std::string &file) {
         if (this->dst.cols == 0) {
             cv::imwrite(file, this->src);
         } else {

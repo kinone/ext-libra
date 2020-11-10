@@ -13,19 +13,21 @@ namespace libra {
 
     class Image {
     public:
-        Image(const std::string& file);
+        Image(const std::string &file);
 
-        Image(const cv::Mat& src);
+        Image(const cv::Mat &src);
 
         cv::Mat destination();
 
         void resize(int fx, int fy);
 
-        void compressJpeg(const std::string& file, int q);
+        void compressJpeg(const std::string &file, int q);
 
-        void compressPng(const std::string& file, int level);
+        void compressWebp(const std::string &file, int q);
 
-        void download(const std::string& file);
+        void compressPng(const std::string &file, int level);
+
+        void download(const std::string &file);
 
         int getWidth() const;
 
