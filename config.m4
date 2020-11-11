@@ -101,8 +101,7 @@ if test "$PHP_LIBRA" != "no"; then
   PHP_ADD_LIBRARY(stdc++, 1, XMLSCHEMA_SHARED_LIBADD)
 
   PHP_NEW_EXTENSION(libra, libra.cpp                 \
-   libra_kaleido.cpp                                 \
-   libra_image.cpp                                   \
+   libra_*.cpp                                       \
    src/*.cpp,
    $ext_shared)
 fi
