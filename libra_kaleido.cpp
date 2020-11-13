@@ -41,9 +41,9 @@ ZEND_BEGIN_ARG_INFO_EX(kaleido_no_args, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(kaleido, __construct) {
-    int64 width;
-    int64 height;
-    int64 direction = libra::Kaleido::Horizontal;
+    int64_t width;
+    int64_t height;
+    int64_t direction = libra::Kaleido::Horizontal;
 
     ZEND_PARSE_PARAMETERS_START(2, 3)
     Z_PARAM_LONG(width)
@@ -76,7 +76,7 @@ PHP_METHOD(kaleido, add) {
 }
 
 PHP_METHOD(kaleido, quality) {
-    int64 q;
+    int64_t q;
 
     ZEND_PARSE_PARAMETERS_START(1, 1)
         Z_PARAM_LONG(q)
@@ -89,7 +89,7 @@ PHP_METHOD(kaleido, quality) {
 }
 
 PHP_METHOD(kaleido, imageDelay) {
-    int64 delay;
+    int64_t delay;
 
     ZEND_PARSE_PARAMETERS_START(1, 1)
     Z_PARAM_LONG(delay)
@@ -102,7 +102,7 @@ PHP_METHOD(kaleido, imageDelay) {
 }
 
 PHP_METHOD(kaleido, animateTime) {
-    int64 time;
+    int64_t time;
 
     ZEND_PARSE_PARAMETERS_START(1, 1)
     Z_PARAM_LONG(time)
@@ -115,7 +115,7 @@ PHP_METHOD(kaleido, animateTime) {
 }
 
 PHP_METHOD(kaleido, animateFrameCount) {
-    int64 count;
+    int64_t count;
 
     ZEND_PARSE_PARAMETERS_START(1, 1)
     Z_PARAM_LONG(count)
@@ -168,6 +168,7 @@ static zend_object* libra_kaleido_new(zend_class_entry *ce)  {
 
     memset(k, 0, XtOffsetOf(kaleido_t, std));
     zend_object_std_init(&k->std, ce);
+
     k->std.handlers = &kaleido_object_handlers;
     if (UNEXPECTED(ce->default_properties_count)) {
         object_properties_init(&k->std, ce);

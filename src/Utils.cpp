@@ -8,7 +8,7 @@ namespace libra {
     float Utils::maxTop = 0.1f;
     float Utils::maxLeft = 0.1f;
 
-    cv::Mat Utils::genFrameH(const cv::Mat &a, const cv::Mat &b, int step, int total) {
+    void Utils::genFrameH(const cv::Mat &a, const cv::Mat &b, cv::Mat &dst, int step, int total) {
         float d = 1.0f / float(total + 1) * float(step + 1);
         float colRate, topRate, top, ltop, rtop;
 
@@ -64,22 +64,21 @@ namespace libra {
         }
 
         if (!r) {
-            return dst_left;
+            dst = dst_left;
+            return;
         }
 
         if (!l) {
-            return dst_right;
+            dst = dst_right;
+            return;
         }
 
-        cv::Mat dst;
         cv::Rect rect_left(0, 0, delimiter, b.rows);
         cv::Rect rect_right(delimiter, 0, b.cols - delimiter, b.rows);
         hconcat(dst_left(rect_left), dst_right(rect_right), dst);
+   }
 
-        return dst;
-    }
-
-    cv::Mat Utils::genFrameV(const cv::Mat &a, const cv::Mat &b, int step, int total) {
+    void Utils::genFrameV(const cv::Mat &a, const cv::Mat &b, cv::Mat &dst, int step, int total) {
         float d = 1.0f / float(total + 1) * float(step + 1);
         float rowRate, leftRate, left, topLeft, bottomLeft;
 
@@ -135,24 +134,23 @@ namespace libra {
         }
 
         if (!bb) {
-            return dst_top;
+            dst = dst_top;
+            return;
         }
 
         if (!bt) {
-            return dst_bottom;
+            dst = dst_bottom;
+            return;
         }
 
-        cv::Mat dst;
         cv::Rect rect_top(0, 0, b.cols, delimiter);
         cv::Rect rect_bottom(0, delimiter, a.cols, a.rows - delimiter);
 
         vconcat(dst_top(rect_top), dst_bottom(rect_bottom), dst);
-
-        return dst;
     }
 
     void Utils::mat2WebPPicture(const cv::Mat &src, WebPPicture *pic, int quality) {
-        std::vector<uchar> buff;
+        std::vector <uchar> buff;
 
         // 设置图片质量
         std::vector<int> params = std::vector<int>();

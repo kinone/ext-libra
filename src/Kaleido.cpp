@@ -17,6 +17,7 @@ namespace libra {
     }
 
     Kaleido::~Kaleido() {
+        this->clear();
     }
 
     bool Kaleido::add(const std::string &file) {
@@ -106,9 +107,9 @@ namespace libra {
             for (int j = 0; j < this->animateFrameCount; j++) {
                 cv::Mat dst;
                 if (this->direction == Kaleido::Vertical) {
-                    dst = Utils::genFrameV(this->images[i], this->images[next], j, this->animateFrameCount);
+                    Utils::genFrameV(this->images[i], this->images[next], dst, j, this->animateFrameCount);
                 } else {
-                    dst = Utils::genFrameH(this->images[i], this->images[next], j, this->animateFrameCount);
+                    Utils::genFrameH(this->images[i], this->images[next], dst, j, this->animateFrameCount);
                 }
                 Utils::mat2WebPPicture(dst, &pic, this->quality);
                 WebPAnimEncoderAdd(enc, &pic, timestamp, &config);
@@ -127,6 +128,7 @@ namespace libra {
         FILE *f = fopen(result.data(), "wb");
         fwrite(data.bytes, data.size, 1, f);
         fclose(f);
+        WebPDataClear(&data);
         WebPAnimEncoderDelete(enc);
     }
 }
