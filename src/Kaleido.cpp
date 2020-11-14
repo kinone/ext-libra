@@ -9,7 +9,7 @@
 namespace libra {
     Kaleido::Kaleido(uint32_t width, uint32_t height, uint8_t direction) : width(width), height(height),
                                                                            direction(direction) {
-        this->images = std::vector<cv::Mat>();
+        this->images = new std::vector<cv::Mat>();
         this->animateFrameCount = 10;
         this->animateTime = 1000;
         this->eachImageStay = 1000;
@@ -18,6 +18,7 @@ namespace libra {
 
     Kaleido::~Kaleido() {
         this->clear();
+        delete this->images;
     }
 
     bool Kaleido::add(const std::string &file) {
@@ -31,17 +32,17 @@ namespace libra {
             // 调整图片尺寸
             Image *o = new Image(image);
             o->resize(this->width, this->height);
-            this->images.push_back(o->destination());
+            this->images->push_back(o->destination());
             delete o;
         } else {
-            this->images.push_back(image);
+            this->images->push_back(image);
         }
 
         return true;
     }
 
     void Kaleido::clear() {
-        this->images.clear();
+        this->images->clear();
     }
 
     bool Kaleido::setAnimateTime(int time) {
@@ -84,7 +85,7 @@ namespace libra {
     }
 
     void Kaleido::generate(const std::string &result) {
-        int count = this->images.size();
+        int count = this->images->size();
 
         WebPAnimEncoderOptions option;
         WebPAnimEncoderOptionsInit(&option);
@@ -98,7 +99,7 @@ namespace libra {
         WebPPicture pic;
         for (int i = 0; i < count; i++) {
             // 添加第一张图片
-            Utils::mat2WebPPicture(this->images[i], &pic, this->quality);
+            Utils::mat2WebPPicture(this->images->at(i), &pic, this->quality);
             WebPAnimEncoderAdd(enc, &pic, timestamp, &config);
             timestamp += this->eachImageStay;
             WebPPictureFree(&pic);
@@ -107,9 +108,9 @@ namespace libra {
             for (int j = 0; j < this->animateFrameCount; j++) {
                 cv::Mat dst;
                 if (this->direction == Kaleido::Vertical) {
-                    Utils::genFrameV(this->images[i], this->images[next], dst, j, this->animateFrameCount);
+                    Utils::genFrameV(this->images->at(i), this->images->at(next), dst, j, this->animateFrameCount);
                 } else {
-                    Utils::genFrameH(this->images[i], this->images[next], dst, j, this->animateFrameCount);
+                    Utils::genFrameH(this->images->at(i), this->images->at(next), dst, j, this->animateFrameCount);
                 }
                 Utils::mat2WebPPicture(dst, &pic, this->quality);
                 WebPAnimEncoderAdd(enc, &pic, timestamp, &config);

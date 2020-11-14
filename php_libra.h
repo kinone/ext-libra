@@ -3,7 +3,10 @@
 #ifndef PHP_LIBRA_H
 # define PHP_LIBRA_H
 
+extern "C" {
 #include "php.h"
+#include "ext/standard/info.h"
+};
 
 # define phpext_libra_ptr &libra_module_entry
 

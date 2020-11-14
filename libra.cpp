@@ -4,11 +4,10 @@
 # include "config.h"
 #endif
 
-#include "php.h"
-#include "ext/standard/info.h"
 #include "php_libra.h"
-#include "libra_kaleido.h"
 #include "libra_image.h"
+#include "libra_kaleido.h"
+#include "libra_sequence.h"
 
 /* For compatibility with older PHP versions */
 #ifndef ZEND_PARSE_PARAMETERS_NONE
@@ -48,6 +47,7 @@ PHP_MINIT_FUNCTION(libra)
 {
     LIBRA_STARTUP(kaleido);
     LIBRA_STARTUP(image);
+    LIBRA_STARTUP(sequence);
 
     return SUCCESS;
 }
@@ -64,9 +64,9 @@ zend_module_entry libra_module_entry = {
     "libra",                     /* Extension name */
     NULL,                        /* zend_function_entry */
     PHP_MINIT(libra),            /* PHP_MINIT - Module initialization */
-    NULL,                        /* PHP_MSHUTDOWN - Module shutdown */
+    PHP_MSHUTDOWN(libra),        /* PHP_MSHUTDOWN - Module shutdown */
     PHP_RINIT(libra),            /* PHP_RINIT - Request initialization */
-    NULL,                        /* PHP_RSHUTDOWN - Request shutdown */
+    PHP_RSHUTDOWN(libra),        /* PHP_RSHUTDOWN - Request shutdown */
     PHP_MINFO(libra),            /* PHP_MINFO - Module info */
     PHP_LIBRA_VERSION,           /* Version */
     STANDARD_MODULE_PROPERTIES

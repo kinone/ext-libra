@@ -18,9 +18,13 @@ add_library(libra SHARED
         src/Kaleido.h
         src/Utils.cpp
         src/Utils.h
+        src/Sequence.cpp
+        src/Sequence.h
         libra.cpp
-        libra_image.cpp
-        libra_image.h
         libra_kaleido.cpp
         libra_kaleido.h
+        libra_image.cpp
+        libra_image.h
+        libra_sequence.cpp
+        libra_sequence.h
         php_libra.h)

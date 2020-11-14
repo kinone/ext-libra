@@ -35,7 +35,7 @@ namespace libra {
         bool setQuality(int q);
 
     private:
-        std::vector<cv::Mat> images;
+        std::vector<cv::Mat> *images;
         uint8_t direction;
         int animateFrameCount;
         int animateTime;
