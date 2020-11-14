@@ -10,7 +10,7 @@
 
 extern zend_object_handlers libra_image_object_handlers;
 
-#define Z_LIBRA_IMAGE_P(obj)     ((libra::Image *)(Z_LIBRA_P(obj)->ptr))
+#define Z_LIBRA_IMAGE_P(zv)     ((libra::Image *)(Z_LIBRA_P(zv)->ptr))
 
 LIBRA_STARTUP_FUNCTION(image);
 

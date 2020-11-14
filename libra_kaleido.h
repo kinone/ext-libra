@@ -12,7 +12,7 @@
 
 extern zend_object_handlers kaleido_object_handlers;
 
-#define Z_KALEIDO_P(obj) ((libra::Kaleido *)(Z_LIBRA_P(obj)->ptr))
+#define Z_KALEIDO_P(zv) ((libra::Kaleido *)(Z_LIBRA_P(zv)->ptr))
 
 LIBRA_STARTUP_FUNCTION(kaleido);
 

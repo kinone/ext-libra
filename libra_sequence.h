@@ -8,7 +8,7 @@
 #include "src/Sequence.h"
 #include "php_libra.h"
 
-#define LIBRA_SEQUENCE_P(obj)  ((libra::Sequence *)(Z_LIBRA_P(obj)->ptr))
+#define LIBRA_SEQUENCE_P(zv)  ((libra::Sequence *)(Z_LIBRA_P(zv)->ptr))
 
 LIBRA_STARTUP_FUNCTION(sequence);
 
