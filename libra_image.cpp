@@ -157,11 +157,7 @@ static const zend_function_entry libra_image_functions[] = {
 };
 
 static zend_object* libra_image_new(zend_class_entry *ce)  {
-    zend_object *std = libra_object_new(ce);
-
-    std->handlers = &libra_image_object_handlers;
-
-    return std;
+    return libra_object_new(ce, &libra_image_object_handlers);
 }
 
 LIBRA_STARTUP_FUNCTION(image) {
@@ -170,12 +166,7 @@ LIBRA_STARTUP_FUNCTION(image) {
     libra_image_ce = zend_register_internal_class(&ce TSRMLS_CC);
     libra_image_ce->create_object = libra_image_new;
 
-    memcpy(&libra_image_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-
-    libra_image_object_handlers.offset = XtOffsetOf(libra_object, std);
-    libra_image_object_handlers.dtor_obj = zend_objects_destroy_object;
-    libra_image_object_handlers.free_obj = libra_object_free_storage;
-    libra_image_object_handlers.clone_obj = NULL;
+    libra_object_handlers_init(&libra_image_object_handlers);
 
     return SUCCESS;
 }

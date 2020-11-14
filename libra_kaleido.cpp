@@ -163,10 +163,7 @@ static const zend_function_entry kaleido_functions[] = {
 };
 
 static zend_object* libra_kaleido_new(zend_class_entry *ce)  {
-    zend_object *std = libra_object_new(ce);
-    std->handlers = &kaleido_object_handlers;
-
-    return std;
+    return libra_object_new(ce, &kaleido_object_handlers);
 }
 
 LIBRA_STARTUP_FUNCTION(kaleido) {
@@ -175,12 +172,7 @@ LIBRA_STARTUP_FUNCTION(kaleido) {
     kaleido_ce = zend_register_internal_class(&ce TSRMLS_CC);
     kaleido_ce->create_object = libra_kaleido_new;
 
-    memcpy(&kaleido_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
-
-    kaleido_object_handlers.offset = XtOffsetOf(libra_object, std);
-    kaleido_object_handlers.dtor_obj = zend_objects_destroy_object;
-    kaleido_object_handlers.free_obj = libra_object_free_storage;
-    kaleido_object_handlers.clone_obj = NULL;
+    libra_object_handlers_init(&kaleido_object_handlers);
 
     zend_declare_class_constant_long(kaleido_ce, "HORIZENTAL", sizeof("HORIZENTAL") - 1, libra::Kaleido::Horizontal TSRMLS_CC);
     zend_declare_class_constant_long(kaleido_ce, "VERTICAL", sizeof("VERTICAL") - 1, libra::Kaleido::Vertical TSRMLS_CC);

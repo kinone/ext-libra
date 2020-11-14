@@ -39,6 +39,8 @@ PHP_MINFO_FUNCTION(libra)
 {
     php_info_print_table_start();
     php_info_print_table_header(2, "libra support", "enabled");
+    php_info_print_table_header(2, "libra version", PHP_LIBRA_VERSION);
+    php_info_print_table_header(2, "libra author", "zhenhao <phpcandy@163.com>");
     php_info_print_table_end();
 }
 /* }}} */
