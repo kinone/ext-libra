@@ -5,7 +5,7 @@
 #ifndef LIBRA_IMAGE_H
 #define LIBRA_IMAGE_H
 
-#include <strings.h>
+#include <string>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc.hpp>
 
@@ -16,7 +16,7 @@ namespace libra {
 
         Image(const cv::Mat &src);
 
-        cv::Mat destination();
+        const cv::Mat& destination();
 
         void resize(int fx, int fy);
 

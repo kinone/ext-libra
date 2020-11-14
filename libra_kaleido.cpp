@@ -46,28 +46,18 @@ PHP_METHOD(kaleido, __construct) {
     zend_long direction = libra::Kaleido::Horizontal;
 
     ZEND_PARSE_PARAMETERS_START(2, 3)
-    Z_PARAM_LONG(width)
-    Z_PARAM_LONG(height)
-    Z_PARAM_OPTIONAL
-    Z_PARAM_LONG(direction)
+        Z_PARAM_LONG(width)
+        Z_PARAM_LONG(height)
+        Z_PARAM_OPTIONAL
+        Z_PARAM_LONG(direction)
     ZEND_PARSE_PARAMETERS_END();
 
-    kaleido_t *obj = Z_KALEIDO_P(getThis());
-
-    obj->files = new std::vector<std::string>();
-    obj->width = width;
-    obj->height = height;
-    obj->direction = direction;
-    obj->animateFrameCount = 10;
-    obj->animateTime = 1000;
-    obj->imageDelay = 1000;
-    obj->quality = 60;
+    libra_object *obj = Z_LIBRA_P(getThis());
+    obj->ptr = new libra::Kaleido(width, height, direction);
 }
 
 PHP_METHOD(kaleido, __destruct) {
-    kaleido_t *obj = Z_KALEIDO_P(getThis());
-    obj->files->clear();
-    delete obj->files;
+    delete Z_KALEIDO_P(getThis());
 }
 
 PHP_METHOD(kaleido, add) {
@@ -75,11 +65,11 @@ PHP_METHOD(kaleido, add) {
     size_t len = 0;
 
     ZEND_PARSE_PARAMETERS_START(1, 1)
-    Z_PARAM_STRING(file, len)
+        Z_PARAM_STRING(file, len)
     ZEND_PARSE_PARAMETERS_END();
 
-    kaleido_t *k = Z_KALEIDO_P(getThis());
-    k->files->push_back(std::string(file));
+    libra::Kaleido *k = Z_KALEIDO_P(getThis());
+    k->add(file);
 
     RETURN_BOOL(true);
 }
@@ -91,8 +81,8 @@ PHP_METHOD(kaleido, quality) {
         Z_PARAM_LONG(q)
     ZEND_PARSE_PARAMETERS_END();
 
-    kaleido_t *k = Z_KALEIDO_P(getThis());
-    k->quality = q;
+    libra::Kaleido *k = Z_KALEIDO_P(getThis());
+    k->setQuality(q);
 
     RETURN_BOOL(true);
 }
@@ -101,11 +91,11 @@ PHP_METHOD(kaleido, imageDelay) {
     zend_long delay;
 
     ZEND_PARSE_PARAMETERS_START(1, 1)
-    Z_PARAM_LONG(delay)
+        Z_PARAM_LONG(delay)
     ZEND_PARSE_PARAMETERS_END();
 
-    kaleido_t *k = Z_KALEIDO_P(getThis());
-    k->imageDelay = delay;
+    libra::Kaleido *k = Z_KALEIDO_P(getThis());
+    k->setImageStay(delay);
 
     RETURN_BOOL(true);
 }
@@ -114,11 +104,11 @@ PHP_METHOD(kaleido, animateTime) {
     zend_long time;
 
     ZEND_PARSE_PARAMETERS_START(1, 1)
-    Z_PARAM_LONG(time)
+        Z_PARAM_LONG(time)
     ZEND_PARSE_PARAMETERS_END();
 
-    kaleido_t *k = Z_KALEIDO_P(getThis());
-    k->animateTime = time;
+    libra::Kaleido *k = Z_KALEIDO_P(getThis());
+    k->setAnimateTime(time);
 
     RETURN_BOOL(true);
 }
@@ -127,11 +117,11 @@ PHP_METHOD(kaleido, animateFrameCount) {
     zend_long count;
 
     ZEND_PARSE_PARAMETERS_START(1, 1)
-    Z_PARAM_LONG(count)
+        Z_PARAM_LONG(count)
     ZEND_PARSE_PARAMETERS_END();
 
-    kaleido_t *k = Z_KALEIDO_P(getThis());
-    k->animateFrameCount = count;
+    libra::Kaleido *k = Z_KALEIDO_P(getThis());
+    k->setFrameCount(count);
 
     RETURN_BOOL(true);
 }
@@ -141,18 +131,11 @@ PHP_METHOD(kaleido, generate) {
     size_t len = 0;
 
     ZEND_PARSE_PARAMETERS_START(1, 1)
-    Z_PARAM_STRING(dst, len)
+        Z_PARAM_STRING(dst, len)
     ZEND_PARSE_PARAMETERS_END();
 
-    kaleido_t *obj = Z_KALEIDO_P(getThis());
-
-    libra::Kaleido *k = newLibraKaileido(obj);
-    for (int i = 0; i < obj->files->size(); i++) {
-        k->add((*obj->files)[i]);
-    }
-
+    libra::Kaleido *k = Z_KALEIDO_P(getThis());
     k->generate(dst);
-    delete k;
 
     RETURN_NULL();
 }
@@ -160,8 +143,8 @@ PHP_METHOD(kaleido, generate) {
 PHP_METHOD(kaleido, clear) {
     ZEND_PARSE_PARAMETERS_NONE();
 
-    kaleido_t *k = Z_KALEIDO_P(getThis());
-    k->files->clear();
+    libra::Kaleido *k = Z_KALEIDO_P(getThis());
+    k->clear();
 
     RETURN_NULL();
 }
@@ -180,21 +163,10 @@ static const zend_function_entry kaleido_functions[] = {
 };
 
 static zend_object* libra_kaleido_new(zend_class_entry *ce)  {
-    kaleido_t *k = (kaleido_t*)emalloc(sizeof(kaleido_t) + zend_object_properties_size(ce));
+    zend_object *std = libra_object_new(ce);
+    std->handlers = &kaleido_object_handlers;
 
-    memset(k, 0, XtOffsetOf(kaleido_t, width));
-    zend_object_std_init(&k->std, ce);
-
-    k->std.handlers = &kaleido_object_handlers;
-    if (UNEXPECTED(ce->default_properties_count)) {
-        object_properties_init(&k->std, ce);
-    }
-
-    return &k->std;
-}
-
-static void libra_kaleido_free(zend_object *object) {
-    zend_object_std_dtor(object);
+    return std;
 }
 
 LIBRA_STARTUP_FUNCTION(kaleido) {
@@ -205,7 +177,9 @@ LIBRA_STARTUP_FUNCTION(kaleido) {
 
     memcpy(&kaleido_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
 
-    kaleido_object_handlers.free_obj = libra_kaleido_free;
+    kaleido_object_handlers.offset = XtOffsetOf(libra_object, std);
+    kaleido_object_handlers.dtor_obj = zend_objects_destroy_object;
+    kaleido_object_handlers.free_obj = libra_object_free_storage;
     kaleido_object_handlers.clone_obj = NULL;
 
     zend_declare_class_constant_long(kaleido_ce, "HORIZENTAL", sizeof("HORIZENTAL") - 1, libra::Kaleido::Horizontal TSRMLS_CC);

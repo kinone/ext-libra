@@ -67,7 +67,7 @@ namespace libra {
         cv::imwrite(file, this->src, params);
     }
 
-    cv::Mat Image::destination() {
+    const cv::Mat& Image::destination() {
         return this->dst;
     }
 

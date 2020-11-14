@@ -13,45 +13,53 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_INFO_EX(sequence_destruct, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_INFO_EX(sequence_add, 0, 0, 1)
+    ZEND_ARG_INFO(0, "file")
+ZEND_END_ARG_INFO()
+
 PHP_METHOD(sequence, __construct) {
     ZEND_PARSE_PARAMETERS_START(0, 0)
     ZEND_PARSE_PARAMETERS_END();
 
     std::cout << "sequence::__construct" << std::endl;
-    libra_sequence_t *obj = Z_LIBRA_SEQUENCE_P(getThis());
-    obj->files = new std::vector<std::string>();
+    libra_object *obj = Z_LIBRA_P(getThis());
+    obj->ptr = new libra::Sequence();
 }
 
 PHP_METHOD(sequence, __destruct) {
+    ZEND_PARSE_PARAMETERS_START(0, 0)
+    ZEND_PARSE_PARAMETERS_END();
+
     std::cout << "sequence::__destruct" << std::endl;
-    libra_sequence_t *obj = Z_LIBRA_SEQUENCE_P(getThis());
-    obj->files->clear();
+    delete LIBRA_SEQUENCE_P(getThis());
+}
+
+PHP_METHOD(sequence, add) {
+    char *file;
+    size_t len;
+
+    ZEND_PARSE_PARAMETERS_START(1, 1)
+        Z_PARAM_STRING(file, len);
+    ZEND_PARSE_PARAMETERS_END();
+
+    libra::Sequence *s = LIBRA_SEQUENCE_P(getThis());
+    s->add(std::string(file));
+
+    RETURN_NULL();
 }
 
 static const zend_function_entry libra_sequence_functions[] = {
     PHP_ME(sequence, __construct, sequence_construct, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
     PHP_ME(sequence, __destruct, sequence_destruct, ZEND_ACC_PUBLIC|ZEND_ACC_DTOR)
+    PHP_ME(sequence, add, sequence_add, ZEND_ACC_PUBLIC)
     {NULL, NULL, NULL}
 };
 
-static zend_object* libra_sequence_new(zend_class_entry *ce)  {
-    std::cout << "libra_sequence_new" << std::endl;
-    libra_sequence_t *k = (libra_sequence_t *)emalloc(sizeof(libra_sequence_t) + zend_object_properties_size(ce));
+static zend_object *libra_sequence_new(zend_class_entry *ce)  {
+    zend_object *std = libra_object_new(ce);
+    std->handlers = &libra_sequence_object_handlers;
 
-    memset(k, 0, XtOffsetOf(libra_sequence_t , std));
-    zend_object_std_init(&k->std, ce);
-
-    k->std.handlers = &libra_sequence_object_handlers;
-    if (UNEXPECTED(ce->default_properties_count)) {
-        object_properties_init(&k->std, ce);
-    }
-
-    return &k->std;
-}
-
-static void libra_sequence_free(zend_object *object) {
-    std::cout << "libra_sequence_free" << std::endl;
-    zend_object_std_dtor(object);
+    return std;
 }
 
 LIBRA_STARTUP_FUNCTION(sequence) {
@@ -62,7 +70,9 @@ LIBRA_STARTUP_FUNCTION(sequence) {
 
     memcpy(&libra_sequence_object_handlers, zend_get_std_object_handlers(), sizeof(zend_object_handlers));
 
-    libra_sequence_object_handlers.free_obj = libra_sequence_free;
+    libra_sequence_object_handlers.offset = XtOffsetOf(libra_object, std);
+    libra_sequence_object_handlers.dtor_obj = zend_objects_destroy_object;
+    libra_sequence_object_handlers.free_obj = libra_object_free_storage;
     libra_sequence_object_handlers.clone_obj = NULL;
 
     return SUCCESS;

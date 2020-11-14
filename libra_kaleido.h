@@ -12,34 +12,7 @@
 
 extern zend_object_handlers kaleido_object_handlers;
 
-typedef struct {
-    std::vector<std::string> *files;
-    zend_long width;
-    zend_long height;
-    zend_long direction;
-    zend_long animateFrameCount;
-    zend_long animateTime;
-    zend_long imageDelay;
-    zend_long quality;
-    zend_object std;
-} kaleido_t;
-
-static libra::Kaleido* newLibraKaileido(kaleido_t *obj) {
-    libra::Kaleido *k = new libra::Kaleido(obj->width, obj->height, obj->direction);
-    k->setQuality(obj->quality);
-    k->setAnimateTime(obj->animateTime);
-    k->setFrameCount(obj->animateFrameCount);
-    k->setImageStay(obj->imageDelay);
-
-    return k;
-}
-
-#define Z_KALEIDO_T(zv)     (kaleido_fetch_object(Z_OBJ(zv)))
-#define Z_KALEIDO_P(zv)     Z_KALEIDO_T(*zv)
-
-static zend_always_inline kaleido_t *kaleido_fetch_object(zend_object *obj) {
-    return (kaleido_t *)((char*)(obj) - XtOffsetOf(kaleido_t, std));
-}
+#define Z_KALEIDO_P(obj) ((libra::Kaleido *)(Z_LIBRA_P(obj)->ptr))
 
 LIBRA_STARTUP_FUNCTION(kaleido);
 

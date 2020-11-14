@@ -5,12 +5,20 @@
 #ifndef EXT_LIBRA_SEQUENCE_H
 #define EXT_LIBRA_SEQUENCE_H
 
+#include <vector>
+#include <string>
+
 namespace libra {
     class Sequence {
     public:
         Sequence();
 
+        void add(const std::string &file);
+
         ~Sequence();
+
+    private:
+        std::vector<std::string> *files;
     };
 }
 

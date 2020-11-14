@@ -10,17 +10,7 @@
 
 extern zend_object_handlers libra_image_object_handlers;
 
-typedef struct {
-    std::string *src;
-    zend_object std;
-} libra_image_t;
-
-#define Z_LIBRA_IMAGE_T(zv)     (libra_image_fetch_object(Z_OBJ(zv)))
-#define Z_LIBRA_IMAGE_P(zv)     Z_LIBRA_IMAGE_T(*zv)
-
-static zend_always_inline libra_image_t *libra_image_fetch_object(zend_object *obj) {
-    return (libra_image_t *)((char*)(obj) - XtOffsetOf(libra_image_t, std));
-}
+#define Z_LIBRA_IMAGE_P(obj)     ((libra::Image *)(Z_LIBRA_P(obj)->ptr))
 
 LIBRA_STARTUP_FUNCTION(image);
 
