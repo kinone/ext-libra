@@ -5,8 +5,6 @@
 #ifndef LIBRA_LIBRA_KALEIDO_H
 #define LIBRA_LIBRA_KALEIDO_H
 
-#include <string>
-#include <vector>
 #include "php_libra.h"
 #include "src/Kaleido.h"
 
