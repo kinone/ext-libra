@@ -10,26 +10,27 @@ extern "C" {
 
 # define phpext_libra_ptr &libra_module_entry
 
-# define PHP_LIBRA_VERSION "0.1.0"
+# define PHP_LIBRA_VERSION "0.1.1"
 
 # if defined(ZTS) && defined(COMPILE_DL_LIBRA)
 ZEND_TSRMLS_CACHE_EXTERN()
 # endif
+
+#define LIBRA_STARTUP_FUNCTION(module)    ZEND_MINIT_FUNCTION(libra_##module)
+#define LIBRA_STARTUP(module)             ZEND_MINIT(libra_##module)(INIT_FUNC_ARGS_PASSTHRU)
 
 typedef struct {
     void        *ptr;
     zend_object std;
 } libra_object;
 
-#define Z_LIBRA_T(zv)     (libra_fetch_object(Z_OBJ(zv)))
-#define Z_LIBRA_P(zv)     Z_LIBRA_T(*zv)
+#define Z_LIBRA_T(zv)                   (libra_fetch_object(Z_OBJ(zv)))
+#define Z_LIBRA_P(zv)                   Z_LIBRA_T(*zv)
+#define Z_LIBRA_INNER_P(zv)             (Z_LIBRA_P(zv)->ptr)
 
 static zend_always_inline libra_object *libra_fetch_object(zend_object *obj) {
     return (libra_object *)((char*)(obj) - XtOffsetOf(libra_object, std));
 }
-
-#define LIBRA_STARTUP_FUNCTION(module)    ZEND_MINIT_FUNCTION(libra_##module)
-#define LIBRA_STARTUP(module)             ZEND_MINIT(libra_##module)(INIT_FUNC_ARGS_PASSTHRU)
 
 static zend_object *libra_object_new(zend_class_entry *ce, zend_object_handlers *h)  {
     libra_object *obj = (libra_object *)zend_object_alloc(sizeof(libra_object), ce);

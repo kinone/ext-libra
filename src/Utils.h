@@ -7,8 +7,11 @@
 
 #include <opencv2/imgproc.hpp>
 #include <opencv2/imgcodecs.hpp>
+
+extern "C" {
 #include <webp/encode.h>
 #include <webp/decode.h>
+};
 
 namespace libra {
     class Utils {

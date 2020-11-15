@@ -8,7 +8,9 @@
 #include "src/Sequence.h"
 #include "php_libra.h"
 
-#define LIBRA_SEQUENCE_P(zv)  ((libra::Sequence *)(Z_LIBRA_P(zv)->ptr))
+extern zend_object_handlers libra_sequence_object_handlers;
+
+#define Z_LIBRA_SEQUENCE_P(zv)  ((libra::Sequence *)Z_LIBRA_INNER_P(zv))
 
 LIBRA_STARTUP_FUNCTION(sequence);
 

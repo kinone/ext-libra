@@ -31,7 +31,7 @@ PHP_METHOD(sequence, __destruct) {
     ZEND_PARSE_PARAMETERS_END();
 
     std::cout << "sequence::__destruct" << std::endl;
-    delete LIBRA_SEQUENCE_P(getThis());
+    delete Z_LIBRA_SEQUENCE_P(getThis());
 }
 
 PHP_METHOD(sequence, add) {
@@ -42,7 +42,7 @@ PHP_METHOD(sequence, add) {
         Z_PARAM_STRING(file, len);
     ZEND_PARSE_PARAMETERS_END();
 
-    libra::Sequence *s = LIBRA_SEQUENCE_P(getThis());
+    libra::Sequence *s = Z_LIBRA_SEQUENCE_P(getThis());
     s->add(std::string(file));
 
     RETURN_NULL();
