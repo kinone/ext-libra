@@ -28,6 +28,14 @@ namespace libra {
             return false;
         }
 
+        if (this->images->size() == 0) { // 记录第一张的图片类型
+            this->type = image.type();
+        } else {
+            if (image.type() != this->type) { // 与第一张的图片类型不一致
+                return false;
+            }
+        }
+
         if (image.cols != this->width || image.rows != this->height) {
             // 调整图片尺寸
             Image *o = new Image(image);

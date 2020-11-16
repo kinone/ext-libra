@@ -46,6 +46,7 @@ namespace libra {
         int width;
         int height;
         int quality;
+        int type;
     };
 }
 

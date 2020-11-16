@@ -69,9 +69,9 @@ PHP_METHOD(kaleido, add) {
     ZEND_PARSE_PARAMETERS_END();
 
     libra::Kaleido *k = Z_KALEIDO_P(getThis());
-    k->add(file);
+    bool b = k->add(file);
 
-    RETURN_BOOL(true);
+    RETURN_BOOL(b);
 }
 
 PHP_METHOD(kaleido, quality) {
@@ -82,9 +82,9 @@ PHP_METHOD(kaleido, quality) {
     ZEND_PARSE_PARAMETERS_END();
 
     libra::Kaleido *k = Z_KALEIDO_P(getThis());
-    k->setQuality(q);
+    bool b = k->setQuality(q);
 
-    RETURN_BOOL(true);
+    RETURN_BOOL(b);
 }
 
 PHP_METHOD(kaleido, imageDelay) {
@@ -95,9 +95,9 @@ PHP_METHOD(kaleido, imageDelay) {
     ZEND_PARSE_PARAMETERS_END();
 
     libra::Kaleido *k = Z_KALEIDO_P(getThis());
-    k->setImageStay(delay);
+    bool b = k->setImageStay(delay);
 
-    RETURN_BOOL(true);
+    RETURN_BOOL(b);
 }
 
 PHP_METHOD(kaleido, animateTime) {
@@ -108,9 +108,9 @@ PHP_METHOD(kaleido, animateTime) {
     ZEND_PARSE_PARAMETERS_END();
 
     libra::Kaleido *k = Z_KALEIDO_P(getThis());
-    k->setAnimateTime(time);
+    bool b = k->setAnimateTime(time);
 
-    RETURN_BOOL(true);
+    RETURN_BOOL(b);
 }
 
 PHP_METHOD(kaleido, animateFrameCount) {
@@ -121,9 +121,9 @@ PHP_METHOD(kaleido, animateFrameCount) {
     ZEND_PARSE_PARAMETERS_END();
 
     libra::Kaleido *k = Z_KALEIDO_P(getThis());
-    k->setFrameCount(count);
+    bool b = k->setFrameCount(count);
 
-    RETURN_BOOL(true);
+    RETURN_BOOL(b);
 }
 
 PHP_METHOD(kaleido, generate) {
