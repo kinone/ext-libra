@@ -61,7 +61,7 @@ static zend_object *libra_sequence_new(zend_class_entry *ce)  {
 
 LIBRA_STARTUP_FUNCTION(sequence) {
     zend_class_entry ce;
-    INIT_CLASS_ENTRY(ce, "Libra\\Sequence", libra_sequence_functions);
+    INIT_NS_CLASS_ENTRY(ce, "Libra", "Sequence", libra_sequence_functions);
     libra_sequence_ce = zend_register_internal_class(&ce TSRMLS_CC);
     libra_sequence_ce->create_object = libra_sequence_new;
 

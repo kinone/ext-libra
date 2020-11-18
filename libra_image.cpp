@@ -162,7 +162,7 @@ static zend_object* libra_image_new(zend_class_entry *ce)  {
 
 LIBRA_STARTUP_FUNCTION(image) {
     zend_class_entry ce;
-    INIT_CLASS_ENTRY(ce, "Libra\\Image", libra_image_functions);
+    INIT_NS_CLASS_ENTRY(ce, "Libra", "Image", libra_image_functions);
     libra_image_ce = zend_register_internal_class(&ce TSRMLS_CC);
     libra_image_ce->create_object = libra_image_new;
 

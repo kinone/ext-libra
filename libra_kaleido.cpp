@@ -37,6 +37,10 @@ ZEND_BEGIN_ARG_INFO_EX(kaleido_set_quality, 0, 0, 1)
     ZEND_ARG_INFO(0, quality)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_INFO_EX(kaleido_set_loop, 0, 0, 1)
+    ZEND_ARG_INFO(0, loop)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_INFO_EX(kaleido_no_args, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
@@ -126,6 +130,19 @@ PHP_METHOD(kaleido, animateFrameCount) {
     RETURN_BOOL(b);
 }
 
+PHP_METHOD(kaleido, loop) {
+    zend_long loop;
+
+    ZEND_PARSE_PARAMETERS_START(1, 1)
+        Z_PARAM_LONG(loop)
+    ZEND_PARSE_PARAMETERS_END();
+
+    libra::Kaleido *k = Z_KALEIDO_P(getThis());
+    bool b = k->setLoop(loop);
+
+    RETURN_BOOL(b);
+}
+
 PHP_METHOD(kaleido, generate) {
     char *dst;
     size_t len = 0;
@@ -154,6 +171,7 @@ static const zend_function_entry kaleido_functions[] = {
     PHP_ME(kaleido, add, kaleido_add, ZEND_ACC_PUBLIC)
     PHP_ME(kaleido, generate, kaleido_generate, ZEND_ACC_PUBLIC)
     PHP_ME(kaleido, quality, kaleido_set_quality, ZEND_ACC_PUBLIC)
+    PHP_ME(kaleido, loop, kaleido_set_loop, ZEND_ACC_PUBLIC)
     PHP_ME(kaleido, imageDelay, kaleido_image_delay, ZEND_ACC_PUBLIC)
     PHP_ME(kaleido, animateTime, kaleido_animate_time, ZEND_ACC_PUBLIC)
     PHP_ME(kaleido, animateFrameCount, kaleido_animate_frame_count, ZEND_ACC_PUBLIC)
@@ -168,7 +186,7 @@ static zend_object* libra_kaleido_new(zend_class_entry *ce)  {
 
 LIBRA_STARTUP_FUNCTION(kaleido) {
     zend_class_entry ce;
-    INIT_CLASS_ENTRY(ce, "Libra\\Kaleido", kaleido_functions);
+    INIT_NS_CLASS_ENTRY(ce, "Libra", "Kaleido", kaleido_functions);
     kaleido_ce = zend_register_internal_class(&ce TSRMLS_CC);
     kaleido_ce->create_object = libra_kaleido_new;
 

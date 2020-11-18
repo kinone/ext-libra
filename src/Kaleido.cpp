@@ -92,11 +92,22 @@ namespace libra {
         return true;
     }
 
+    bool Kaleido::setLoop(int loop) {
+        if (loop < 0 || loop > 100) {
+            return false;
+        }
+
+        this->loop = loop;
+
+        return true;
+    }
+
     void Kaleido::generate(const std::string &result) {
         int count = this->images->size();
 
         WebPAnimEncoderOptions option;
         WebPAnimEncoderOptionsInit(&option);
+        option.anim_params.loop_count = this->loop;
         WebPAnimEncoder *enc = WebPAnimEncoderNew(this->width, this->height, &option);
 
         WebPConfig config;

@@ -37,6 +37,8 @@ namespace libra {
 
         bool setQuality(int q);
 
+        bool setLoop(int loop);
+
     private:
         std::vector<cv::Mat> *images;
         uint8_t direction;
@@ -47,6 +49,7 @@ namespace libra {
         int height;
         int quality;
         int type;
+        int loop;
     };
 }
 
