@@ -13,8 +13,8 @@ namespace libra {
         delete logger;
     }
 
-    void Base::registerLogger(zval *l) {
+    void Base::setLogger(LoggerInterface *l) {
         delete logger;
-        logger = new Logger(l);
+        logger = l;
     }
 }

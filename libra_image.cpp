@@ -3,6 +3,7 @@
 //
 #include "libra_image.h"
 #include "libra_logger.h"
+#include "src/Logger.h"
 
 zend_class_entry *libra_image_ce;
 
@@ -150,7 +151,7 @@ PHP_METHOD(image, setLogger) {
     ZEND_PARSE_PARAMETERS_END();
 
     libra::Image *img = Z_LIBRA_IMAGE_P(getThis());
-    img->registerLogger(logger);
+    img->setLogger(new libra::Logger(logger));
 
     RETURN_NULL()
 }

@@ -7,8 +7,6 @@
 
 #include "src/LoggerInterface.h"
 #include "src/NullLogger.h"
-#include "src/Logger.h"
-#include "php_libra.h"
 
 namespace libra {
     class Base {
@@ -17,7 +15,7 @@ namespace libra {
 
         ~Base();
 
-        void registerLogger(zval *logger);
+        void setLogger(LoggerInterface *l);
 
     protected:
         LoggerInterface *logger;

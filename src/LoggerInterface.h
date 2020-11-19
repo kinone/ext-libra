@@ -6,18 +6,17 @@
 #define EXT_LIBRA_LOGGERINTERFACE_H
 
 #include <string>
-#include "php_libra.h"
 
 namespace libra {
     class LoggerInterface {
     public:
         virtual ~LoggerInterface();
 
-        virtual void debug(const std::string &message, zend_array *context = NULL) = 0;
+        virtual void debug(const std::string &message, void *context = NULL) = 0;
 
-        virtual void info(const std::string &message, zend_array *context = NULL) = 0;
+        virtual void info(const std::string &message, void *context = NULL) = 0;
 
-        virtual void error(const std::string &message, zend_array *context = NULL) = 0;
+        virtual void error(const std::string &message, void *context = NULL) = 0;
     };
 }
 

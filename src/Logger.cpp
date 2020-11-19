@@ -13,16 +13,15 @@ namespace libra {
         zval_ptr_dtor(&zv);
     }
 
-    void Logger::debug(const std::string &message, zend_array *context) {
-        zval ret, arg1, arg2;
+    void Logger::debug(const std::string &message, void *context) {
+        zval ret, arg;
         zend_string *str = zend_string_init(message.data(), message.length(), 1);
-        ZVAL_STR(&arg1, str);
-        ZVAL_ARR(&arg2, context);
-        zend_call_method_with_2_params(&zv, Z_OBJCE_P(&zv), NULL, "debug", &ret, &arg1, &arg2);
+        ZVAL_STR(&arg, str);
+        zend_call_method_with_1_params(&zv, Z_OBJCE_P(&zv), NULL, "debug", &ret, &arg);
         zend_string_free(str);
     }
 
-    void Logger::info(const std::string &message, zend_array *context) {
+    void Logger::info(const std::string &message, void *context) {
         zval ret, arg;
         zend_string *str = zend_string_init(message.data(), message.length(), 1);
         ZVAL_STR(&arg, str);
@@ -30,7 +29,7 @@ namespace libra {
         zend_string_free(str);
     }
 
-    void Logger::error(const std::string &message, zend_array *context) {
+    void Logger::error(const std::string &message, void *context) {
         zval ret, arg;
         zend_string *str = zend_string_init(message.data(), message.length(), 1);
         ZVAL_STR(&arg, str);

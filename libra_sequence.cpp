@@ -44,7 +44,7 @@ PHP_METHOD(sequence, setLogger) {
 
     libra::Sequence *s = Z_LIBRA_SEQUENCE_P(getThis());
 
-    s->registerLogger(logger);
+    s->setLogger(new libra::Logger(logger));
 
     RETURN_NULL()
 }

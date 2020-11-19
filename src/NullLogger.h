@@ -12,11 +12,11 @@ namespace libra {
     public:
         virtual ~NullLogger();
 
-        virtual void debug(const std::string &message, zend_array *context = NULL);
+        virtual void debug(const std::string &message, void *context = NULL);
 
-        virtual void info(const std::string &message, zend_array *context = NULL);
+        virtual void info(const std::string &message, void *context = NULL);
 
-        virtual void error(const std::string &message, zend_array *context = NULL);
+        virtual void error(const std::string &message, void *context = NULL);
     };
 }
 

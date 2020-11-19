@@ -3,6 +3,7 @@
 //
 #include "libra_kaleido.h"
 #include "libra_logger.h"
+#include "src/Logger.h"
 
 zend_class_entry *kaleido_ce;
 
@@ -175,7 +176,7 @@ PHP_METHOD(kaleido, setLogger) {
     ZEND_PARSE_PARAMETERS_END();
 
     libra::Kaleido *k = Z_KALEIDO_P(getThis());
-    k->registerLogger(logger);
+    k->setLogger(new libra::Logger(logger));
 
     RETURN_NULL();
 }

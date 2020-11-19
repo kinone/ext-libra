@@ -30,6 +30,7 @@ add_library(libra SHARED
         src/LoggerInterface.cpp
         src/NullLogger.cpp
         src/Sequence.cpp
+        src/Base.cpp
         libra.cpp
         php_libra.h
         libra_image.cpp

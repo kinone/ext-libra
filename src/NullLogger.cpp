@@ -7,9 +7,9 @@
 namespace libra {
     NullLogger::~NullLogger() {}
 
-    void NullLogger::debug(const std::string &message, zend_array *context) {}
+    void NullLogger::debug(const std::string &message, void *context) {}
 
-    void NullLogger::info(const std::string &message, zend_array *context) {}
+    void NullLogger::info(const std::string &message, void *context) {}
 
-    void NullLogger::error(const std::string &message, zend_array *context) {}
+    void NullLogger::error(const std::string &message, void *context) {}
 }

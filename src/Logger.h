@@ -7,6 +7,10 @@
 
 #include <string>
 #include "src/LoggerInterface.h"
+extern "C" {
+#include "php.h"
+#include "Zend/zend_interfaces.h"
+};
 
 namespace libra {
     class Logger: public LoggerInterface {
@@ -14,11 +18,11 @@ namespace libra {
         Logger(zval *v);
         ~Logger();
 
-        virtual void debug(const std::string &message, zend_array *context = NULL);
+        virtual void debug(const std::string &message, void *context = NULL);
 
-        virtual void info(const std::string &message, zend_array *context = NULL);
+        virtual void info(const std::string &message, void *context = NULL);
 
-        virtual void error(const std::string &message, zend_array *context = NULL);
+        virtual void error(const std::string &message, void *context = NULL);
     private:
         zval zv;
     };
