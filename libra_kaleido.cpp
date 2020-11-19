@@ -2,6 +2,7 @@
 // Created by 王振浩 on 2020/11/9.
 //
 #include "libra_kaleido.h"
+#include "libra_logger.h"
 
 zend_class_entry *kaleido_ce;
 
@@ -166,6 +167,19 @@ PHP_METHOD(kaleido, clear) {
     RETURN_NULL();
 }
 
+PHP_METHOD(kaleido, setLogger) {
+    zval *logger;
+
+    ZEND_PARSE_PARAMETERS_START(1, 1)
+        Z_PARAM_OBJECT_OF_CLASS(logger, libra_logger_interface_ce);
+    ZEND_PARSE_PARAMETERS_END();
+
+    libra::Kaleido *k = Z_KALEIDO_P(getThis());
+    k->registerLogger(logger);
+
+    RETURN_NULL();
+}
+
 static const zend_function_entry kaleido_functions[] = {
     PHP_ME(kaleido, __construct, kaleido_construct, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
     PHP_ME(kaleido, add, kaleido_add, ZEND_ACC_PUBLIC)
@@ -176,6 +190,7 @@ static const zend_function_entry kaleido_functions[] = {
     PHP_ME(kaleido, animateTime, kaleido_animate_time, ZEND_ACC_PUBLIC)
     PHP_ME(kaleido, animateFrameCount, kaleido_animate_frame_count, ZEND_ACC_PUBLIC)
     PHP_ME(kaleido, clear, kaleido_no_args, ZEND_ACC_PUBLIC)
+    PHP_ME(kaleido, setLogger, libra_set_logger, ZEND_ACC_PUBLIC)
     PHP_ME(kaleido, __destruct, kaleido_no_args, ZEND_ACC_PUBLIC|ZEND_ACC_DTOR)
     {NULL, NULL, NULL}
 };

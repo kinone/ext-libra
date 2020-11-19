@@ -51,7 +51,7 @@ PHP_MINIT_FUNCTION(libra)
     LIBRA_STARTUP(kaleido);
     LIBRA_STARTUP(image);
     LIBRA_STARTUP(sequence);
-    LIBRA_STARTUP(logger);
+    LIBRA_STARTUP(logger_interface);
 
     return SUCCESS;
 }

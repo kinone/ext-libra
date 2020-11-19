@@ -7,13 +7,16 @@
 
 #include <vector>
 #include <string>
+#include "src/Base.h"
 
 namespace libra {
-    class Sequence {
+    class Sequence : public Base {
     public:
         Sequence();
 
         void add(const std::string &file);
+
+        void generate(const std::string &result);
 
         ~Sequence();
 

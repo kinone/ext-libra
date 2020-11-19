@@ -8,9 +8,10 @@
 #include <string>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc.hpp>
+#include "src/Base.h"
 
 namespace libra {
-    class Image {
+    class Image : public Base {
     public:
         Image(const std::string &file);
 

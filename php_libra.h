@@ -6,6 +6,7 @@
 extern "C" {
 #include "php.h"
 #include "ext/standard/info.h"
+#include "Zend/zend_interfaces.h"
 };
 
 # define phpext_libra_ptr &libra_module_entry

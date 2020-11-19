@@ -2,6 +2,7 @@
 // Created by 王振浩 on 2020/11/10.
 //
 #include "libra_image.h"
+#include "libra_logger.h"
 
 zend_class_entry *libra_image_ce;
 
@@ -126,8 +127,7 @@ PHP_METHOD(image, compressPng) {
 }
 
 PHP_METHOD(image, getWidth) {
-    ZEND_PARSE_PARAMETERS_START(0, 0)
-    ZEND_PARSE_PARAMETERS_END();
+    ZEND_PARSE_PARAMETERS_NONE();
 
     libra::Image *img = Z_LIBRA_IMAGE_P(getThis());
 
@@ -135,12 +135,24 @@ PHP_METHOD(image, getWidth) {
 }
 
 PHP_METHOD(image, getHeight) {
-    ZEND_PARSE_PARAMETERS_START(0, 0)
-    ZEND_PARSE_PARAMETERS_END();
+    ZEND_PARSE_PARAMETERS_NONE();
 
     libra::Image *img = Z_LIBRA_IMAGE_P(getThis());
 
     RETURN_LONG(img->getHeight());
+}
+
+PHP_METHOD(image, setLogger) {
+    zval *logger;
+
+    ZEND_PARSE_PARAMETERS_START(1, 1)
+        Z_PARAM_OBJECT_OF_CLASS(logger, libra_logger_interface_ce);
+    ZEND_PARSE_PARAMETERS_END();
+
+    libra::Image *img = Z_LIBRA_IMAGE_P(getThis());
+    img->registerLogger(logger);
+
+    RETURN_NULL()
 }
 
 static const zend_function_entry libra_image_functions[] = {
@@ -153,6 +165,7 @@ static const zend_function_entry libra_image_functions[] = {
     PHP_ME(image, getWidth, image_no_args, ZEND_ACC_PUBLIC)
     PHP_ME(image, getHeight, image_no_args, ZEND_ACC_PUBLIC)
     PHP_ME(image, resize, image_resize, ZEND_ACC_PUBLIC)
+    PHP_ME(image, setLogger, libra_set_logger, ZEND_ACC_PUBLIC)
     {NULL, NULL, NULL}
 };
 

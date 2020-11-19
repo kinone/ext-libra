@@ -2,7 +2,8 @@
 // Created by 王振浩 on 2020/11/14.
 //
 #include "libra_sequence.h"
-#include <iostream>
+#include "libra_logger.h"
+#include "src/Logger.h"
 
 zend_class_entry *libra_sequence_ce;
 zend_object_handlers libra_sequence_object_handlers;
@@ -14,24 +15,38 @@ ZEND_BEGIN_ARG_INFO_EX(sequence_destruct, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(sequence_add, 0, 0, 1)
-    ZEND_ARG_INFO(0, "file")
+    ZEND_ARG_INFO(0, file)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(sequence_generate, 0, 0, 1)
+    ZEND_ARG_INFO(0, result)
 ZEND_END_ARG_INFO()
 
 PHP_METHOD(sequence, __construct) {
-    ZEND_PARSE_PARAMETERS_START(0, 0)
-    ZEND_PARSE_PARAMETERS_END();
+    ZEND_PARSE_PARAMETERS_NONE();
 
-    std::cout << "sequence::__construct" << std::endl;
     libra_object *obj = Z_LIBRA_P(getThis());
     obj->ptr = new libra::Sequence();
 }
 
 PHP_METHOD(sequence, __destruct) {
-    ZEND_PARSE_PARAMETERS_START(0, 0)
+    ZEND_PARSE_PARAMETERS_NONE();
+
+    delete Z_LIBRA_SEQUENCE_P(getThis());
+}
+
+PHP_METHOD(sequence, setLogger) {
+    zval *logger;
+
+    ZEND_PARSE_PARAMETERS_START(1, 1)
+        Z_PARAM_OBJECT_OF_CLASS(logger, libra_logger_interface_ce)
     ZEND_PARSE_PARAMETERS_END();
 
-    std::cout << "sequence::__destruct" << std::endl;
-    delete Z_LIBRA_SEQUENCE_P(getThis());
+    libra::Sequence *s = Z_LIBRA_SEQUENCE_P(getThis());
+
+    s->registerLogger(logger);
+
+    RETURN_NULL()
 }
 
 PHP_METHOD(sequence, add) {
@@ -48,10 +63,26 @@ PHP_METHOD(sequence, add) {
     RETURN_NULL();
 }
 
+PHP_METHOD(sequence, generate) {
+    char *file;
+    size_t len;
+
+    ZEND_PARSE_PARAMETERS_START(1, 1)
+        Z_PARAM_STRING(file, len);
+    ZEND_PARSE_PARAMETERS_END();
+
+    libra::Sequence *s = Z_LIBRA_SEQUENCE_P(getThis());
+    s->generate(std::string(file));
+
+    RETURN_NULL();
+}
+
 static const zend_function_entry libra_sequence_functions[] = {
     PHP_ME(sequence, __construct, sequence_construct, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
     PHP_ME(sequence, __destruct, sequence_destruct, ZEND_ACC_PUBLIC|ZEND_ACC_DTOR)
     PHP_ME(sequence, add, sequence_add, ZEND_ACC_PUBLIC)
+    PHP_ME(sequence, generate, sequence_generate, ZEND_ACC_PUBLIC)
+    PHP_ME(sequence, setLogger, libra_set_logger, ZEND_ACC_PUBLIC)
     {NULL, NULL, NULL}
 };
 
