@@ -31,6 +31,7 @@ add_library(libra SHARED
         src/AbstractLogger.cpp
         src/NullLogger.cpp
         src/Container.cpp
+        src/Animate.cpp
         libra.cpp
         php_libra.h
         libra_image.cpp

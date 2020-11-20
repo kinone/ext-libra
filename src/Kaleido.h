@@ -37,7 +37,7 @@ namespace libra {
 
         bool setQuality(int q);
 
-        bool setLoop(int loop);
+        bool setLoop(int l);
 
     private:
         std::vector<cv::Mat> *images;

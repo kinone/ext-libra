@@ -3,6 +3,7 @@
 //
 
 #include "Container.h"
+#include "Animate.h"
 #include "Sequence.h"
 #include "Image.h"
 #include "Utils.h"
@@ -58,15 +59,7 @@ namespace libra {
     bool Sequence::generate(const std::string &result) {
         logger->info("start to generate " + result);
 
-        WebPAnimEncoderOptions option;
-        WebPAnimEncoderOptionsInit(&option);
-        option.anim_params.loop_count = loop;
-        WebPAnimEncoder *enc = WebPAnimEncoderNew(this->width, this->height, &option);
-
-        WebPConfig config;
-        WebPConfigInit(&config);
-
-        int timestamp = 0;
+        Animate *animate = new Animate(width, height, loop);
         int eachFrameStay = 1000 / frameCount;
 
         for (int i = 0; i < files->size(); i++) {
@@ -88,24 +81,14 @@ namespace libra {
             // 转webp并调整质量
             WebPPicture pic;
             Utils::mat2WebPPicture(src, &pic, quality);
-            WebPAnimEncoderAdd(enc, &pic, timestamp, &config);
+            animate->add(&pic, eachFrameStay);
             WebPPictureFree(&pic);
-
-            timestamp += eachFrameStay;
         }
 
-        // 空帧
-        WebPAnimEncoderAdd(enc, NULL, timestamp, NULL);
-
         // 写文件
-        WebPData data;
-        WebPDataInit(&data);
-        WebPAnimEncoderAssemble(enc, &data);
-        FILE *f = fopen(result.data(), "wb");
-        fwrite(data.bytes, data.size, 1, f);
-        fclose(f);
-        WebPDataClear(&data);
-        WebPAnimEncoderDelete(enc);
+        animate->save(result);
+
+        delete animate;
 
         logger->info("end to generate " + result);
 

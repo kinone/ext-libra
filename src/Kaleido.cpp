@@ -5,6 +5,7 @@
 #include "Kaleido.h"
 #include "Utils.h"
 #include "Image.h"
+#include "Animate.h"
 
 namespace libra {
     Kaleido::Kaleido(uint32_t width, uint32_t height, uint8_t direction) : width(width), height(height),
@@ -92,35 +93,26 @@ namespace libra {
         return true;
     }
 
-    bool Kaleido::setLoop(int loop) {
-        if (loop < 0 || loop > 100) {
+    bool Kaleido::setLoop(int l) {
+        if (l < 0 || l > 100) {
             return false;
         }
 
-        this->loop = loop;
+        this->loop = l;
 
         return true;
     }
 
     void Kaleido::generate(const std::string &result) {
         int count = this->images->size();
+        Animate *animate = new Animate(width, height, loop);
 
-        WebPAnimEncoderOptions option;
-        WebPAnimEncoderOptionsInit(&option);
-        option.anim_params.loop_count = this->loop;
-        WebPAnimEncoder *enc = WebPAnimEncoderNew(this->width, this->height, &option);
-
-        WebPConfig config;
-        WebPConfigInit(&config);
-
-        int timestamp = 0;
         int eachFrameStay = this->animateTime / this->animateFrameCount;
         WebPPicture pic;
         for (int i = 0; i < count; i++) {
             // 添加第一张图片
             Utils::mat2WebPPicture(this->images->at(i), &pic, this->quality);
-            WebPAnimEncoderAdd(enc, &pic, timestamp, &config);
-            timestamp += this->eachImageStay;
+            animate->add(&pic, eachImageStay);
             WebPPictureFree(&pic);
 
             int next = (i + 1) % count; // 下一张位置
@@ -132,23 +124,14 @@ namespace libra {
                     Utils::genFrameH(this->images->at(i), this->images->at(next), dst, j, this->animateFrameCount);
                 }
                 Utils::mat2WebPPicture(dst, &pic, this->quality);
-                WebPAnimEncoderAdd(enc, &pic, timestamp, &config);
-                timestamp += eachFrameStay;
+                animate->add(&pic, eachFrameStay);
                 WebPPictureFree(&pic);
             }
         }
 
-        WebPAnimEncoderAdd(enc, NULL, timestamp, NULL);
+        // 写文件
+        animate->save(result);
 
-        WebPData data;
-        WebPDataInit(&data);
-
-        WebPAnimEncoderAssemble(enc, &data);
-
-        FILE *f = fopen(result.data(), "wb");
-        fwrite(data.bytes, data.size, 1, f);
-        fclose(f);
-        WebPDataClear(&data);
-        WebPAnimEncoderDelete(enc);
+        delete animate;
     }
 }
