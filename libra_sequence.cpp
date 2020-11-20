@@ -62,9 +62,9 @@ PHP_METHOD(sequence, add) {
     ZEND_PARSE_PARAMETERS_END();
 
     libra::Sequence *s = Z_LIBRA_SEQUENCE_P(getThis());
-    s->add(std::string(file));
+    bool b = s->add(std::string(file));
 
-    RETURN_NULL();
+    RETURN_BOOL(b)
 }
 
 PHP_METHOD(sequence, generate) {
@@ -76,9 +76,9 @@ PHP_METHOD(sequence, generate) {
     ZEND_PARSE_PARAMETERS_END();
 
     libra::Sequence *s = Z_LIBRA_SEQUENCE_P(getThis());
-    s->generate(std::string(file));
+    bool b = s->generate(std::string(file));
 
-    RETURN_NULL();
+    RETURN_BOOL(b)
 }
 
 PHP_METHOD(sequence, loop) {
