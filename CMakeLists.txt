@@ -6,16 +6,16 @@ set(CMAKE_CXX_STANDARD 98)
 include_directories(. src include)
 
 set(GLOBAL_INCLUDE /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include)
-set(PHP_INCLUDE /usr/local/opt/php/include)
+set(PHP_INCLUDE /usr/local/include/php)
 
 include_directories(
         ${GLOBAL_INCLUDE}
-        ${PHP_INCLUDE}/php
-        ${PHP_INCLUDE}/php/main
-        ${PHP_INCLUDE}/php/Zend
-        ${PHP_INCLUDE}/php/TSRM
-        /opt/apps/libwebp/include
+        ${PHP_INCLUDE}
+        ${PHP_INCLUDE}/main
+        ${PHP_INCLUDE}/Zend
+        ${PHP_INCLUDE}/TSRM
         /opt/apps/opencv/include
+        /opt/apps/libwebp/include
 )
 
 link_directories(/opt/apps/libwebp/lib /opt/apps/opencv/lib)
@@ -27,10 +27,10 @@ add_library(libra SHARED
         src/Utils.cpp
         src/Kaleido.cpp
         src/Logger.cpp
-        src/LoggerInterface.cpp
-        src/NullLogger.cpp
         src/Sequence.cpp
-        src/Base.cpp
+        src/AbstractLogger.cpp
+        src/NullLogger.cpp
+        src/Container.cpp
         libra.cpp
         php_libra.h
         libra_image.cpp
@@ -40,4 +40,6 @@ add_library(libra SHARED
         libra_sequence.cpp
         libra_sequence.h
         libra_logger.h
-        libra_logger.cpp)
+        libra_logger.cpp
+        libra_container.cpp
+        libra_container.h)

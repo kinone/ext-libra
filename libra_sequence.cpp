@@ -35,20 +35,6 @@ PHP_METHOD(sequence, __destruct) {
     delete Z_LIBRA_SEQUENCE_P(getThis());
 }
 
-PHP_METHOD(sequence, setLogger) {
-    zval *logger;
-
-    ZEND_PARSE_PARAMETERS_START(1, 1)
-        Z_PARAM_OBJECT_OF_CLASS(logger, libra_logger_interface_ce)
-    ZEND_PARSE_PARAMETERS_END();
-
-    libra::Sequence *s = Z_LIBRA_SEQUENCE_P(getThis());
-
-    s->setLogger(new libra::Logger(logger));
-
-    RETURN_NULL()
-}
-
 PHP_METHOD(sequence, add) {
     char *file;
     size_t len;
@@ -82,7 +68,6 @@ static const zend_function_entry libra_sequence_functions[] = {
     PHP_ME(sequence, __destruct, sequence_destruct, ZEND_ACC_PUBLIC|ZEND_ACC_DTOR)
     PHP_ME(sequence, add, sequence_add, ZEND_ACC_PUBLIC)
     PHP_ME(sequence, generate, sequence_generate, ZEND_ACC_PUBLIC)
-    PHP_ME(sequence, setLogger, libra_set_logger, ZEND_ACC_PUBLIC)
     {NULL, NULL, NULL}
 };
 

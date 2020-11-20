@@ -28,6 +28,8 @@ typedef struct {
 #define Z_LIBRA_P(zv)                   Z_LIBRA_T(*zv)
 #define Z_LIBRA_INNER_P(zv)             (Z_LIBRA_P(zv)->ptr)
 
+#define LIBRA_G(v)                      (libra_globals.v)
+
 static zend_always_inline libra_object *libra_fetch_object(zend_object *obj) {
     return (libra_object *)((char*)(obj) - XtOffsetOf(libra_object, std));
 }
@@ -56,6 +58,12 @@ static void libra_object_handlers_init(zend_object_handlers *h) {
     h->free_obj = libra_object_free_storage;
     h->clone_obj = NULL;
 }
+
+ZEND_BEGIN_MODULE_GLOBALS(libra)
+    zval container;
+ZEND_END_MODULE_GLOBALS(libra)
+
+extern ZEND_DECLARE_MODULE_GLOBALS(libra)
 
 PHP_RINIT_FUNCTION(libra);
 

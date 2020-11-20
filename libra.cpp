@@ -5,6 +5,7 @@
 #endif
 
 #include "php_libra.h"
+#include "libra_container.h"
 #include "libra_image.h"
 #include "libra_kaleido.h"
 #include "libra_sequence.h"
@@ -16,6 +17,8 @@
     ZEND_PARSE_PARAMETERS_START(0, 0) \
     ZEND_PARSE_PARAMETERS_END()
 #endif
+
+ZEND_DECLARE_MODULE_GLOBALS(libra)
 
 /* {{{ PHP_RINIT_FUNCTION
  */
@@ -48,6 +51,7 @@ PHP_MINFO_FUNCTION(libra)
 
 PHP_MINIT_FUNCTION(libra)
 {
+    LIBRA_STARTUP(container);
     LIBRA_STARTUP(kaleido);
     LIBRA_STARTUP(image);
     LIBRA_STARTUP(sequence);
@@ -59,6 +63,11 @@ PHP_MINIT_FUNCTION(libra)
 PHP_MSHUTDOWN_FUNCTION(libra)
 {
     return SUCCESS;
+}
+
+PHP_GINIT_FUNCTION(libra)
+{
+    memset(libra_globals, 0, sizeof(*libra_globals));
 }
 
 /* {{{ libra_module_entry
@@ -73,7 +82,11 @@ zend_module_entry libra_module_entry = {
     PHP_RSHUTDOWN(libra),        /* PHP_RSHUTDOWN - Request shutdown */
     PHP_MINFO(libra),            /* PHP_MINFO - Module info */
     PHP_LIBRA_VERSION,           /* Version */
-    STANDARD_MODULE_PROPERTIES
+    PHP_MODULE_GLOBALS(libra),
+    PHP_GINIT(libra),
+    NULL,
+    NULL,
+    STANDARD_MODULE_PROPERTIES_EX
 };
 /* }}} */
 

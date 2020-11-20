@@ -7,10 +7,9 @@
 
 #include <vector>
 #include <string>
-#include "src/Base.h"
 
 namespace libra {
-    class Sequence : public Base {
+    class Sequence {
     public:
         Sequence();
 

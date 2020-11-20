@@ -8,14 +8,13 @@
 #include <string>
 #include <vector>
 #include <opencv2/imgproc.hpp>
-#include "src/Base.h"
 
 extern "C" {
 #include <webp/mux.h>
 };
 
 namespace libra {
-    class Kaleido : public Base {
+    class Kaleido {
     public:
         static const uint8_t Horizontal = 0;
         static const uint8_t Vertical = 1;

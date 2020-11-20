@@ -5,10 +5,10 @@
 #ifndef EXT_LIBRA_NULLLOGGER_H
 #define EXT_LIBRA_NULLLOGGER_H
 
-#include "src/LoggerInterface.h"
+#include "AbstractLogger.h"
 
 namespace libra {
-    class NullLogger: public LoggerInterface {
+    class NullLogger: public AbstractLogger {
     public:
         virtual ~NullLogger();
 

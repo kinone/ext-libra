@@ -2,15 +2,15 @@
 // Created by 王振浩 on 2020/11/19.
 //
 
-#ifndef EXT_LIBRA_LOGGERINTERFACE_H
-#define EXT_LIBRA_LOGGERINTERFACE_H
+#ifndef EXT_LIBRA_ABSTRACTLOGGER_H
+#define EXT_LIBRA_ABSTRACTLOGGER_H
 
 #include <string>
 
 namespace libra {
-    class LoggerInterface {
+    class AbstractLogger {
     public:
-        virtual ~LoggerInterface();
+        virtual ~AbstractLogger();
 
         virtual void debug(const std::string &message, void *context = NULL) = 0;
 
@@ -21,4 +21,4 @@ namespace libra {
 }
 
 
-#endif //EXT_LIBRA_LOGGERINTERFACE_H
+#endif //EXT_LIBRA_ABSTRACTLOGGER_H

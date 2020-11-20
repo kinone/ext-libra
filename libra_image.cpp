@@ -143,19 +143,6 @@ PHP_METHOD(image, getHeight) {
     RETURN_LONG(img->getHeight());
 }
 
-PHP_METHOD(image, setLogger) {
-    zval *logger;
-
-    ZEND_PARSE_PARAMETERS_START(1, 1)
-        Z_PARAM_OBJECT_OF_CLASS(logger, libra_logger_interface_ce);
-    ZEND_PARSE_PARAMETERS_END();
-
-    libra::Image *img = Z_LIBRA_IMAGE_P(getThis());
-    img->setLogger(new libra::Logger(logger));
-
-    RETURN_NULL()
-}
-
 static const zend_function_entry libra_image_functions[] = {
     PHP_ME(image, __construct, image_construct, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
     PHP_ME(image, __destruct, image_no_args, ZEND_ACC_PUBLIC|ZEND_ACC_DTOR)
@@ -166,7 +153,6 @@ static const zend_function_entry libra_image_functions[] = {
     PHP_ME(image, getWidth, image_no_args, ZEND_ACC_PUBLIC)
     PHP_ME(image, getHeight, image_no_args, ZEND_ACC_PUBLIC)
     PHP_ME(image, resize, image_resize, ZEND_ACC_PUBLIC)
-    PHP_ME(image, setLogger, libra_set_logger, ZEND_ACC_PUBLIC)
     {NULL, NULL, NULL}
 };
 

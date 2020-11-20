@@ -6,14 +6,14 @@
 #define EXT_LIBRA_LOGGER_H
 
 #include <string>
-#include "src/LoggerInterface.h"
+#include "AbstractLogger.h"
 extern "C" {
 #include "php.h"
 #include "Zend/zend_interfaces.h"
 };
 
 namespace libra {
-    class Logger: public LoggerInterface {
+    class Logger: public AbstractLogger {
     public:
         Logger(zval *v);
         ~Logger();

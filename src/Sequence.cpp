@@ -3,6 +3,7 @@
 //
 
 #include "Sequence.h"
+#include "Container.h"
 
 namespace libra {
     Sequence::Sequence() {
@@ -19,6 +20,6 @@ namespace libra {
     }
 
     void Sequence::generate(const std::string &result) {
-        this->logger->info(result);
+        Container::instance()->logger()->info(result);
     }
 }
