@@ -2,13 +2,13 @@
 // Created by 王振浩 on 2020/11/14.
 //
 #include "libra_sequence.h"
-#include "libra_logger.h"
-#include "src/Logger.h"
 
 zend_class_entry *libra_sequence_ce;
 zend_object_handlers libra_sequence_object_handlers;
 
-ZEND_BEGIN_ARG_INFO_EX(sequence_construct, 0, 0, 0)
+ZEND_BEGIN_ARG_INFO_EX(sequence_construct, 0, 0, 2)
+    ZEND_ARG_INFO(0, width)
+    ZEND_ARG_INFO(0, height)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(sequence_destruct, 0, 0, 0)
@@ -22,11 +22,29 @@ ZEND_BEGIN_ARG_INFO_EX(sequence_generate, 0, 0, 1)
     ZEND_ARG_INFO(0, result)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_INFO_EX(sequence_frame_count, 0, 0, 1)
+    ZEND_ARG_INFO(0, count)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(sequence_set_quality, 0, 0, 1)
+    ZEND_ARG_INFO(0, quality)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(sequence_set_loop, 0, 0, 1)
+    ZEND_ARG_INFO(0, loop)
+ZEND_END_ARG_INFO()
+
 PHP_METHOD(sequence, __construct) {
-    ZEND_PARSE_PARAMETERS_NONE();
+    int64_t width;
+    int64_t height;
+
+    ZEND_PARSE_PARAMETERS_START(2, 2)
+        Z_PARAM_LONG(width)
+        Z_PARAM_LONG(height)
+    ZEND_PARSE_PARAMETERS_END();
 
     libra_object *obj = Z_LIBRA_P(getThis());
-    obj->ptr = new libra::Sequence();
+    obj->ptr = new libra::Sequence(width, height);
 }
 
 PHP_METHOD(sequence, __destruct) {
@@ -63,11 +81,50 @@ PHP_METHOD(sequence, generate) {
     RETURN_NULL();
 }
 
+PHP_METHOD(sequence, loop) {
+    int64_t l;
+    ZEND_PARSE_PARAMETERS_START(1, 1)
+        Z_PARAM_LONG(l)
+    ZEND_PARSE_PARAMETERS_END();
+
+    libra::Sequence *s = Z_LIBRA_SEQUENCE_P(getThis());
+    bool b = s->setLoop(l);
+
+    RETURN_BOOL(b)
+}
+
+PHP_METHOD(sequence, quality) {
+    int64_t q;
+    ZEND_PARSE_PARAMETERS_START(1, 1)
+        Z_PARAM_LONG(q)
+    ZEND_PARSE_PARAMETERS_END();
+
+    libra::Sequence *s = Z_LIBRA_SEQUENCE_P(getThis());
+    bool b = s->setQuality(q);
+
+    RETURN_BOOL(b)
+}
+
+PHP_METHOD(sequence, frameCount) {
+    int64_t c;
+    ZEND_PARSE_PARAMETERS_START(1, 1)
+        Z_PARAM_LONG(c)
+    ZEND_PARSE_PARAMETERS_END();
+
+    libra::Sequence *s = Z_LIBRA_SEQUENCE_P(getThis());
+    bool b = s->setFrameCount(c);
+
+    RETURN_BOOL(b)
+}
+
 static const zend_function_entry libra_sequence_functions[] = {
     PHP_ME(sequence, __construct, sequence_construct, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
     PHP_ME(sequence, __destruct, sequence_destruct, ZEND_ACC_PUBLIC|ZEND_ACC_DTOR)
     PHP_ME(sequence, add, sequence_add, ZEND_ACC_PUBLIC)
     PHP_ME(sequence, generate, sequence_generate, ZEND_ACC_PUBLIC)
+    PHP_ME(sequence, loop, sequence_set_loop, ZEND_ACC_PUBLIC)
+    PHP_ME(sequence, quality, sequence_set_quality, ZEND_ACC_PUBLIC)
+    PHP_ME(sequence, frameCount, sequence_frame_count, ZEND_ACC_PUBLIC)
     {NULL, NULL, NULL}
 };
 

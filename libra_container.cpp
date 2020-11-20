@@ -4,7 +4,6 @@
 
 #include "libra_container.h"
 #include "libra_logger.h"
-#include <iostream>
 
 zend_class_entry *libra_container_ce;
 zend_object_handlers libra_container_object_handlers;
@@ -38,7 +37,7 @@ PHP_METHOD(container, setLogger) {
     zval *container = libra_container_instance();
     libra::Container *c = Z_LIBRA_CONTAINER_P(container);
 
-    c->setLogger(new libra::Logger(logger));
+    c->setLogger(logger);
 }
 
 zend_function_entry libra_container_functions[] = {

@@ -2,8 +2,6 @@
 // Created by 王振浩 on 2020/11/10.
 //
 #include "libra_image.h"
-#include "libra_logger.h"
-#include "src/Logger.h"
 
 zend_class_entry *libra_image_ce;
 

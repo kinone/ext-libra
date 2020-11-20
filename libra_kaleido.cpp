@@ -2,8 +2,6 @@
 // Created by 王振浩 on 2020/11/9.
 //
 #include "libra_kaleido.h"
-#include "libra_logger.h"
-#include "src/Logger.h"
 
 zend_class_entry *kaleido_ce;
 

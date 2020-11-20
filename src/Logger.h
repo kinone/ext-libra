@@ -5,24 +5,34 @@
 #ifndef EXT_LIBRA_LOGGER_H
 #define EXT_LIBRA_LOGGER_H
 
-#include <string>
-#include "AbstractLogger.h"
 extern "C" {
 #include "php.h"
 #include "Zend/zend_interfaces.h"
 };
 
+#include <string>
+#include "AbstractLogger.h"
+
 namespace libra {
-    class Logger: public AbstractLogger {
+    extern const char *LG_DEBUG;
+    extern const char *LG_INFO;
+    extern const char *LG_ERROR;
+
+    class Logger : public AbstractLogger {
+    private:
+        void log(const std::string &level, const std::string &message);
+
     public:
         Logger(zval *v);
+
         ~Logger();
 
-        virtual void debug(const std::string &message, void *context = NULL);
+        virtual void debug(const std::string &message);
 
-        virtual void info(const std::string &message, void *context = NULL);
+        virtual void info(const std::string &message);
 
-        virtual void error(const std::string &message, void *context = NULL);
+        virtual void error(const std::string &message);
+
     private:
         zval zv;
     };

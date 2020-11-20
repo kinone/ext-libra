@@ -24,11 +24,11 @@ namespace libra {
     bool Kaleido::add(const std::string &file) {
         cv::Mat image = imread(file, cv::IMREAD_UNCHANGED);
 
-        if (image.cols == 0 || image.rows == 0) {
+        if (image.empty()) {
             return false;
         }
 
-        if (this->images->size() == 0) { // 记录第一张的图片类型
+        if (images->empty()) { // 记录第一张的图片类型
             this->type = image.type();
         } else {
             if (image.type() != this->type) { // 与第一张的图片类型不一致
@@ -83,7 +83,7 @@ namespace libra {
     }
 
     bool Kaleido::setQuality(int q) {
-        if (q < 1 || q > 100) {
+        if (q < 10 || q > 100) {
             return false;
         }
 

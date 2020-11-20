@@ -5,8 +5,8 @@
 #ifndef EXT_LIBRA_LIBRA_SEQUENCE_H
 #define EXT_LIBRA_LIBRA_SEQUENCE_H
 
-#include "src/Sequence.h"
 #include "php_libra.h"
+#include "src/Sequence.h"
 
 extern zend_object_handlers libra_sequence_object_handlers;
 

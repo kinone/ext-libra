@@ -5,14 +5,14 @@
 #ifndef EXT_LIBRA_CONTAINER_H
 #define EXT_LIBRA_CONTAINER_H
 
+#include "Logger.h"
 #include "AbstractLogger.h"
 #include "NullLogger.h"
-#include "Logger.h"
 
 namespace libra {
     class Container {
     public:
-        void setLogger(AbstractLogger *l);
+        void setLogger(zval *l);
 
         AbstractLogger *logger();
 
