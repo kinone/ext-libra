@@ -71,7 +71,7 @@ namespace libra {
         return this->dst;
     }
 
-    void Image::download(const std::string &file) {
+    void Image::save(const std::string &file) {
         if (this->dst.cols == 0) {
             cv::imwrite(file, this->src);
         } else {

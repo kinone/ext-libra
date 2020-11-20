@@ -26,7 +26,7 @@ namespace libra {
 
         void compressPng(const std::string &file, int level);
 
-        void download(const std::string &file);
+        void save(const std::string &file);
 
         int getWidth() const;
 

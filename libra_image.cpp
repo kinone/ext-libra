@@ -20,7 +20,7 @@ ZEND_BEGIN_ARG_INFO_EX(image_resize, 0, 0, 3)
     ZEND_ARG_INFO(0, dst)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(image_download, 0, 0, 1)
+ZEND_BEGIN_ARG_INFO_EX(image_save, 0, 0, 1)
     ZEND_ARG_INFO(0, file)
 ZEND_END_ARG_INFO()
 
@@ -63,7 +63,7 @@ PHP_METHOD(image, resize) {
     RETURN_NULL();
 }
 
-PHP_METHOD(image, download) {
+PHP_METHOD(image, save) {
     char *file;
     size_t len;
 
@@ -72,7 +72,7 @@ PHP_METHOD(image, download) {
     ZEND_PARSE_PARAMETERS_END();
 
     libra::Image *img = Z_LIBRA_IMAGE_P(getThis());
-    img->download(file);
+    img->save(file);
 
     RETURN_NULL();
 }
@@ -144,7 +144,7 @@ PHP_METHOD(image, getHeight) {
 static const zend_function_entry libra_image_functions[] = {
     PHP_ME(image, __construct, image_construct, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
     PHP_ME(image, __destruct, image_no_args, ZEND_ACC_PUBLIC|ZEND_ACC_DTOR)
-    PHP_ME(image, download, image_download, ZEND_ACC_PUBLIC)
+    PHP_ME(image, save, image_save, ZEND_ACC_PUBLIC)
     PHP_ME(image, compressPng, image_comperss_png, ZEND_ACC_PUBLIC)
     PHP_ME(image, compressJpeg, image_compress_jpeg, ZEND_ACC_PUBLIC)
     PHP_ME(image, compressWebp, image_compress_jpeg, ZEND_ACC_PUBLIC)
