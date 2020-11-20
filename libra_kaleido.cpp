@@ -117,7 +117,7 @@ PHP_METHOD(kaleido, animateTime) {
     RETURN_BOOL(b);
 }
 
-PHP_METHOD(kaleido, animateFrameCount) {
+PHP_METHOD(kaleido, frameCount) {
     zend_long count;
 
     ZEND_PARSE_PARAMETERS_START(1, 1)
@@ -174,7 +174,7 @@ static const zend_function_entry kaleido_functions[] = {
     PHP_ME(kaleido, loop, kaleido_set_loop, ZEND_ACC_PUBLIC)
     PHP_ME(kaleido, imageDelay, kaleido_image_delay, ZEND_ACC_PUBLIC)
     PHP_ME(kaleido, animateTime, kaleido_animate_time, ZEND_ACC_PUBLIC)
-    PHP_ME(kaleido, animateFrameCount, kaleido_animate_frame_count, ZEND_ACC_PUBLIC)
+    PHP_ME(kaleido, frameCount, kaleido_animate_frame_count, ZEND_ACC_PUBLIC)
     PHP_ME(kaleido, clear, kaleido_no_args, ZEND_ACC_PUBLIC)
     PHP_ME(kaleido, __destruct, kaleido_no_args, ZEND_ACC_PUBLIC|ZEND_ACC_DTOR)
     {NULL, NULL, NULL}
