@@ -10,11 +10,6 @@
 #include "src/AbstractLogger.h"
 #include "opencv2/imgcodecs.hpp"
 
-extern "C" {
-#include "webp/encode.h"
-#include "webp/mux.h"
-}
-
 namespace libra {
     class Sequence {
     public:

@@ -9,10 +9,6 @@
 #include <vector>
 #include <opencv2/imgproc.hpp>
 
-extern "C" {
-#include <webp/mux.h>
-};
-
 namespace libra {
     class Kaleido {
     public:
