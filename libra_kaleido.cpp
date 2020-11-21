@@ -152,9 +152,9 @@ PHP_METHOD(kaleido, generate) {
     ZEND_PARSE_PARAMETERS_END();
 
     libra::Kaleido *k = Z_KALEIDO_P(getThis());
-    k->generate(dst);
+    bool b = k->generate(dst);
 
-    RETURN_NULL();
+    RETURN_BOOL(b);
 }
 
 PHP_METHOD(kaleido, clear) {

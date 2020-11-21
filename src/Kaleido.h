@@ -15,7 +15,7 @@ namespace libra {
         static const uint8_t Horizontal = 0;
         static const uint8_t Vertical = 1;
 
-        Kaleido(uint32_t width, uint32_t height, uint8_t direction);
+        Kaleido(uint32_t w, uint32_t h, uint8_t d);
 
         ~Kaleido();
 
@@ -23,7 +23,7 @@ namespace libra {
 
         void clear();
 
-        void generate(const std::string &result);
+        bool generate(const std::string &result);
 
         bool setFrameCount(int count);
 
@@ -36,7 +36,9 @@ namespace libra {
         bool setLoop(int l);
 
     private:
-        std::vector<cv::Mat> *images;
+        bool checkWH(const cv::Mat &m) const;
+
+        std::vector<std::string> *files;
         uint8_t direction;
         int animateFrameCount;
         int animateTime;
@@ -44,7 +46,6 @@ namespace libra {
         int width;
         int height;
         int quality;
-        int type;
         int loop;
     };
 }

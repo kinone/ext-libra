@@ -2,56 +2,39 @@
 // Created by 王振浩 on 2020/10/30.
 //
 
+#include "Container.h"
 #include "Kaleido.h"
 #include "Utils.h"
 #include "Image.h"
 #include "Animate.h"
 
 namespace libra {
-    Kaleido::Kaleido(uint32_t width, uint32_t height, uint8_t direction) : width(width), height(height),
-                                                                           direction(direction) {
-        this->images = new std::vector<cv::Mat>();
-        this->animateFrameCount = 10;
-        this->animateTime = 1000;
-        this->eachImageStay = 1000;
-        this->quality = 100;
+    Kaleido::Kaleido(uint32_t w, uint32_t h, uint8_t d)
+            : width(w),
+              height(h),
+              direction(d),
+              animateFrameCount(10),
+              animateTime(1000),
+              eachImageStay(1000),
+              quality(100) {
+        files = new std::vector<std::string>();
     }
 
     Kaleido::~Kaleido() {
-        this->clear();
-        delete this->images;
+        clear();
+        delete files;
     }
 
     bool Kaleido::add(const std::string &file) {
-        cv::Mat image = imread(file, cv::IMREAD_UNCHANGED);
+        files->push_back(file);
 
-        if (image.empty()) {
-            return false;
-        }
-
-        if (images->empty()) { // 记录第一张的图片类型
-            this->type = image.type();
-        } else {
-            if (image.type() != this->type) { // 与第一张的图片类型不一致
-                return false;
-            }
-        }
-
-        if (image.cols != this->width || image.rows != this->height) {
-            // 调整图片尺寸
-            Image *o = new Image(image);
-            o->resize(this->width, this->height);
-            this->images->push_back(o->destination());
-            delete o;
-        } else {
-            this->images->push_back(image);
-        }
+        Container::instance()->logger()->info("add image: " + file);
 
         return true;
     }
 
     void Kaleido::clear() {
-        this->images->clear();
+        files->clear();
     }
 
     bool Kaleido::setAnimateTime(int time) {
@@ -59,7 +42,7 @@ namespace libra {
             return false;
         }
 
-        this->animateTime = time;
+        animateTime = time;
 
         return true;
     }
@@ -68,7 +51,7 @@ namespace libra {
         if (count < 1 || count > 20) {
             return false;
         }
-        this->animateFrameCount = count;
+        animateFrameCount = count;
 
         return true;
     }
@@ -78,7 +61,7 @@ namespace libra {
             return false;
         }
 
-        this->eachImageStay = time;
+        eachImageStay = time;
 
         return true;
     }
@@ -88,7 +71,7 @@ namespace libra {
             return false;
         }
 
-        this->quality = q;
+        quality = q;
 
         return true;
     }
@@ -98,40 +81,87 @@ namespace libra {
             return false;
         }
 
-        this->loop = l;
+        loop = l;
 
         return true;
     }
 
-    void Kaleido::generate(const std::string &result) {
-        int count = this->images->size();
+    bool Kaleido::generate(const std::string &result) {
+        Container::instance()->logger()->info("Kaleido: generate started.");
+        int count = files->size();
+        cv::Mat images[count];
+
+        for (int i = 0; i < count; i++) {
+            Container::instance()->logger()->info("read file: " + files->at(i));
+            images[i] = cv::imread(files->at(i), cv::IMREAD_UNCHANGED);
+            if (images[i].empty()) {
+                Container::instance()->logger()->error("error read file: " + files->at(i));
+                return false;
+            }
+
+            if (i > 0 && images[i].type() != images[0].type()) {
+                Container::instance()->logger()->error("type of image not the same: " + files->at(i));
+                return false;
+            }
+
+            if (!checkWH(images[i])) {
+                Container::instance()->logger()->info("resize image: " + files->at(i));
+                Image *obj = new Image(images[i]);
+                obj->resize(width, height);
+                images[i].release();
+                obj->exportTo(images[i]);
+                delete obj;
+            }
+        }
+
         Animate *animate = new Animate(width, height, loop);
 
-        int eachFrameStay = this->animateTime / this->animateFrameCount;
+        int eachFrameStay = animateTime / animateFrameCount;
         WebPPicture pic;
+        bool r;
         for (int i = 0; i < count; i++) {
             // 添加第一张图片
-            Utils::mat2WebPPicture(this->images->at(i), &pic, this->quality);
-            animate->add(&pic, eachImageStay);
+            Utils::mat2WebPPicture(images[i], &pic, quality);
+            r = animate->add(&pic, eachImageStay);
             WebPPictureFree(&pic);
+            if (!r) {
+                Container::instance()->logger()->error("add file error: " + files->at(i));
+                return false;
+            }
 
             int next = (i + 1) % count; // 下一张位置
-            for (int j = 0; j < this->animateFrameCount; j++) {
+            for (int j = 0; j < animateFrameCount; j++) {
                 cv::Mat dst;
-                if (this->direction == Kaleido::Vertical) {
-                    Utils::genFrameV(this->images->at(i), this->images->at(next), dst, j, this->animateFrameCount);
+                if (direction == Kaleido::Vertical) {
+                    Utils::genFrameV(images[i], images[next], dst, j, animateFrameCount);
                 } else {
-                    Utils::genFrameH(this->images->at(i), this->images->at(next), dst, j, this->animateFrameCount);
+                    Utils::genFrameH(images[i], images[next], dst, j, animateFrameCount);
                 }
-                Utils::mat2WebPPicture(dst, &pic, this->quality);
+                Utils::mat2WebPPicture(dst, &pic, quality);
                 animate->add(&pic, eachFrameStay);
                 WebPPictureFree(&pic);
             }
         }
 
         // 写文件
-        animate->save(result);
-
+        r = animate->save(result);
         delete animate;
+
+        if (!r) {
+            Container::instance()->logger()->error("Kaleido: generate failed.");
+            return false;
+        }
+
+        Container::instance()->logger()->info("Kaleido: generate finished. result is " + result);
+
+        return true;
+    }
+
+    bool Kaleido::checkWH(const cv::Mat &m) const {
+        if (m.cols != width || m.rows != height) {
+            return false;
+        }
+
+        return true;
     }
 }

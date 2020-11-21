@@ -3,14 +3,13 @@
 //
 
 #include "Animate.h"
+#include "Container.h"
 
 namespace libra {
     Animate::Animate(int width, int height, int loop) : timestamp(0) {
         WebPConfigInit(&config);
         WebPAnimEncoderOptionsInit(&animEncoderOpt);
-
         animEncoderOpt.anim_params.loop_count = loop;
-
         animEncoder = WebPAnimEncoderNew(width, height, &animEncoderOpt);
     }
 
@@ -18,22 +17,40 @@ namespace libra {
         WebPAnimEncoderDelete(animEncoder);
     }
 
-    void Animate::add(WebPPicture *pic, int dtime) {
-        WebPAnimEncoderAdd(animEncoder, pic, timestamp, &config);
+    bool Animate::add(WebPPicture *pic, int dtime) {
+        int r = WebPAnimEncoderAdd(animEncoder, pic, timestamp, &config);
+
+        if (r == 0) {
+            const char *err = WebPAnimEncoderGetError(animEncoder);
+            Container::instance()->logger()->error(err);
+            return false;
+        }
+
         timestamp += dtime;
+
+        return true;
     }
 
-    void Animate::save(const std::string &file) {
+    bool Animate::save(const std::string &file) {
         WebPAnimEncoderAdd(animEncoder, NULL, timestamp, NULL);
 
         WebPData data;
         WebPDataInit(&data);
 
-        WebPAnimEncoderAssemble(animEncoder, &data);
+        int r = WebPAnimEncoderAssemble(animEncoder, &data);
+        if (r == 0) {
+            const char *err = WebPAnimEncoderGetError(animEncoder);
+            Container::instance()->logger()->error(err);
+            WebPDataClear(&data);
+            return false;
+        }
+
         FILE *f = fopen(file.data(), "wb");
         fwrite(data.bytes, data.size, 1, f);
         fclose(f);
 
         WebPDataClear(&data);
+
+        return true;
     }
 }

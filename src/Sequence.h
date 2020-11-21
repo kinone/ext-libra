@@ -7,13 +7,14 @@
 
 #include <vector>
 #include <string>
-#include "src/AbstractLogger.h"
 #include "opencv2/imgcodecs.hpp"
 
 namespace libra {
     class Sequence {
     public:
         Sequence(int width, int height);
+
+        ~Sequence();
 
         bool add(const std::string &file);
 
@@ -25,13 +26,10 @@ namespace libra {
 
         bool generate(const std::string &result);
 
-        ~Sequence();
-
     private:
         bool checkWH(const cv::Mat &m) const;
 
         std::vector<std::string> *files;
-        AbstractLogger *logger;
         int32_t width;
         int32_t height;
         int32_t loop;

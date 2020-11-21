@@ -17,6 +17,10 @@ namespace libra {
         this->height = this->src.rows;
     }
 
+    Image::~Image() {
+
+    }
+
     void Image::resize(int fx, int fy) {
         float xr = float(fx) / float(this->width);
         float yr = float(fy) / float(this->height);
@@ -67,12 +71,12 @@ namespace libra {
         cv::imwrite(file, this->src, params);
     }
 
-    const cv::Mat& Image::destination() {
-        return this->dst;
+    void Image::exportTo(cv::Mat &ret) {
+        this->dst.copyTo(ret);
     }
 
     void Image::save(const std::string &file) {
-        if (this->dst.cols == 0) {
+        if (this->dst.empty()) {
             cv::imwrite(file, this->src);
         } else {
             cv::imwrite(file, this->dst);

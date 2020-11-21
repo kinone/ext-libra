@@ -28,7 +28,11 @@ typedef struct {
 #define Z_LIBRA_P(zv)                   Z_LIBRA_T(*zv)
 #define Z_LIBRA_INNER_P(zv)             (Z_LIBRA_P(zv)->ptr)
 
+#ifdef ZTS
+#define LIBRA_G(v) TSRMG(libra_globals_id, zend_libra_globals *, v)
+#else
 #define LIBRA_G(v)                      (libra_globals.v)
+#endif
 
 static zend_always_inline libra_object *libra_fetch_object(zend_object *obj) {
     return (libra_object *)((char*)(obj) - XtOffsetOf(libra_object, std));
@@ -63,7 +67,7 @@ ZEND_BEGIN_MODULE_GLOBALS(libra)
     zval container;
 ZEND_END_MODULE_GLOBALS(libra)
 
-extern ZEND_DECLARE_MODULE_GLOBALS(libra)
+ZEND_EXTERN_MODULE_GLOBALS(libra)
 
 PHP_RINIT_FUNCTION(libra);
 

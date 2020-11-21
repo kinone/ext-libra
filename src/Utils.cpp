@@ -76,7 +76,7 @@ namespace libra {
         cv::Rect rect_left(0, 0, delimiter, b.rows);
         cv::Rect rect_right(delimiter, 0, b.cols - delimiter, b.rows);
         hconcat(dst_left(rect_left), dst_right(rect_right), dst);
-   }
+    }
 
     void Utils::genFrameV(const cv::Mat &a, const cv::Mat &b, cv::Mat &dst, int step, int total) {
         float d = 1.0f / float(total + 1) * float(step + 1);
@@ -150,7 +150,7 @@ namespace libra {
     }
 
     void Utils::mat2WebPPicture(const cv::Mat &src, WebPPicture *pic, int quality) {
-        std::vector <uchar> buff;
+        std::vector<uchar> buff;
 
         // 设置图片质量
         std::vector<int> params = std::vector<int>();

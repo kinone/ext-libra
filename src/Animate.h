@@ -20,9 +20,9 @@ namespace libra {
 
         ~Animate();
 
-        void add(WebPPicture *pic, int dtime);
+        bool add(WebPPicture *pic, int dtime);
 
-        void save(const std::string &file);
+        bool save(const std::string &file);
 
     private:
         WebPConfig config;

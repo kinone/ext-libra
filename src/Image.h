@@ -16,7 +16,9 @@ namespace libra {
 
         Image(const cv::Mat &src);
 
-        const cv::Mat& destination();
+        ~Image();
+
+        void exportTo(cv::Mat &ret);
 
         void resize(int fx, int fy);
 
