@@ -28,8 +28,6 @@ add_library(libra SHARED
         src/Kaleido.cpp
         src/Logger.cpp
         src/Sequence.cpp
-        src/AbstractLogger.cpp
-        src/NullLogger.cpp
         src/Container.cpp
         src/Animate.cpp
         libra.cpp

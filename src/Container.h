@@ -6,15 +6,13 @@
 #define EXT_LIBRA_CONTAINER_H
 
 #include "Logger.h"
-#include "AbstractLogger.h"
-#include "NullLogger.h"
 
 namespace libra {
     class Container {
     public:
         void setLogger(zval *l);
 
-        AbstractLogger *logger();
+        LoggerInterface *logger();
 
         ~Container();
 
@@ -23,7 +21,7 @@ namespace libra {
     private:
         Container();
 
-        AbstractLogger *driver;
+        LoggerInterface *driver;
 
         static Container *self;
 

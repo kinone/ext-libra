@@ -11,21 +11,42 @@ extern "C" {
 };
 
 #include <string>
-#include "AbstractLogger.h"
 
 namespace libra {
     extern const char *LG_DEBUG;
     extern const char *LG_INFO;
     extern const char *LG_ERROR;
 
-    class Logger : public AbstractLogger {
+    class LoggerInterface {
+    public:
+        virtual ~LoggerInterface() {};
+
+        virtual void debug(const std::string &message) = 0;
+
+        virtual void info(const std::string &message) = 0;
+
+        virtual void error(const std::string &message) = 0;
+    };
+
+    class NullLogger : public LoggerInterface {
+    public:
+        virtual ~NullLogger() {}
+
+        virtual void debug(const std::string &message) {}
+
+        virtual void info(const std::string &message) {}
+
+        virtual void error(const std::string &message) {}
+    };
+
+    class Logger : public LoggerInterface {
     private:
         void log(const std::string &level, const std::string &message);
 
     public:
         Logger(zval *v);
 
-        ~Logger();
+        virtual ~Logger();
 
         virtual void debug(const std::string &message);
 

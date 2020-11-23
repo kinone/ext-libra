@@ -5,7 +5,7 @@
 #include "Container.h"
 
 namespace libra {
-    Container* Container::self = NULL;
+    Container *Container::self = NULL;
 
     Container::Container() {
         driver = new NullLogger();
@@ -28,7 +28,7 @@ namespace libra {
         driver = new Logger(l);
     }
 
-    AbstractLogger *Container::logger() {
+    LoggerInterface *Container::logger() {
         return driver;
     }
 }
