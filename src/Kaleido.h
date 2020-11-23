@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 #include <opencv2/imgproc.hpp>
+#include "Logger.h"
 
 namespace libra {
     class Kaleido {
@@ -25,28 +26,30 @@ namespace libra {
 
         bool generate(const std::string &result);
 
-        bool setFrameCount(int count);
+        bool setFrameCount(uint32_t count);
 
-        bool setAnimateTime(int time);
+        bool setAnimateTime(uint32_t time);
 
-        bool setImageStay(int time);
+        bool setImageStay(uint32_t time);
 
-        bool setQuality(int q);
+        bool setQuality(uint32_t q);
 
-        bool setLoop(int l);
+        bool setLoop(uint32_t l);
 
     private:
         bool checkWH(const cv::Mat &m) const;
 
         std::vector<std::string> *files;
         uint8_t direction;
-        int animateFrameCount;
-        int animateTime;
-        int eachImageStay;
-        int width;
-        int height;
-        int quality;
-        int loop;
+        uint32_t animateFrameCount;
+        uint32_t animateTime;
+        uint32_t eachImageStay;
+        uint32_t width;
+        uint32_t height;
+        uint32_t quality;
+        uint32_t loop;
+
+        LoggerInterface *logger;
     };
 }
 

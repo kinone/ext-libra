@@ -16,8 +16,10 @@ namespace libra {
               animateFrameCount(10),
               animateTime(1000),
               eachImageStay(1000),
-              quality(100) {
+              quality(100),
+              loop(0) {
         files = new std::vector<std::string>();
+        logger = Container::instance()->logger();
     }
 
     Kaleido::~Kaleido() {
@@ -28,7 +30,7 @@ namespace libra {
     bool Kaleido::add(const std::string &file) {
         files->push_back(file);
 
-        Container::instance()->logger()->info("add image: " + file);
+        logger->info("add image: " + file);
 
         return true;
     }
@@ -37,7 +39,7 @@ namespace libra {
         files->clear();
     }
 
-    bool Kaleido::setAnimateTime(int time) {
+    bool Kaleido::setAnimateTime(uint32_t time) {
         if (time < 100 || time > 5000) {
             return false;
         }
@@ -47,7 +49,7 @@ namespace libra {
         return true;
     }
 
-    bool Kaleido::setFrameCount(int count) {
+    bool Kaleido::setFrameCount(uint32_t count) {
         if (count < 1 || count > 20) {
             return false;
         }
@@ -56,7 +58,7 @@ namespace libra {
         return true;
     }
 
-    bool Kaleido::setImageStay(int time) {
+    bool Kaleido::setImageStay(uint32_t time) {
         if (time < 100 || time > 5000) {
             return false;
         }
@@ -66,7 +68,7 @@ namespace libra {
         return true;
     }
 
-    bool Kaleido::setQuality(int q) {
+    bool Kaleido::setQuality(uint32_t q) {
         if (q < 10 || q > 100) {
             return false;
         }
@@ -76,7 +78,7 @@ namespace libra {
         return true;
     }
 
-    bool Kaleido::setLoop(int l) {
+    bool Kaleido::setLoop(uint32_t l) {
         if (l < 0 || l > 100) {
             return false;
         }
@@ -87,25 +89,25 @@ namespace libra {
     }
 
     bool Kaleido::generate(const std::string &result) {
-        Container::instance()->logger()->info("Kaleido: generate started.");
+        logger->info("Kaleido: generate started.");
         int count = files->size();
         cv::Mat images[count];
 
         for (int i = 0; i < count; i++) {
-            Container::instance()->logger()->info("read file: " + files->at(i));
+            logger->info("read file: " + files->at(i));
             images[i] = cv::imread(files->at(i), cv::IMREAD_UNCHANGED);
             if (images[i].empty()) {
-                Container::instance()->logger()->error("error read file: " + files->at(i));
+                logger->error("error read file: " + files->at(i));
                 return false;
             }
 
             if (i > 0 && images[i].type() != images[0].type()) {
-                Container::instance()->logger()->error("type of image not the same: " + files->at(i));
+                logger->error("type of image not the same: " + files->at(i));
                 return false;
             }
 
             if (!checkWH(images[i])) {
-                Container::instance()->logger()->info("resize image: " + files->at(i));
+                logger->info("resize image: " + files->at(i));
                 Image *obj = new Image(images[i]);
                 obj->resize(width, height);
                 images[i].release();
@@ -125,7 +127,7 @@ namespace libra {
             r = animate->add(&pic, eachImageStay);
             WebPPictureFree(&pic);
             if (!r) {
-                Container::instance()->logger()->error("add file error: " + files->at(i));
+                logger->error("add file error: " + files->at(i));
                 return false;
             }
 
@@ -148,11 +150,11 @@ namespace libra {
         delete animate;
 
         if (!r) {
-            Container::instance()->logger()->error("Kaleido: generate failed.");
+            logger->error("Kaleido: generate failed.");
             return false;
         }
 
-        Container::instance()->logger()->info("Kaleido: generate finished. result is " + result);
+        logger->info("Kaleido: generate finished. result is " + result);
 
         return true;
     }

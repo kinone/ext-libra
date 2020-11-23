@@ -9,12 +9,13 @@
 #include "Utils.h"
 
 namespace libra {
-    Sequence::Sequence(int32_t w, int32_t h) : width(w),
+    Sequence::Sequence(uint32_t w, uint32_t h) : width(w),
                                                height(h),
                                                frameCount(10),
                                                quality(100),
                                                loop(0) {
         files = new std::vector<std::string>();
+        logger = Container::instance()->logger();
     }
 
     Sequence::~Sequence() {
@@ -22,7 +23,7 @@ namespace libra {
         delete this->files;
     }
 
-    bool Sequence::setFrameCount(int c) {
+    bool Sequence::setFrameCount(uint32_t c) {
         if (c < 1 || c > 50) {
             return false;
         }
@@ -32,7 +33,7 @@ namespace libra {
         return true;
     }
 
-    bool Sequence::setQuality(int q) {
+    bool Sequence::setQuality(uint32_t q) {
         if (q < 10 || q > 100) {
             return false;
         }
@@ -42,7 +43,7 @@ namespace libra {
         return true;
     }
 
-    bool Sequence::setLoop(int l) {
+    bool Sequence::setLoop(uint32_t l) {
         if (l < 0 || l > 100) {
             return false;
         }
@@ -53,27 +54,27 @@ namespace libra {
     }
 
     bool Sequence::add(const std::string &file) {
-        Container::instance()->logger()->info("add file " + file);
+        logger->info("add file " + file);
         files->push_back(file);
 
         return true;
     }
 
     bool Sequence::generate(const std::string &result) {
-        Container::instance()->logger()->info("Sequence: generate started.");
+        logger->info("Sequence: generate started.");
 
         Animate *animate = new Animate(width, height, loop);
         int eachFrameStay = 1000 / frameCount;
 
         for (int i = 0; i < files->size(); i++) {
-            Container::instance()->logger()->info("processing " + files->at(i));
+            logger->info("processing " + files->at(i));
             // 读取图片
             cv::Mat src, dst;
             cv::Mat *ptr;
 
             src = cv::imread(files->at(i), cv::IMREAD_UNCHANGED);
             if (src.empty()) {
-                Container::instance()->logger()->error("image read error: " + files->at(i));
+                logger->error("image read error: " + files->at(i));
                 return false;
             }
 
@@ -87,7 +88,7 @@ namespace libra {
             }
 
             if (ptr->empty()) {
-                Container::instance()->logger()->error("resize error: " + files->at(i));
+                logger->error("resize error: " + files->at(i));
                 return false;
             }
 
@@ -103,7 +104,7 @@ namespace libra {
 
         delete animate;
 
-        Container::instance()->logger()->info("Sequence: generate finished. result is " + result);
+        logger->info("Sequence: generate finished. result is " + result);
 
         return true;
     }

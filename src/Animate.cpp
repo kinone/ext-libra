@@ -11,6 +11,8 @@ namespace libra {
         WebPAnimEncoderOptionsInit(&animEncoderOpt);
         animEncoderOpt.anim_params.loop_count = loop;
         animEncoder = WebPAnimEncoderNew(width, height, &animEncoderOpt);
+
+        logger = Container::instance()->logger();
     }
 
     Animate::~Animate() {
@@ -22,7 +24,7 @@ namespace libra {
 
         if (r == 0) {
             const char *err = WebPAnimEncoderGetError(animEncoder);
-            Container::instance()->logger()->error(err);
+            logger->error(err);
             return false;
         }
 
@@ -40,7 +42,7 @@ namespace libra {
         int r = WebPAnimEncoderAssemble(animEncoder, &data);
         if (r == 0) {
             const char *err = WebPAnimEncoderGetError(animEncoder);
-            Container::instance()->logger()->error(err);
+            logger->error(err);
             WebPDataClear(&data);
             return false;
         }

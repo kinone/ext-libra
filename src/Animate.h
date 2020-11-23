@@ -12,6 +12,7 @@ extern "C" {
 
 #include <string>
 #include <cstdio>
+#include "Logger.h"
 
 namespace libra {
     class Animate {
@@ -29,6 +30,8 @@ namespace libra {
         WebPAnimEncoderOptions animEncoderOpt;
         WebPAnimEncoder *animEncoder;
         int timestamp;
+
+        LoggerInterface *logger;
     };
 }
 

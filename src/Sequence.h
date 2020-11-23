@@ -8,21 +8,22 @@
 #include <vector>
 #include <string>
 #include "opencv2/imgcodecs.hpp"
+#include "Logger.h"
 
 namespace libra {
     class Sequence {
     public:
-        Sequence(int width, int height);
+        Sequence(uint32_t width, uint32_t height);
 
         ~Sequence();
 
         bool add(const std::string &file);
 
-        bool setFrameCount(int c);
+        bool setFrameCount(uint32_t c);
 
-        bool setQuality(int q);
+        bool setQuality(uint32_t q);
 
-        bool setLoop(int l);
+        bool setLoop(uint32_t l);
 
         bool generate(const std::string &result);
 
@@ -30,11 +31,13 @@ namespace libra {
         bool checkWH(const cv::Mat &m) const;
 
         std::vector<std::string> *files;
-        int32_t width;
-        int32_t height;
-        int32_t loop;
-        int32_t frameCount;
-        int32_t quality;
+        uint32_t width;
+        uint32_t height;
+        uint32_t loop;
+        uint32_t frameCount;
+        uint32_t quality;
+
+        LoggerInterface *logger;
     };
 }
 
