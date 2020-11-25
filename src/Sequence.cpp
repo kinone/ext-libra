@@ -19,7 +19,7 @@ namespace libra {
     }
 
     Sequence::~Sequence() {
-        files->clear();
+        clear();
         delete this->files;
     }
 
@@ -107,6 +107,10 @@ namespace libra {
         logger->info("Sequence: generate finished. result is " + result);
 
         return true;
+    }
+
+    void Sequence::clear() {
+        files->clear();
     }
 
     bool Sequence::checkWH(const cv::Mat &m) const {

@@ -27,6 +27,7 @@ static const zend_function_entry libra_animate_interface_functions[] = {
     ZEND_ABSTRACT_ME(animate_interface, frameCount, animate_frame_count)
     ZEND_ABSTRACT_ME(animate_interface, add, animate_add)
     ZEND_ABSTRACT_ME(animate_interface, generate, animate_generate)
+    ZEND_ABSTRACT_ME(animate_interface, clear, animate_noargs)
     {NULL, NULL, NULL}
 };
 

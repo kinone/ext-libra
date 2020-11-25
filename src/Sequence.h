@@ -27,6 +27,8 @@ namespace libra {
 
         bool generate(const std::string &result);
 
+        void clear();
+
     private:
         bool checkWH(const cv::Mat &m) const;
 

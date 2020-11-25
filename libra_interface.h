@@ -39,4 +39,7 @@ ZEND_BEGIN_ARG_INFO_EX(animate_generate, 0, 0, 1)
     ZEND_ARG_INFO(0, result)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_INFO_EX(animate_noargs, 0, 0, 0)
+ZEND_END_ARG_INFO()
+
 #endif //LIBRA_LIBRA_INTERFACE_H
