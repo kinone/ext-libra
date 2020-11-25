@@ -9,7 +9,7 @@
 #include "libra_image.h"
 #include "libra_kaleido.h"
 #include "libra_sequence.h"
-#include "libra_logger.h"
+#include "libra_interface.h"
 
 /* For compatibility with older PHP versions */
 #ifndef ZEND_PARSE_PARAMETERS_NONE
@@ -51,11 +51,12 @@ PHP_MINFO_FUNCTION(libra)
 
 PHP_MINIT_FUNCTION(libra)
 {
+    LIBRA_STARTUP(logger_interface);
+    LIBRA_STARTUP(animate_interface);
     LIBRA_STARTUP(container);
     LIBRA_STARTUP(kaleido);
     LIBRA_STARTUP(image);
     LIBRA_STARTUP(sequence);
-    LIBRA_STARTUP(logger_interface);
 
     return SUCCESS;
 }

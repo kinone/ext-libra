@@ -38,7 +38,7 @@ add_library(libra SHARED
         libra_kaleido.h
         libra_sequence.cpp
         libra_sequence.h
-        libra_logger.h
-        libra_logger.cpp
+        libra_interface.h
+        libra_interface.cpp
         libra_container.cpp
         libra_container.h)

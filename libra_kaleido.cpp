@@ -2,6 +2,7 @@
 // Created by 王振浩 on 2020/11/9.
 //
 #include "libra_kaleido.h"
+#include "libra_interface.h"
 
 zend_class_entry *kaleido_ce;
 
@@ -13,32 +14,12 @@ ZEND_BEGIN_ARG_INFO_EX(kaleido_construct, 0, 0, 3)
     ZEND_ARG_INFO(0, direction)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(kaleido_add, 0, 0, 1)
-    ZEND_ARG_INFO(0, file)
-ZEND_END_ARG_INFO()
-
-ZEND_BEGIN_ARG_INFO_EX(kaleido_generate, 0, 0, 1)
-    ZEND_ARG_INFO(0, file)
-ZEND_END_ARG_INFO()
-
 ZEND_BEGIN_ARG_INFO_EX(kaleido_image_delay, 0, 0, 1)
     ZEND_ARG_INFO(0, delay)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(kaleido_animate_time, 0, 0, 1)
     ZEND_ARG_INFO(0, time)
-ZEND_END_ARG_INFO()
-
-ZEND_BEGIN_ARG_INFO_EX(kaleido_animate_frame_count, 0, 0, 1)
-    ZEND_ARG_INFO(0, count)
-ZEND_END_ARG_INFO()
-
-ZEND_BEGIN_ARG_INFO_EX(kaleido_set_quality, 0, 0, 1)
-    ZEND_ARG_INFO(0, quality)
-ZEND_END_ARG_INFO()
-
-ZEND_BEGIN_ARG_INFO_EX(kaleido_set_loop, 0, 0, 1)
-    ZEND_ARG_INFO(0, loop)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_INFO_EX(kaleido_no_args, 0, 0, 0)
@@ -168,13 +149,13 @@ PHP_METHOD(kaleido, clear) {
 
 static const zend_function_entry kaleido_functions[] = {
     PHP_ME(kaleido, __construct, kaleido_construct, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
-    PHP_ME(kaleido, add, kaleido_add, ZEND_ACC_PUBLIC)
-    PHP_ME(kaleido, generate, kaleido_generate, ZEND_ACC_PUBLIC)
-    PHP_ME(kaleido, quality, kaleido_set_quality, ZEND_ACC_PUBLIC)
-    PHP_ME(kaleido, loop, kaleido_set_loop, ZEND_ACC_PUBLIC)
+    PHP_ME(kaleido, add, animate_add, ZEND_ACC_PUBLIC)
+    PHP_ME(kaleido, generate, animate_generate, ZEND_ACC_PUBLIC)
+    PHP_ME(kaleido, quality, animate_quality, ZEND_ACC_PUBLIC)
+    PHP_ME(kaleido, loop, animate_loop, ZEND_ACC_PUBLIC)
+    PHP_ME(kaleido, frameCount, animate_frame_count, ZEND_ACC_PUBLIC)
     PHP_ME(kaleido, imageDelay, kaleido_image_delay, ZEND_ACC_PUBLIC)
     PHP_ME(kaleido, animateTime, kaleido_animate_time, ZEND_ACC_PUBLIC)
-    PHP_ME(kaleido, frameCount, kaleido_animate_frame_count, ZEND_ACC_PUBLIC)
     PHP_ME(kaleido, clear, kaleido_no_args, ZEND_ACC_PUBLIC)
     PHP_ME(kaleido, __destruct, kaleido_no_args, ZEND_ACC_PUBLIC|ZEND_ACC_DTOR)
     {NULL, NULL, NULL}
@@ -190,6 +171,7 @@ LIBRA_STARTUP_FUNCTION(kaleido) {
     kaleido_ce = zend_register_internal_class(&ce TSRMLS_CC);
     kaleido_ce->create_object = libra_kaleido_new;
 
+    zend_class_implements(kaleido_ce, 1, libra_animate_interface_ce);
     libra_object_handlers_init(&kaleido_object_handlers);
 
     zend_declare_class_constant_long(kaleido_ce, "HORIZENTAL", sizeof("HORIZENTAL") - 1, libra::Kaleido::Horizontal TSRMLS_CC);
