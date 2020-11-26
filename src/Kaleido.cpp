@@ -17,7 +17,9 @@ namespace libra {
               animateTime(1000),
               eachImageStay(1000),
               quality(100),
-              loop(0) {
+              loop(0),
+              code(0),
+              message("") {
         files = new std::vector<std::string>();
         logger = Container::instance()->logger();
     }
@@ -88,6 +90,14 @@ namespace libra {
         return true;
     }
 
+    const std::string &Kaleido::lastError() const {
+        return message;
+    }
+
+    int Kaleido::lastErrorCode() const {
+        return code;
+    }
+
     bool Kaleido::generate(const std::string &result) {
         logger->info("Kaleido: generate started.");
         int count = files->size();
@@ -97,12 +107,16 @@ namespace libra {
             logger->info("read file: " + files->at(i));
             images[i] = cv::imread(files->at(i), cv::IMREAD_UNCHANGED);
             if (images[i].empty()) {
-                logger->error("error read file: " + files->at(i));
+                code = ERR_READ_FAILED;
+                message = "error read file: " + files->at(i);
+                logger->error(message);
                 return false;
             }
 
             if (i > 0 && images[i].type() != images[0].type()) {
-                logger->error("type of image not the same: " + files->at(i));
+                code = ERR_TYPE_DIFFERENT;
+                message = "type of image not the same: " + files->at(i);
+                logger->error(message);
                 return false;
             }
 
@@ -127,7 +141,10 @@ namespace libra {
             r = animate->add(&pic, eachImageStay);
             WebPPictureFree(&pic);
             if (!r) {
-                logger->error("add file error: " + files->at(i));
+                code = ERR_ADD_FAILED;
+                message = "add webp frame failed" + files->at(i);
+                logger->error(message);
+                delete animate;
                 return false;
             }
 
@@ -150,7 +167,9 @@ namespace libra {
         delete animate;
 
         if (!r) {
-            logger->error("Kaleido: generate failed.");
+            code = ERR_SAVE_FAILED;
+            message = "Kaleido: generate failed.";
+            logger->error(message);
             return false;
         }
 

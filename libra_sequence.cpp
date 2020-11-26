@@ -99,13 +99,30 @@ PHP_METHOD(sequence, frameCount) {
 }
 
 PHP_METHOD(sequence, clear) {
-    int64_t c;
     ZEND_PARSE_PARAMETERS_NONE();
 
     libra::Sequence *s = Z_LIBRA_SEQUENCE_P(getThis());
     s->clear();
 
     RETURN_NULL()
+}
+
+PHP_METHOD(sequence, errorCode) {
+    ZEND_PARSE_PARAMETERS_NONE();
+
+    libra::Sequence *s = Z_LIBRA_SEQUENCE_P(getThis());
+    int64_t code = s->lastErrorCode();
+
+    RETURN_LONG(code)
+}
+
+PHP_METHOD(sequence, errorInfo) {
+    ZEND_PARSE_PARAMETERS_NONE();
+
+    libra::Sequence *s = Z_LIBRA_SEQUENCE_P(getThis());
+    const std::string& msg = s->lastError();
+
+    RETURN_STRINGL(msg.data(), msg.length())
 }
 
 static const zend_function_entry libra_sequence_functions[] = {
@@ -117,6 +134,8 @@ static const zend_function_entry libra_sequence_functions[] = {
     PHP_ME(sequence, quality, animate_quality, ZEND_ACC_PUBLIC)
     PHP_ME(sequence, frameCount, animate_frame_count, ZEND_ACC_PUBLIC)
     PHP_ME(sequence, clear, animate_noargs, ZEND_ACC_PUBLIC)
+    PHP_ME(sequence, errorCode, animate_noargs, ZEND_ACC_PUBLIC)
+    PHP_ME(sequence, errorInfo, animate_noargs, ZEND_ACC_PUBLIC)
     {NULL, NULL, NULL}
 };
 

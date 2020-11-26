@@ -9,6 +9,7 @@
 #include <string>
 #include "opencv2/imgcodecs.hpp"
 #include "Logger.h"
+#include "LibraErrno.h"
 
 namespace libra {
     class Sequence {
@@ -29,6 +30,10 @@ namespace libra {
 
         void clear();
 
+        const std::string &lastError() const;
+
+        int lastErrorCode() const;
+
     private:
         bool checkWH(const cv::Mat &m) const;
 
@@ -38,6 +43,9 @@ namespace libra {
         uint32_t loop;
         uint32_t frameCount;
         uint32_t quality;
+
+        int code;
+        std::string message;
 
         LoggerInterface *logger;
     };

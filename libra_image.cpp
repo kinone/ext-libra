@@ -60,7 +60,7 @@ PHP_METHOD(image, resize) {
     libra::Image *img = Z_LIBRA_IMAGE_P(getThis());
     img->resize(width, height);
 
-    RETURN_NULL();
+    RETURN_NULL()
 }
 
 PHP_METHOD(image, save) {
@@ -74,7 +74,7 @@ PHP_METHOD(image, save) {
     libra::Image *img = Z_LIBRA_IMAGE_P(getThis());
     img->save(file);
 
-    RETURN_NULL();
+    RETURN_NULL()
 }
 
 PHP_METHOD(image, compressJpeg) {
@@ -90,7 +90,7 @@ PHP_METHOD(image, compressJpeg) {
     libra::Image *img = Z_LIBRA_IMAGE_P(getThis());
     img->compressJpeg(file, q);
 
-    RETURN_NULL();
+    RETURN_NULL()
 }
 
 PHP_METHOD(image, compressWebp) {
@@ -106,7 +106,7 @@ PHP_METHOD(image, compressWebp) {
     libra::Image *img = Z_LIBRA_IMAGE_P(getThis());
     img->compressWebp(file, q);
 
-    RETURN_NULL();
+    RETURN_NULL()
 }
 
 PHP_METHOD(image, compressPng) {
@@ -122,7 +122,7 @@ PHP_METHOD(image, compressPng) {
     libra::Image *img = Z_LIBRA_IMAGE_P(getThis());
     img->compressPng(file, level);
 
-    RETURN_NULL();
+    RETURN_NULL()
 }
 
 PHP_METHOD(image, getWidth) {
@@ -130,7 +130,7 @@ PHP_METHOD(image, getWidth) {
 
     libra::Image *img = Z_LIBRA_IMAGE_P(getThis());
 
-    RETURN_LONG(img->getWidth());
+    RETURN_LONG(img->getWidth())
 }
 
 PHP_METHOD(image, getHeight) {
@@ -138,7 +138,15 @@ PHP_METHOD(image, getHeight) {
 
     libra::Image *img = Z_LIBRA_IMAGE_P(getThis());
 
-    RETURN_LONG(img->getHeight());
+    RETURN_LONG(img->getHeight())
+}
+
+PHP_METHOD(image, type) {
+    ZEND_PARSE_PARAMETERS_NONE();
+
+    libra::Image *img = Z_LIBRA_IMAGE_P(getThis());
+
+    RETURN_LONG(img->type())
 }
 
 static const zend_function_entry libra_image_functions[] = {
@@ -150,6 +158,7 @@ static const zend_function_entry libra_image_functions[] = {
     PHP_ME(image, compressWebp, image_compress_jpeg, ZEND_ACC_PUBLIC)
     PHP_ME(image, getWidth, image_no_args, ZEND_ACC_PUBLIC)
     PHP_ME(image, getHeight, image_no_args, ZEND_ACC_PUBLIC)
+    PHP_ME(image, type, image_no_args, ZEND_ACC_PUBLIC)
     PHP_ME(image, resize, image_resize, ZEND_ACC_PUBLIC)
     {NULL, NULL, NULL}
 };

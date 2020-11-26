@@ -23,6 +23,7 @@ link_directories(/opt/apps/libwebp/lib /opt/apps/opencv/lib)
 link_libraries(webp webpmux opencv_core opencv_imgproc opencv_imgcodecs)
 
 add_library(libra SHARED
+        src/LibraErrno.h
         src/Image.cpp
         src/Utils.cpp
         src/Kaleido.cpp

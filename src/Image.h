@@ -34,6 +34,8 @@ namespace libra {
 
         int getHeight() const;
 
+        int type() const;
+
     private:
         cv::Mat src;
         cv::Mat dst;

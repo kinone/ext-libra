@@ -53,7 +53,7 @@ PHP_METHOD(kaleido, add) {
     libra::Kaleido *k = Z_KALEIDO_P(getThis());
     bool b = k->add(file);
 
-    RETURN_BOOL(b);
+    RETURN_BOOL(b)
 }
 
 PHP_METHOD(kaleido, quality) {
@@ -66,7 +66,7 @@ PHP_METHOD(kaleido, quality) {
     libra::Kaleido *k = Z_KALEIDO_P(getThis());
     bool b = k->setQuality(q);
 
-    RETURN_BOOL(b);
+    RETURN_BOOL(b)
 }
 
 PHP_METHOD(kaleido, imageDelay) {
@@ -79,7 +79,7 @@ PHP_METHOD(kaleido, imageDelay) {
     libra::Kaleido *k = Z_KALEIDO_P(getThis());
     bool b = k->setImageStay(delay);
 
-    RETURN_BOOL(b);
+    RETURN_BOOL(b)
 }
 
 PHP_METHOD(kaleido, animateTime) {
@@ -92,7 +92,7 @@ PHP_METHOD(kaleido, animateTime) {
     libra::Kaleido *k = Z_KALEIDO_P(getThis());
     bool b = k->setAnimateTime(time);
 
-    RETURN_BOOL(b);
+    RETURN_BOOL(b)
 }
 
 PHP_METHOD(kaleido, frameCount) {
@@ -105,7 +105,7 @@ PHP_METHOD(kaleido, frameCount) {
     libra::Kaleido *k = Z_KALEIDO_P(getThis());
     bool b = k->setFrameCount(count);
 
-    RETURN_BOOL(b);
+    RETURN_BOOL(b)
 }
 
 PHP_METHOD(kaleido, loop) {
@@ -118,7 +118,7 @@ PHP_METHOD(kaleido, loop) {
     libra::Kaleido *k = Z_KALEIDO_P(getThis());
     bool b = k->setLoop(loop);
 
-    RETURN_BOOL(b);
+    RETURN_BOOL(b)
 }
 
 PHP_METHOD(kaleido, generate) {
@@ -132,7 +132,7 @@ PHP_METHOD(kaleido, generate) {
     libra::Kaleido *k = Z_KALEIDO_P(getThis());
     bool b = k->generate(dst);
 
-    RETURN_BOOL(b);
+    RETURN_BOOL(b)
 }
 
 PHP_METHOD(kaleido, clear) {
@@ -141,7 +141,25 @@ PHP_METHOD(kaleido, clear) {
     libra::Kaleido *k = Z_KALEIDO_P(getThis());
     k->clear();
 
-    RETURN_NULL();
+    RETURN_NULL()
+}
+
+PHP_METHOD(kaleido, errorCode) {
+    ZEND_PARSE_PARAMETERS_NONE();
+
+    libra::Kaleido *k = Z_KALEIDO_P(getThis());
+    int64_t code = k->lastErrorCode();
+
+    RETURN_LONG(code)
+}
+
+PHP_METHOD(kaleido, errorInfo) {
+    ZEND_PARSE_PARAMETERS_NONE();
+
+    libra::Kaleido *k = Z_KALEIDO_P(getThis());
+    const std::string& msg = k->lastError();
+
+    RETURN_STRINGL(msg.data(), msg.length())
 }
 
 static const zend_function_entry kaleido_functions[] = {
@@ -154,6 +172,8 @@ static const zend_function_entry kaleido_functions[] = {
     PHP_ME(kaleido, imageDelay, kaleido_image_delay, ZEND_ACC_PUBLIC)
     PHP_ME(kaleido, animateTime, kaleido_animate_time, ZEND_ACC_PUBLIC)
     PHP_ME(kaleido, clear, animate_noargs, ZEND_ACC_PUBLIC)
+    PHP_ME(kaleido, errorCode, animate_noargs, ZEND_ACC_PUBLIC)
+    PHP_ME(kaleido, errorInfo, animate_noargs, ZEND_ACC_PUBLIC)
     PHP_ME(kaleido, __destruct, animate_noargs, ZEND_ACC_PUBLIC|ZEND_ACC_DTOR)
     {NULL, NULL, NULL}
 };

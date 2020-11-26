@@ -9,6 +9,7 @@
 #include <vector>
 #include <opencv2/imgproc.hpp>
 #include "Logger.h"
+#include "LibraErrno.h"
 
 namespace libra {
     class Kaleido {
@@ -36,6 +37,10 @@ namespace libra {
 
         bool setLoop(uint32_t l);
 
+        const std::string &lastError() const;
+
+        int lastErrorCode() const;
+
     private:
         bool checkWH(const cv::Mat &m) const;
 
@@ -48,6 +53,9 @@ namespace libra {
         uint32_t height;
         uint32_t quality;
         uint32_t loop;
+
+        int code;
+        std::string message;
 
         LoggerInterface *logger;
     };

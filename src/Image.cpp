@@ -83,6 +83,10 @@ namespace libra {
         }
     }
 
+    int Image::type() const {
+        return this->src.type();
+    }
+
     int Image::getWidth() const {
         return this->width;
     }

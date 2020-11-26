@@ -13,7 +13,9 @@ namespace libra {
                                                height(h),
                                                frameCount(10),
                                                quality(100),
-                                               loop(0) {
+                                               loop(0),
+                                               code(0),
+                                               message(""){
         files = new std::vector<std::string>();
         logger = Container::instance()->logger();
     }
@@ -74,7 +76,11 @@ namespace libra {
 
             src = cv::imread(files->at(i), cv::IMREAD_UNCHANGED);
             if (src.empty()) {
-                logger->error("image read error: " + files->at(i));
+                code = ERR_READ_FAILED;
+                message = "image read error: " + files->at(i);
+
+                logger->error(message);
+
                 return false;
             }
 
@@ -88,21 +94,39 @@ namespace libra {
             }
 
             if (ptr->empty()) {
-                logger->error("resize error: " + files->at(i));
+                code = ERR_RESIZE_FAILED;
+                message = "resize error: " + files->at(i);
+
+                logger->error(message);
+
                 return false;
             }
 
             // 转webp并调整质量
             WebPPicture pic;
             Utils::mat2WebPPicture(*ptr, &pic, quality);
-            animate->add(&pic, eachFrameStay);
+            bool r = animate->add(&pic, eachFrameStay);
             WebPPictureFree(&pic);
+            if (!r) {
+                delete animate;
+                code = ERR_ADD_FAILED;
+                message = "add webp frame failed: " + files->at(i);
+                logger->error(message);
+
+                return false;
+            }
         }
 
         // 写文件
-        animate->save(result);
-
+        bool r = animate->save(result);
         delete animate;
+        if (!r) {
+            code = ERR_SAVE_FAILED;
+            message = "Sequence: generate failed.";
+            logger->error(message);
+
+            return false;
+        }
 
         logger->info("Sequence: generate finished. result is " + result);
 
@@ -119,5 +143,13 @@ namespace libra {
         }
 
         return true;
+    }
+
+    const std::string & Sequence::lastError() const {
+        return message;
+    }
+
+    int Sequence::lastErrorCode() const {
+        return code;
     }
 }
