@@ -35,6 +35,8 @@ namespace libra {
         static void genFrameH(const cv::Mat &a, const cv::Mat &b, cv::Mat &dst, int step, int total);
 
         static void genFrameV(const cv::Mat &a, const cv::Mat &b, cv::Mat &dst, int step, int total);
+
+        static void addAlpha(const cv::Mat &src, cv::Mat &dst);
     };
 }
 

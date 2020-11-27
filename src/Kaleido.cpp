@@ -113,6 +113,13 @@ namespace libra {
                 return false;
             }
 
+            // 3 通道转 4 通道
+            if (images[i].channels() == 3) {
+                cv::Mat tmp;
+                Utils::addAlpha(images[i], tmp);
+                images[i] = tmp;
+            }
+
             if (i > 0 && images[i].type() != images[0].type()) {
                 code = ERR_TYPE_DIFFERENT;
                 message = "type of image not the same: " + files->at(i);
@@ -124,7 +131,6 @@ namespace libra {
                 logger->info("resize image: " + files->at(i));
                 Image *obj = new Image(images[i]);
                 obj->resize(width, height);
-                images[i].release();
                 obj->exportTo(images[i]);
                 delete obj;
             }

@@ -8,6 +8,18 @@ namespace libra {
     float Utils::maxTop = 0.1f;
     float Utils::maxLeft = 0.1f;
 
+    void Utils::addAlpha(const cv::Mat &src, cv::Mat &dst) {
+        std::vector<cv::Mat> ch(4);
+        cv::split(src, ch);
+
+        // 增加 alpha 通道
+        cv::Mat alpha = cv::Mat::ones(src.size(), ch[0].type()) * 255;
+        ch.push_back(alpha);
+
+        // 生成新mat
+        cv::merge(ch, dst);
+    }
+
     void Utils::genFrameH(const cv::Mat &a, const cv::Mat &b, cv::Mat &dst, int step, int total) {
         float d = 1.0f / float(total + 1) * float(step + 1);
         float colRate, topRate, top, ltop, rtop;
@@ -16,7 +28,7 @@ namespace libra {
         cv::Point2f dstTri[4];
 
         cv::Mat warp_left(3, 3, a.type());
-        cv::Mat warp_right(3, 3, a.type());
+        cv::Mat warp_right(3, 3, b.type());
         cv::Mat dst_left, dst_right;
 
         colRate = evaluate(d);
@@ -50,7 +62,7 @@ namespace libra {
 
         rtop = colRate * float(a.cols) * maxTop;
         if (a.cols - delimiter > 25) {
-            dst_right = cv::Mat::zeros(b.rows, b.cols, a.type());
+            dst_right = cv::Mat::zeros(b.rows, b.cols, b.type());
 
             dstTri[0] = cv::Point2f(delimiter, -top);
             dstTri[1] = cv::Point2f(x, rtop);
@@ -85,7 +97,7 @@ namespace libra {
         cv::Point2f srcTri[4];
         cv::Point2f dstTri[4];
 
-        cv::Mat warp_top(3, 3, a.type());
+        cv::Mat warp_top(3, 3, b.type());
         cv::Mat warp_bottom(3, 3, a.type());
         cv::Mat dst_top, dst_bottom;
 
