@@ -133,6 +133,13 @@ namespace libra {
                 obj->resize(width, height);
                 obj->exportTo(images[i]);
                 delete obj;
+
+                if (images[i].empty()) {
+                    code = ERR_RESIZE_FAILED;
+                    message = "resize image failed: " + files->at(i);
+                    logger->error(message);
+                    return false;
+                }
             }
         }
 

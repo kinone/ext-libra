@@ -9,7 +9,7 @@ namespace libra {
     float Utils::maxLeft = 0.1f;
 
     void Utils::addAlpha(const cv::Mat &src, cv::Mat &dst) {
-        std::vector<cv::Mat> ch(4);
+        std::vector<cv::Mat> ch;
         cv::split(src, ch);
 
         // 增加 alpha 通道
@@ -179,8 +179,8 @@ namespace libra {
         WebPPictureAlloc(pic);
 
         int width, height;
-        uint8_t *p = WebPDecodeBGRA(&buff[0], buff.size(), &width, &height);
-        WebPPictureImportBGRA(pic, p, width * 4);
+        uint8_t *p = WebPDecodeRGBA(buff.data(), buff.size(), &width, &height);
+        WebPPictureImportRGBA(pic, p, width * 4);
 
         WebPFree(p);
     }

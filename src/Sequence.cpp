@@ -87,19 +87,19 @@ namespace libra {
             ptr = &src;
             // 调整尺寸
             if (!checkWH(src)) {
+                logger->info("resize image: " + files->at(i));
                 Image *img = new Image(src);
                 img->resize(width, height);
                 img->exportTo(dst);
                 ptr = &dst;
-            }
 
-            if (ptr->empty()) {
-                code = ERR_RESIZE_FAILED;
-                message = "resize error: " + files->at(i);
+                if (ptr->empty()) {
+                    code = ERR_RESIZE_FAILED;
+                    message = "resize image failed: " + files->at(i);
+                    logger->error(message);
 
-                logger->error(message);
-
-                return false;
+                    return false;
+                }
             }
 
             // 转webp并调整质量
