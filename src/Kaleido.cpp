@@ -101,6 +101,12 @@ namespace libra {
     bool Kaleido::generate(const std::string &result) {
         logger->info("Kaleido: generate started.");
         int count = files->size();
+
+        if (count == 0) {
+            logger->error("empty files");
+            return false;
+        }
+
         cv::Mat images[count];
 
         for (int i = 0; i < count; i++) {
@@ -173,6 +179,12 @@ namespace libra {
                 animate->add(&pic, eachFrameStay);
                 WebPPictureFree(&pic);
             }
+        }
+
+        if (loop > 0) {
+            Utils::mat2WebPPicture(images[0], &pic, quality);
+            animate->add(&pic, 1);
+            WebPPictureInit(&pic);
         }
 
         // 写文件
