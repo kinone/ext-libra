@@ -45,7 +45,7 @@ PHP_METHOD(sequence, add) {
     libra::Sequence *s = Z_LIBRA_SEQUENCE_P(getThis());
     bool b = s->add(std::string(file));
 
-    RETURN_BOOL(b)
+    RETURN_BOOL(b);
 }
 
 PHP_METHOD(sequence, generate) {
@@ -59,7 +59,7 @@ PHP_METHOD(sequence, generate) {
     libra::Sequence *s = Z_LIBRA_SEQUENCE_P(getThis());
     bool b = s->generate(std::string(file));
 
-    RETURN_BOOL(b)
+    RETURN_BOOL(b);
 }
 
 PHP_METHOD(sequence, loop) {
@@ -71,7 +71,7 @@ PHP_METHOD(sequence, loop) {
     libra::Sequence *s = Z_LIBRA_SEQUENCE_P(getThis());
     bool b = s->setLoop(l);
 
-    RETURN_BOOL(b)
+    RETURN_BOOL(b);
 }
 
 PHP_METHOD(sequence, quality) {
@@ -83,7 +83,7 @@ PHP_METHOD(sequence, quality) {
     libra::Sequence *s = Z_LIBRA_SEQUENCE_P(getThis());
     bool b = s->setQuality(q);
 
-    RETURN_BOOL(b)
+    RETURN_BOOL(b);
 }
 
 PHP_METHOD(sequence, frameCount) {
@@ -95,7 +95,7 @@ PHP_METHOD(sequence, frameCount) {
     libra::Sequence *s = Z_LIBRA_SEQUENCE_P(getThis());
     bool b = s->setFrameCount(c);
 
-    RETURN_BOOL(b)
+    RETURN_BOOL(b);
 }
 
 PHP_METHOD(sequence, clear) {
@@ -104,7 +104,7 @@ PHP_METHOD(sequence, clear) {
     libra::Sequence *s = Z_LIBRA_SEQUENCE_P(getThis());
     s->clear();
 
-    RETURN_NULL()
+    RETURN_NULL();
 }
 
 PHP_METHOD(sequence, errorCode) {
@@ -113,7 +113,7 @@ PHP_METHOD(sequence, errorCode) {
     libra::Sequence *s = Z_LIBRA_SEQUENCE_P(getThis());
     int64_t code = s->lastErrorCode();
 
-    RETURN_LONG(code)
+    RETURN_LONG(code);
 }
 
 PHP_METHOD(sequence, errorInfo) {
@@ -122,12 +122,12 @@ PHP_METHOD(sequence, errorInfo) {
     libra::Sequence *s = Z_LIBRA_SEQUENCE_P(getThis());
     const std::string& msg = s->lastError();
 
-    RETURN_STRINGL(msg.data(), msg.length())
+    RETURN_STRINGL(msg.data(), msg.length());
 }
 
 static const zend_function_entry libra_sequence_functions[] = {
     PHP_ME(sequence, __construct, sequence_construct, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
-    PHP_ME(sequence, __destruct, sequence_destruct, ZEND_ACC_PUBLIC|ZEND_ACC_DTOR)
+    PHP_ME(sequence, __destruct, sequence_destruct, ZEND_ACC_PUBLIC)
     PHP_ME(sequence, add, animate_add, ZEND_ACC_PUBLIC)
     PHP_ME(sequence, generate, animate_generate, ZEND_ACC_PUBLIC)
     PHP_ME(sequence, loop, animate_loop, ZEND_ACC_PUBLIC)
@@ -146,7 +146,7 @@ static zend_object *libra_sequence_new(zend_class_entry *ce)  {
 LIBRA_STARTUP_FUNCTION(sequence) {
     zend_class_entry ce;
     INIT_NS_CLASS_ENTRY(ce, "Libra", "Sequence", libra_sequence_functions);
-    libra_sequence_ce = zend_register_internal_class(&ce TSRMLS_CC);
+    libra_sequence_ce = zend_register_internal_class(&ce);
     libra_sequence_ce->create_object = libra_sequence_new;
 
     zend_class_implements(libra_sequence_ce, 1, libra_animate_interface_ce);

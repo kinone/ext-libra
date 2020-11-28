@@ -60,7 +60,7 @@ PHP_METHOD(image, resize) {
     libra::Image *img = Z_LIBRA_IMAGE_P(getThis());
     img->resize(width, height);
 
-    RETURN_NULL()
+    RETURN_NULL();
 }
 
 PHP_METHOD(image, save) {
@@ -74,7 +74,7 @@ PHP_METHOD(image, save) {
     libra::Image *img = Z_LIBRA_IMAGE_P(getThis());
     img->save(file);
 
-    RETURN_NULL()
+    RETURN_NULL();
 }
 
 PHP_METHOD(image, compressJpeg) {
@@ -90,7 +90,7 @@ PHP_METHOD(image, compressJpeg) {
     libra::Image *img = Z_LIBRA_IMAGE_P(getThis());
     img->compressJpeg(file, q);
 
-    RETURN_NULL()
+    RETURN_NULL();
 }
 
 PHP_METHOD(image, compressWebp) {
@@ -106,7 +106,7 @@ PHP_METHOD(image, compressWebp) {
     libra::Image *img = Z_LIBRA_IMAGE_P(getThis());
     img->compressWebp(file, q);
 
-    RETURN_NULL()
+    RETURN_NULL();
 }
 
 PHP_METHOD(image, compressPng) {
@@ -122,7 +122,7 @@ PHP_METHOD(image, compressPng) {
     libra::Image *img = Z_LIBRA_IMAGE_P(getThis());
     img->compressPng(file, level);
 
-    RETURN_NULL()
+    RETURN_NULL();
 }
 
 PHP_METHOD(image, getWidth) {
@@ -130,7 +130,7 @@ PHP_METHOD(image, getWidth) {
 
     libra::Image *img = Z_LIBRA_IMAGE_P(getThis());
 
-    RETURN_LONG(img->getWidth())
+    RETURN_LONG(img->getWidth());
 }
 
 PHP_METHOD(image, getHeight) {
@@ -138,7 +138,7 @@ PHP_METHOD(image, getHeight) {
 
     libra::Image *img = Z_LIBRA_IMAGE_P(getThis());
 
-    RETURN_LONG(img->getHeight())
+    RETURN_LONG(img->getHeight());
 }
 
 PHP_METHOD(image, type) {
@@ -146,12 +146,12 @@ PHP_METHOD(image, type) {
 
     libra::Image *img = Z_LIBRA_IMAGE_P(getThis());
 
-    RETURN_LONG(img->type())
+    RETURN_LONG(img->type());
 }
 
 static const zend_function_entry libra_image_functions[] = {
     PHP_ME(image, __construct, image_construct, ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
-    PHP_ME(image, __destruct, image_no_args, ZEND_ACC_PUBLIC|ZEND_ACC_DTOR)
+    PHP_ME(image, __destruct, image_no_args, ZEND_ACC_PUBLIC)
     PHP_ME(image, save, image_save, ZEND_ACC_PUBLIC)
     PHP_ME(image, compressPng, image_comperss_png, ZEND_ACC_PUBLIC)
     PHP_ME(image, compressJpeg, image_compress_jpeg, ZEND_ACC_PUBLIC)
@@ -170,7 +170,7 @@ static zend_object* libra_image_new(zend_class_entry *ce)  {
 LIBRA_STARTUP_FUNCTION(image) {
     zend_class_entry ce;
     INIT_NS_CLASS_ENTRY(ce, "Libra", "Image", libra_image_functions);
-    libra_image_ce = zend_register_internal_class(&ce TSRMLS_CC);
+    libra_image_ce = zend_register_internal_class(&ce);
     libra_image_ce->create_object = libra_image_new;
 
     libra_object_handlers_init(&libra_image_object_handlers);

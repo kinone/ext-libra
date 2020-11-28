@@ -67,7 +67,7 @@ static zval *libra_container_instance()  {
 LIBRA_STARTUP_FUNCTION(container) {
     zend_class_entry ce;
     INIT_NS_CLASS_ENTRY(ce, "Libra", "Container", libra_container_functions);
-    libra_container_ce = zend_register_internal_class(&ce TSRMLS_CC);
+    libra_container_ce = zend_register_internal_class(&ce);
     libra_container_ce->ce_flags |= ZEND_ACC_FINAL;
 
     libra_object_handlers_init(&libra_container_object_handlers);

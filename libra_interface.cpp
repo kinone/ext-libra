@@ -39,11 +39,11 @@ LIBRA_STARTUP_FUNCTION(animate_interface) {
     INIT_NS_CLASS_ENTRY(ce, "Libra", "AnimateInterface", libra_animate_interface_functions);
     libra_animate_interface_ce = zend_register_internal_interface(&ce);
 
-    zend_declare_class_constant_long(libra_animate_interface_ce, "E_READ_FAILED", sizeof("E_READ_FAILED") - 1, libra::ERR_READ_FAILED TSRMLS_CC);
-    zend_declare_class_constant_long(libra_animate_interface_ce, "E_TYPE_DIFFERENT", sizeof("E_TYPE_DIFFERENT") - 1, libra::ERR_TYPE_DIFFERENT TSRMLS_CC);
-    zend_declare_class_constant_long(libra_animate_interface_ce, "E_RESIZE_FAILED", sizeof("E_RESIZE_FAILED") - 1, libra::ERR_RESIZE_FAILED TSRMLS_CC);
-    zend_declare_class_constant_long(libra_animate_interface_ce, "E_ADD_FAILED", sizeof("E_ADD_FAILED") - 1, libra::ERR_ADD_FAILED TSRMLS_CC);
-    zend_declare_class_constant_long(libra_animate_interface_ce, "E_SAVE_FAILED", sizeof("E_SAVE_FAILED") - 1, libra::ERR_SAVE_FAILED TSRMLS_CC);
+    zend_declare_class_constant_long(libra_animate_interface_ce, "E_READ_FAILED", sizeof("E_READ_FAILED") - 1, libra::ERR_READ_FAILED);
+    zend_declare_class_constant_long(libra_animate_interface_ce, "E_TYPE_DIFFERENT", sizeof("E_TYPE_DIFFERENT") - 1, libra::ERR_TYPE_DIFFERENT);
+    zend_declare_class_constant_long(libra_animate_interface_ce, "E_RESIZE_FAILED", sizeof("E_RESIZE_FAILED") - 1, libra::ERR_RESIZE_FAILED);
+    zend_declare_class_constant_long(libra_animate_interface_ce, "E_ADD_FAILED", sizeof("E_ADD_FAILED") - 1, libra::ERR_ADD_FAILED);
+    zend_declare_class_constant_long(libra_animate_interface_ce, "E_SAVE_FAILED", sizeof("E_SAVE_FAILED") - 1, libra::ERR_SAVE_FAILED);
 
     return SUCCESS;
 }

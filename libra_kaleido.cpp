@@ -53,7 +53,7 @@ PHP_METHOD(kaleido, add) {
     libra::Kaleido *k = Z_KALEIDO_P(getThis());
     bool b = k->add(file);
 
-    RETURN_BOOL(b)
+    RETURN_BOOL(b);
 }
 
 PHP_METHOD(kaleido, quality) {
@@ -66,7 +66,7 @@ PHP_METHOD(kaleido, quality) {
     libra::Kaleido *k = Z_KALEIDO_P(getThis());
     bool b = k->setQuality(q);
 
-    RETURN_BOOL(b)
+    RETURN_BOOL(b);
 }
 
 PHP_METHOD(kaleido, imageDelay) {
@@ -79,7 +79,7 @@ PHP_METHOD(kaleido, imageDelay) {
     libra::Kaleido *k = Z_KALEIDO_P(getThis());
     bool b = k->setImageStay(delay);
 
-    RETURN_BOOL(b)
+    RETURN_BOOL(b);
 }
 
 PHP_METHOD(kaleido, animateTime) {
@@ -92,7 +92,7 @@ PHP_METHOD(kaleido, animateTime) {
     libra::Kaleido *k = Z_KALEIDO_P(getThis());
     bool b = k->setAnimateTime(time);
 
-    RETURN_BOOL(b)
+    RETURN_BOOL(b);
 }
 
 PHP_METHOD(kaleido, frameCount) {
@@ -105,7 +105,7 @@ PHP_METHOD(kaleido, frameCount) {
     libra::Kaleido *k = Z_KALEIDO_P(getThis());
     bool b = k->setFrameCount(count);
 
-    RETURN_BOOL(b)
+    RETURN_BOOL(b);
 }
 
 PHP_METHOD(kaleido, loop) {
@@ -118,7 +118,7 @@ PHP_METHOD(kaleido, loop) {
     libra::Kaleido *k = Z_KALEIDO_P(getThis());
     bool b = k->setLoop(loop);
 
-    RETURN_BOOL(b)
+    RETURN_BOOL(b);
 }
 
 PHP_METHOD(kaleido, generate) {
@@ -132,7 +132,7 @@ PHP_METHOD(kaleido, generate) {
     libra::Kaleido *k = Z_KALEIDO_P(getThis());
     bool b = k->generate(dst);
 
-    RETURN_BOOL(b)
+    RETURN_BOOL(b);
 }
 
 PHP_METHOD(kaleido, clear) {
@@ -141,7 +141,7 @@ PHP_METHOD(kaleido, clear) {
     libra::Kaleido *k = Z_KALEIDO_P(getThis());
     k->clear();
 
-    RETURN_NULL()
+    RETURN_NULL();
 }
 
 PHP_METHOD(kaleido, errorCode) {
@@ -150,7 +150,7 @@ PHP_METHOD(kaleido, errorCode) {
     libra::Kaleido *k = Z_KALEIDO_P(getThis());
     int64_t code = k->lastErrorCode();
 
-    RETURN_LONG(code)
+    RETURN_LONG(code);
 }
 
 PHP_METHOD(kaleido, errorInfo) {
@@ -159,7 +159,7 @@ PHP_METHOD(kaleido, errorInfo) {
     libra::Kaleido *k = Z_KALEIDO_P(getThis());
     const std::string& msg = k->lastError();
 
-    RETURN_STRINGL(msg.data(), msg.length())
+    RETURN_STRINGL(msg.data(), msg.length());
 }
 
 static const zend_function_entry kaleido_functions[] = {
@@ -174,7 +174,7 @@ static const zend_function_entry kaleido_functions[] = {
     PHP_ME(kaleido, clear, animate_noargs, ZEND_ACC_PUBLIC)
     PHP_ME(kaleido, errorCode, animate_noargs, ZEND_ACC_PUBLIC)
     PHP_ME(kaleido, errorInfo, animate_noargs, ZEND_ACC_PUBLIC)
-    PHP_ME(kaleido, __destruct, animate_noargs, ZEND_ACC_PUBLIC|ZEND_ACC_DTOR)
+    PHP_ME(kaleido, __destruct, animate_noargs, ZEND_ACC_PUBLIC)
     {NULL, NULL, NULL}
 };
 
@@ -185,14 +185,14 @@ static zend_object* libra_kaleido_new(zend_class_entry *ce)  {
 LIBRA_STARTUP_FUNCTION(kaleido) {
     zend_class_entry ce;
     INIT_NS_CLASS_ENTRY(ce, "Libra", "Kaleido", kaleido_functions);
-    kaleido_ce = zend_register_internal_class(&ce TSRMLS_CC);
+    kaleido_ce = zend_register_internal_class(&ce);
     kaleido_ce->create_object = libra_kaleido_new;
 
     zend_class_implements(kaleido_ce, 1, libra_animate_interface_ce);
     libra_object_handlers_init(&kaleido_object_handlers);
 
-    zend_declare_class_constant_long(kaleido_ce, "HORIZENTAL", sizeof("HORIZENTAL") - 1, libra::Kaleido::Horizontal TSRMLS_CC);
-    zend_declare_class_constant_long(kaleido_ce, "VERTICAL", sizeof("VERTICAL") - 1, libra::Kaleido::Vertical TSRMLS_CC);
+    zend_declare_class_constant_long(kaleido_ce, "HORIZENTAL", sizeof("HORIZENTAL") - 1, libra::Kaleido::Horizontal);
+    zend_declare_class_constant_long(kaleido_ce, "VERTICAL", sizeof("VERTICAL") - 1, libra::Kaleido::Vertical);
 
     return SUCCESS;
 }
