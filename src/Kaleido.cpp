@@ -52,7 +52,7 @@ namespace libra {
     }
 
     bool Kaleido::setFrameCount(uint32_t count) {
-        if (count < 1 || count > 20) {
+        if (count < 1 || count > 50) {
             return false;
         }
         animateFrameCount = count;
