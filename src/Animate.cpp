@@ -1,57 +1,80 @@
 //
-// Created by 王振浩 on 2020/11/20.
+// Created by 王振浩 on 2021/03/17.
 //
 
 #include "Animate.h"
 #include "Container.h"
 
 namespace libra {
-    Animate::Animate(int width, int height, int loop) : timestamp(0) {
-        WebPConfigInit(&config);
-        WebPAnimEncoderOptionsInit(&animEncoderOpt);
-        animEncoderOpt.anim_params.loop_count = loop;
-        animEncoder = WebPAnimEncoderNew(width, height, &animEncoderOpt);
-
+    Animate::Animate(uint32_t w, uint32_t h): width(w),
+                                        height(h),
+                                        loop(0),
+                                        frameCount(10),
+                                        quality(60),
+                                        animateTime(1000),
+                                        code(0),
+                                        message("") {
+        files = new std::vector<std::string>;
         logger = Container::instance()->logger();
     }
 
     Animate::~Animate() {
-        WebPAnimEncoderDelete(animEncoder);
+        clear();
+        delete files;
     }
 
-    bool Animate::add(WebPPicture *pic, int dtime) {
-        int r = WebPAnimEncoderAdd(animEncoder, pic, timestamp, &config);
+    bool Animate::add(const std::string &image) {
+        files->push_back(image);
 
-        if (r == 0) {
-            const char *err = WebPAnimEncoderGetError(animEncoder);
-            logger->error(err);
-            return false;
-        }
-
-        timestamp += dtime;
+        logger->info("add file: " + image);
 
         return true;
     }
 
-    bool Animate::save(const std::string &file) {
-        WebPAnimEncoderAdd(animEncoder, NULL, timestamp, NULL);
+    void Animate::clear() {
+        files->clear();
+    }
 
-        WebPData data;
-        WebPDataInit(&data);
+    bool Animate::setFrameCount(uint32_t f) {
+        frameCount = f;
 
-        int r = WebPAnimEncoderAssemble(animEncoder, &data);
-        if (r == 0) {
-            const char *err = WebPAnimEncoderGetError(animEncoder);
-            logger->error(err);
-            WebPDataClear(&data);
+        return true;
+    }
+
+    bool Animate::setLoop(uint32_t l) {
+        loop = l;
+
+        return true;
+    }
+
+    bool Animate::setQuality(uint32_t q) {
+        quality = q;
+
+        return true;
+    }
+
+    bool Animate::setAnimateTime(uint32_t t) {
+        if (t < 100 || t > 5000) {
             return false;
         }
 
-        FILE *f = fopen(file.data(), "wb");
-        fwrite(data.bytes, data.size, 1, f);
-        fclose(f);
+        animateTime = t;
 
-        WebPDataClear(&data);
+        return true;
+    }
+
+    const std::string & Animate::lastError() const {
+        return message;
+    }
+
+    int Animate::lastErrorCode() const {
+        return code;
+    }
+
+    bool Animate::checkWH(const cv::Mat &m) const {
+        if (m.cols != width || m.rows != height) {
+            return false;
+        }
 
         return true;
     }

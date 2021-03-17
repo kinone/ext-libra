@@ -6,10 +6,10 @@
 #include "Kaleido.h"
 #include "Utils.h"
 #include "Image.h"
-#include "Animate.h"
+#include "Mux.h"
 
 namespace libra {
-    Kaleido::Kaleido(uint32_t w, uint32_t h, uint8_t d): Base(w, h), direction(d), eachImageStay(1000) {
+    Kaleido::Kaleido(uint32_t w, uint32_t h, uint8_t d): Animate(w, h), direction(d), eachImageStay(1000) {
     }
 
     Kaleido::~Kaleido() {
@@ -78,7 +78,7 @@ namespace libra {
             }
         }
 
-        Animate *animate = new Animate(width, height, loop);
+        Mux *mux = new Mux(width, height, loop);
 
         uint32_t eachFrameStay = animateTime / frameCount;
         WebPPicture pic;
@@ -86,13 +86,13 @@ namespace libra {
         for (int i = 0; i < count; i++) {
             // 添加第一张图片
             Utils::mat2WebPPicture(images[i], &pic, quality);
-            r = animate->add(&pic, eachImageStay);
+            r = mux->add(&pic, eachImageStay);
             WebPPictureFree(&pic);
             if (!r) {
                 code = ERR_ADD_FAILED;
                 message = "add webp frame failed" + files->at(i);
                 logger->error(message);
-                delete animate;
+                delete mux;
                 return false;
             }
 
@@ -105,20 +105,20 @@ namespace libra {
                     Utils::genFrameH(images[i], images[next], dst, j, frameCount);
                 }
                 Utils::mat2WebPPicture(dst, &pic, quality);
-                animate->add(&pic, eachFrameStay);
+                mux->add(&pic, eachFrameStay);
                 WebPPictureFree(&pic);
             }
         }
 
         if (loop > 0) {
             Utils::mat2WebPPicture(images[0], &pic, quality);
-            animate->add(&pic, 1);
+            mux->add(&pic, 1);
             WebPPictureInit(&pic);
         }
 
         // 写文件
-        r = animate->save(result);
-        delete animate;
+        r = mux->save(result);
+        delete mux;
 
         if (!r) {
             code = ERR_SAVE_FAILED;

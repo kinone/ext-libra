@@ -7,18 +7,18 @@
 
 #include <string>
 #include <vector>
-#include "Base.h"
+#include "Animate.h"
 
 namespace libra {
-    class Roller: public Base {
+    class Roller: public Animate {
     public:
-        Roller(uint32_t w, uint32_t h) : Base(w, h) {}
+        Roller(uint32_t w, uint32_t h) : Animate(w, h) {}
 
         ~Roller() {}
 
         bool add(const std::string &image);
 
-        bool generate(const std::string &sUp, const std::string &sDown);
+        bool generate(const std::string &dstUp, const std::string &dstDown);
     };
 }
 

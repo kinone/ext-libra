@@ -10,10 +10,10 @@
 #include <opencv2/imgproc.hpp>
 #include "ILogger.h"
 #include "LibraErrno.h"
-#include "Base.h"
+#include "Animate.h"
 
 namespace libra {
-    class Kaleido: public Base {
+    class Kaleido: public Animate {
     public:
         static const uint8_t Horizontal = 0;
         static const uint8_t Vertical = 1;

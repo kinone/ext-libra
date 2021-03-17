@@ -3,10 +3,10 @@
 //
 
 #include "Roller.h"
-#include "Animate.h"
 #include "Utils.h"
 #include "Image.h"
 #include "LibraErrno.h"
+#include "Mux.h"
 
 namespace libra {
     bool Roller::add(const std::string &image) {
@@ -14,10 +14,10 @@ namespace libra {
             return false;
         }
 
-        return Base::add(image);
+        return Animate::add(image);
     }
 
-    bool Roller::generate(const std::string &sUp, const std::string &sDown) {
+    bool Roller::generate(const std::string &dstUp, const std::string &dstDown) {
         if (files->size() < 2) {
             return false;
         }
@@ -68,8 +68,8 @@ namespace libra {
 
         uint32_t dtime = animateTime / frameCount;
 
-        Animate *animate1 = new Animate(width, height, 1);
-        Animate *animate2 = new Animate(width, height, 1);
+        Mux *muxUp = new Mux(width, height, 1);
+        Mux *muxDown = new Mux(width, height, 1);
 
         // 生成中间帧
         WebPPicture pic[frameCount];
@@ -80,15 +80,15 @@ namespace libra {
         }
         // 上翻vs下翻
         for (int i = 0; i < frameCount; i++) {
-            animate1->add(&pic[frameCount - 1 - i], dtime);
-            animate2->add(&pic[i], dtime);
+            muxUp->add(&pic[frameCount - 1 - i], dtime);
+            muxDown->add(&pic[i], dtime);
         }
 
-        bool b1 = animate1->save(sUp);
-        bool b2 = animate2->save(sDown);
+        bool b1 = muxUp->save(dstUp);
+        bool b2 = muxDown->save(dstDown);
 
-        delete animate1;
-        delete animate2;
+        delete muxUp;
+        delete muxDown;
 
         return b1 && b2;
     }

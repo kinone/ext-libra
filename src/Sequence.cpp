@@ -3,7 +3,7 @@
 //
 
 #include "Container.h"
-#include "Animate.h"
+#include "Mux.h"
 #include "Sequence.h"
 #include "Image.h"
 #include "Utils.h"
@@ -12,7 +12,7 @@ namespace libra {
     bool Sequence::generate(const std::string &result) {
         logger->info("Sequence: generate started.");
 
-        Animate *animate = new Animate(width, height, loop);
+        Mux *mux = new Mux(width, height, loop);
         int eachFrameStay = animateTime / frameCount;
 
         for (int i = 0; i < files->size(); i++) {
@@ -52,10 +52,10 @@ namespace libra {
             // 转webp并调整质量
             WebPPicture pic;
             Utils::mat2WebPPicture(*ptr, &pic, quality);
-            bool r = animate->add(&pic, eachFrameStay);
+            bool r = mux->add(&pic, eachFrameStay);
             WebPPictureFree(&pic);
             if (!r) {
-                delete animate;
+                delete mux;
                 code = ERR_ADD_FAILED;
                 message = "add webp frame failed: " + files->at(i);
                 logger->error(message);
@@ -65,8 +65,8 @@ namespace libra {
         }
 
         // 写文件
-        bool r = animate->save(result);
-        delete animate;
+        bool r = mux->save(result);
+        delete mux;
         if (!r) {
             code = ERR_SAVE_FAILED;
             message = "Sequence: generate failed.";

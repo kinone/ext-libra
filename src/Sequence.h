@@ -10,12 +10,12 @@
 #include "opencv2/imgcodecs.hpp"
 #include "ILogger.h"
 #include "LibraErrno.h"
-#include "Base.h"
+#include "Animate.h"
 
 namespace libra {
-    class Sequence: public Base {
+    class Sequence: public Animate {
     public:
-        Sequence(uint32_t w, uint32_t h): Base(w, h) {}
+        Sequence(uint32_t w, uint32_t h): Animate(w, h) {}
 
         ~Sequence(){}
 
