@@ -23,9 +23,9 @@ namespace libra {
         return Container::self;
     }
 
-    void Container::setLogger(zval *l) {
+    void Container::setLogger(LoggerInterface *l) {
         delete driver;
-        driver = new Logger(l);
+        driver = l;
     }
 
     LoggerInterface *Container::logger() {

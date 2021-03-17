@@ -1,5 +1,5 @@
 //
-// Created by 王振浩 on 2020/11/18.
+// Created by 王振浩 on 2021/3/16.
 //
 
 #ifndef EXT_LIBRA_LOGGER_H
@@ -10,34 +10,13 @@ extern "C" {
 #include "Zend/zend_interfaces.h"
 };
 
-#include <string>
+#include "ILogger.h"
 
 namespace libra {
     extern const char *LG_DEBUG;
     extern const char *LG_INFO;
     extern const char *LG_ERROR;
 
-    class LoggerInterface {
-    public:
-        virtual ~LoggerInterface() {};
-
-        virtual void debug(const std::string &message) = 0;
-
-        virtual void info(const std::string &message) = 0;
-
-        virtual void error(const std::string &message) = 0;
-    };
-
-    class NullLogger : public LoggerInterface {
-    public:
-        virtual ~NullLogger() {}
-
-        virtual void debug(const std::string &message) {}
-
-        virtual void info(const std::string &message) {}
-
-        virtual void error(const std::string &message) {}
-    };
 
     class Logger : public LoggerInterface {
     private:
@@ -58,5 +37,6 @@ namespace libra {
         zval zv;
     };
 }
+
 
 #endif //EXT_LIBRA_LOGGER_H

@@ -8,11 +8,12 @@
 #include <string>
 #include <vector>
 #include <opencv2/imgproc.hpp>
-#include "Logger.h"
+#include "ILogger.h"
 #include "LibraErrno.h"
+#include "Base.h"
 
 namespace libra {
-    class Kaleido {
+    class Kaleido: public Base {
     public:
         static const uint8_t Horizontal = 0;
         static const uint8_t Vertical = 1;
@@ -21,43 +22,13 @@ namespace libra {
 
         ~Kaleido();
 
-        bool add(const std::string &file);
-
-        void clear();
-
         bool generate(const std::string &result);
-
-        bool setFrameCount(uint32_t count);
-
-        bool setAnimateTime(uint32_t time);
 
         bool setImageStay(uint32_t time);
 
-        bool setQuality(uint32_t q);
-
-        bool setLoop(uint32_t l);
-
-        const std::string &lastError() const;
-
-        int lastErrorCode() const;
-
     private:
-        bool checkWH(const cv::Mat &m) const;
-
-        std::vector<std::string> *files;
         uint8_t direction;
-        uint32_t animateFrameCount;
-        uint32_t animateTime;
         uint32_t eachImageStay;
-        uint32_t width;
-        uint32_t height;
-        uint32_t quality;
-        uint32_t loop;
-
-        int code;
-        std::string message;
-
-        LoggerInterface *logger;
     };
 }
 

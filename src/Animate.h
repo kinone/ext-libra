@@ -12,7 +12,7 @@ extern "C" {
 
 #include <string>
 #include <cstdio>
-#include "Logger.h"
+#include "ILogger.h"
 
 namespace libra {
     class Animate {

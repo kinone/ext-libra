@@ -4,6 +4,7 @@
 
 #include "libra_container.h"
 #include "libra_interface.h"
+#include "src/Logger.h"
 
 zend_class_entry *libra_container_ce;
 zend_object_handlers libra_container_object_handlers;
@@ -28,16 +29,16 @@ PHP_METHOD(container, instance) {
 }
 
 PHP_METHOD(container, setLogger) {
-    zval *logger;
+    zval *l;
 
     ZEND_PARSE_PARAMETERS_START(1, 1)
-        Z_PARAM_OBJECT_OF_CLASS(logger, libra_logger_interface_ce)
+        Z_PARAM_OBJECT_OF_CLASS(l, libra_logger_interface_ce)
     ZEND_PARSE_PARAMETERS_END();
 
     zval *container = libra_container_instance();
     libra::Container *c = Z_LIBRA_CONTAINER_P(container);
 
-    c->setLogger(logger);
+    c->setLogger(new libra::Logger(l));
 }
 
 zend_function_entry libra_container_functions[] = {

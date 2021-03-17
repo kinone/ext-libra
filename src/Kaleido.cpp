@@ -9,55 +9,10 @@
 #include "Animate.h"
 
 namespace libra {
-    Kaleido::Kaleido(uint32_t w, uint32_t h, uint8_t d)
-            : width(w),
-              height(h),
-              direction(d),
-              animateFrameCount(10),
-              animateTime(1000),
-              eachImageStay(1000),
-              quality(100),
-              loop(0),
-              code(0),
-              message("") {
-        files = new std::vector<std::string>();
-        logger = Container::instance()->logger();
+    Kaleido::Kaleido(uint32_t w, uint32_t h, uint8_t d): Base(w, h), direction(d), eachImageStay(1000) {
     }
 
     Kaleido::~Kaleido() {
-        clear();
-        delete files;
-    }
-
-    bool Kaleido::add(const std::string &file) {
-        files->push_back(file);
-
-        logger->info("add image: " + file);
-
-        return true;
-    }
-
-    void Kaleido::clear() {
-        files->clear();
-    }
-
-    bool Kaleido::setAnimateTime(uint32_t time) {
-        if (time < 100 || time > 5000) {
-            return false;
-        }
-
-        animateTime = time;
-
-        return true;
-    }
-
-    bool Kaleido::setFrameCount(uint32_t count) {
-        if (count < 1 || count > 50) {
-            return false;
-        }
-        animateFrameCount = count;
-
-        return true;
     }
 
     bool Kaleido::setImageStay(uint32_t time) {
@@ -68,34 +23,6 @@ namespace libra {
         eachImageStay = time;
 
         return true;
-    }
-
-    bool Kaleido::setQuality(uint32_t q) {
-        if (q < 10 || q > 100) {
-            return false;
-        }
-
-        quality = q;
-
-        return true;
-    }
-
-    bool Kaleido::setLoop(uint32_t l) {
-        if (l < 0 || l > 100) {
-            return false;
-        }
-
-        loop = l;
-
-        return true;
-    }
-
-    const std::string &Kaleido::lastError() const {
-        return message;
-    }
-
-    int Kaleido::lastErrorCode() const {
-        return code;
     }
 
     bool Kaleido::generate(const std::string &result) {
@@ -126,6 +53,7 @@ namespace libra {
                 images[i] = tmp;
             }
 
+            // 类型检查
             if (i > 0 && images[i].type() != images[0].type()) {
                 code = ERR_TYPE_DIFFERENT;
                 message = "type of image not the same: " + files->at(i);
@@ -133,6 +61,7 @@ namespace libra {
                 return false;
             }
 
+            // 尺寸调整
             if (!checkWH(images[i])) {
                 logger->info("resize image: " + files->at(i));
                 Image *obj = new Image(images[i]);
@@ -151,7 +80,7 @@ namespace libra {
 
         Animate *animate = new Animate(width, height, loop);
 
-        int eachFrameStay = animateTime / animateFrameCount;
+        uint32_t eachFrameStay = animateTime / frameCount;
         WebPPicture pic;
         bool r;
         for (int i = 0; i < count; i++) {
@@ -168,12 +97,12 @@ namespace libra {
             }
 
             int next = (i + 1) % count; // 下一张位置
-            for (int j = 0; j < animateFrameCount; j++) {
+            for (int j = 0; j < frameCount; j++) {
                 cv::Mat dst;
                 if (direction == Kaleido::Vertical) {
-                    Utils::genFrameV(images[i], images[next], dst, j, animateFrameCount);
+                    Utils::genFrameV(images[i], images[next], dst, j, frameCount);
                 } else {
-                    Utils::genFrameH(images[i], images[next], dst, j, animateFrameCount);
+                    Utils::genFrameH(images[i], images[next], dst, j, frameCount);
                 }
                 Utils::mat2WebPPicture(dst, &pic, quality);
                 animate->add(&pic, eachFrameStay);
@@ -199,14 +128,6 @@ namespace libra {
         }
 
         logger->info("Kaleido: generate finished. result is " + result);
-
-        return true;
-    }
-
-    bool Kaleido::checkWH(const cv::Mat &m) const {
-        if (m.cols != width || m.rows != height) {
-            return false;
-        }
 
         return true;
     }

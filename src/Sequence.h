@@ -8,46 +8,18 @@
 #include <vector>
 #include <string>
 #include "opencv2/imgcodecs.hpp"
-#include "Logger.h"
+#include "ILogger.h"
 #include "LibraErrno.h"
+#include "Base.h"
 
 namespace libra {
-    class Sequence {
+    class Sequence: public Base {
     public:
-        Sequence(uint32_t width, uint32_t height);
+        Sequence(uint32_t w, uint32_t h): Base(w, h) {}
 
-        ~Sequence();
-
-        bool add(const std::string &file);
-
-        bool setFrameCount(uint32_t c);
-
-        bool setQuality(uint32_t q);
-
-        bool setLoop(uint32_t l);
+        ~Sequence(){}
 
         bool generate(const std::string &result);
-
-        void clear();
-
-        const std::string &lastError() const;
-
-        int lastErrorCode() const;
-
-    private:
-        bool checkWH(const cv::Mat &m) const;
-
-        std::vector<std::string> *files;
-        uint32_t width;
-        uint32_t height;
-        uint32_t loop;
-        uint32_t frameCount;
-        uint32_t quality;
-
-        int code;
-        std::string message;
-
-        LoggerInterface *logger;
     };
 }
 
