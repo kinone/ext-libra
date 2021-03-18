@@ -8,9 +8,9 @@ zend_class_entry *libra_logger_interface_ce;
 zend_class_entry *libra_animate_interface_ce;
 
 static const zend_function_entry libra_logger_interface_functions[] = {
-    ZEND_ABSTRACT_ME(logger_interface, debug, logger_level_log)
-    ZEND_ABSTRACT_ME(logger_interface, info, logger_level_log)
-    ZEND_ABSTRACT_ME(logger_interface, error, logger_level_log)
+    PHP_ABSTRACT_ME(logger_interface, debug, logger_level_log)
+    PHP_ABSTRACT_ME(logger_interface, info, logger_level_log)
+    PHP_ABSTRACT_ME(logger_interface, error, logger_level_log)
     {NULL, NULL, NULL}
 };
 
@@ -23,14 +23,15 @@ LIBRA_STARTUP_FUNCTION(logger_interface) {
 }
 
 static const zend_function_entry libra_animate_interface_functions[] = {
-    ZEND_ABSTRACT_ME(animate_interface, loop, animate_loop)
-    ZEND_ABSTRACT_ME(animate_interface, quality, animate_quality)
-    ZEND_ABSTRACT_ME(animate_interface, frameCount, animate_frame_count)
-    ZEND_ABSTRACT_ME(animate_interface, add, animate_add)
-    ZEND_ABSTRACT_ME(animate_interface, generate, animate_generate)
-    ZEND_ABSTRACT_ME(animate_interface, clear, animate_noargs)
-    ZEND_ABSTRACT_ME(animate_interface, errorCode, animate_noargs)
-    ZEND_ABSTRACT_ME(animate_interface, errorInfo, animate_noargs)
+    PHP_ABSTRACT_ME(animate_interface, loop, animate_loop)
+    PHP_ABSTRACT_ME(animate_interface, quality, animate_quality)
+    PHP_ABSTRACT_ME(animate_interface, frameCount, animate_frame_count)
+    PHP_ABSTRACT_ME(animate_interface, duration, animate_duration)
+    PHP_ABSTRACT_ME(animate_interface, add, animate_add)
+    PHP_ABSTRACT_ME(animate_interface, generate, animate_generate)
+    PHP_ABSTRACT_ME(animate_interface, clear, animate_noargs)
+    PHP_ABSTRACT_ME(animate_interface, errorCode, animate_noargs)
+    PHP_ABSTRACT_ME(animate_interface, errorInfo, animate_noargs)
     {NULL, NULL, NULL}
 };
 
