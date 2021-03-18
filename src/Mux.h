@@ -21,17 +21,17 @@ namespace libra {
 
         ~Mux();
 
-        bool add(WebPPicture *pic, int dtime);
+        bool add(WebPPicture* pic, int dtime);
 
-        bool save(const std::string &file);
+        bool save(const std::string& file);
 
     private:
         WebPConfig config;
         WebPAnimEncoderOptions animEncoderOpt;
-        WebPAnimEncoder *animEncoder;
+        WebPAnimEncoder* animEncoder;
         int timestamp;
 
-        LoggerInterface *logger;
+        LoggerInterface* logger;
     };
 }
 

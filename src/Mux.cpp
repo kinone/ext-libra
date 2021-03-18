@@ -19,11 +19,11 @@ namespace libra {
         WebPAnimEncoderDelete(animEncoder);
     }
 
-    bool Mux::add(WebPPicture *pic, int dtime) {
+    bool Mux::add(WebPPicture* pic, int dtime) {
         int r = WebPAnimEncoderAdd(animEncoder, pic, timestamp, &config);
 
         if (r == 0) {
-            const char *err = WebPAnimEncoderGetError(animEncoder);
+            const char* err = WebPAnimEncoderGetError(animEncoder);
             logger->error(err);
             return false;
         }
@@ -33,7 +33,7 @@ namespace libra {
         return true;
     }
 
-    bool Mux::save(const std::string &file) {
+    bool Mux::save(const std::string& file) {
         WebPAnimEncoderAdd(animEncoder, NULL, timestamp, NULL);
 
         WebPData data;
@@ -41,13 +41,13 @@ namespace libra {
 
         int r = WebPAnimEncoderAssemble(animEncoder, &data);
         if (r == 0) {
-            const char *err = WebPAnimEncoderGetError(animEncoder);
+            const char* err = WebPAnimEncoderGetError(animEncoder);
             logger->error(err);
             WebPDataClear(&data);
             return false;
         }
 
-        FILE *f = fopen(file.data(), "wb");
+        FILE* f = fopen(file.data(), "wb");
         fwrite(data.bytes, data.size, 1, f);
         fclose(f);
 

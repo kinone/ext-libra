@@ -5,13 +5,13 @@
 #include "Image.h"
 
 namespace libra {
-    Image::Image(const std::string &file) {
+    Image::Image(const std::string& file) {
         src = cv::imread(file, cv::IMREAD_UNCHANGED);
         width = src.cols;
         height = src.rows;
     }
 
-    Image::Image(const cv::Mat &src) : src(src) {
+    Image::Image(const cv::Mat& src) : src(src) {
         width = src.cols;
         height = src.rows;
     }
@@ -32,7 +32,8 @@ namespace libra {
 
             int top = (h - fy) / 2;
             r = cv::Rect(0, top, fx, fy);
-        } else { // 按高进行等比例压缩
+        }
+        else { // 按高进行等比例压缩
             int w = int(float(width) * yr);
             cv::resize(src, result, cv::Size(w, fy));
 
@@ -46,7 +47,7 @@ namespace libra {
         height = fy;
     }
 
-    void Image::compressJpeg(const std::string &file, int q) {
+    void Image::compressJpeg(const std::string& file, int q) {
         std::vector<int> params;
         params.push_back(cv::IMWRITE_JPEG_QUALITY);
         params.push_back(q);
@@ -54,7 +55,7 @@ namespace libra {
         cv::imwrite(file, src, params);
     }
 
-    void Image::compressWebp(const std::string &file, int q) {
+    void Image::compressWebp(const std::string& file, int q) {
         std::vector<int> params;
         params.push_back(cv::IMWRITE_WEBP_QUALITY);
         params.push_back(q);
@@ -62,7 +63,7 @@ namespace libra {
         cv::imwrite(file, src, params);
     }
 
-    void Image::compressPng(const std::string &file, int level) {
+    void Image::compressPng(const std::string& file, int level) {
         std::vector<int> params;
         params.push_back(cv::IMWRITE_PNG_COMPRESSION);
         params.push_back(level);
@@ -70,14 +71,15 @@ namespace libra {
         cv::imwrite(file, src, params);
     }
 
-    void Image::exportTo(cv::Mat &ret) {
+    void Image::exportTo(cv::Mat& ret) {
         dst.copyTo(ret);
     }
 
-    void Image::save(const std::string &file) {
+    void Image::save(const std::string& file) {
         if (dst.empty()) {
             cv::imwrite(file, src);
-        } else {
+        }
+        else {
             cv::imwrite(file, dst);
         }
     }

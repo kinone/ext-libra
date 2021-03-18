@@ -13,25 +13,25 @@ extern "C" {
 #include "ILogger.h"
 
 namespace libra {
-    extern const char *LG_DEBUG;
-    extern const char *LG_INFO;
-    extern const char *LG_ERROR;
+    extern const char* LG_DEBUG;
+    extern const char* LG_INFO;
+    extern const char* LG_ERROR;
 
 
     class Logger : public LoggerInterface {
     private:
-        void log(const std::string &level, const std::string &message);
+        void log(const std::string& level, const std::string& message);
 
     public:
-        Logger(zval *v);
+        Logger(zval* v);
 
         virtual ~Logger();
 
-        virtual void debug(const std::string &message);
+        virtual void debug(const std::string& message);
 
-        virtual void info(const std::string &message);
+        virtual void info(const std::string& message);
 
-        virtual void error(const std::string &message);
+        virtual void error(const std::string& message);
 
     private:
         zval zv;

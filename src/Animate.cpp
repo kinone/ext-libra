@@ -6,14 +6,15 @@
 #include "Container.h"
 
 namespace libra {
-    Animate::Animate(uint32_t w, uint32_t h): width(w),
-                                        height(h),
-                                        loop(0),
-                                        frameCount(10),
-                                        quality(60),
-                                        animateTime(1000),
-                                        code(0),
-                                        message("") {
+    Animate::Animate(uint32_t w, uint32_t h) :
+        width(w),
+        height(h),
+        loop(0),
+        frameCount(10),
+        quality(60),
+        animateTime(1000),
+        code(0),
+        message("") {
         files = new std::vector<std::string>;
         logger = Container::instance()->logger();
     }
@@ -23,7 +24,7 @@ namespace libra {
         delete files;
     }
 
-    bool Animate::add(const std::string &image) {
+    bool Animate::add(const std::string& image) {
         files->push_back(image);
 
         logger->info("add file: " + image);
@@ -63,7 +64,7 @@ namespace libra {
         return true;
     }
 
-    const std::string & Animate::lastError() const {
+    const std::string& Animate::lastError() const {
         return message;
     }
 
@@ -71,7 +72,7 @@ namespace libra {
         return code;
     }
 
-    bool Animate::checkWH(const cv::Mat &m) const {
+    bool Animate::checkWH(const cv::Mat& m) const {
         if (m.cols != width || m.rows != height) {
             return false;
         }

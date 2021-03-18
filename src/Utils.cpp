@@ -8,7 +8,7 @@ namespace libra {
     float Utils::maxTop = 0.1f;
     float Utils::maxLeft = 0.1f;
 
-    void Utils::addAlpha(const cv::Mat &src, cv::Mat &dst) {
+    void Utils::addAlpha(const cv::Mat& src, cv::Mat& dst) {
         std::vector<cv::Mat> ch;
         cv::split(src, ch);
 
@@ -20,7 +20,7 @@ namespace libra {
         cv::merge(ch, dst);
     }
 
-    void Utils::genFrameH(const cv::Mat &a, const cv::Mat &b, cv::Mat &dst, int step, int total) {
+    void Utils::genFrameH(const cv::Mat& a, const cv::Mat& b, cv::Mat& dst, int step, int total) {
         float d = 1.0f / float(total + 1) * float(step + 1);
         float colRate, topRate, top, ltop, rtop;
 
@@ -90,7 +90,7 @@ namespace libra {
         hconcat(dst_left(rect_left), dst_right(rect_right), dst);
     }
 
-    void Utils::genFrameV(const cv::Mat &a, const cv::Mat &b, cv::Mat &dst, int step, int total) {
+    void Utils::genFrameV(const cv::Mat& a, const cv::Mat& b, cv::Mat& dst, int step, int total) {
         float d = 1.0f / float(total + 1) * float(step + 1);
         float rowRate, leftRate, left, topLeft, bottomLeft;
 
@@ -161,7 +161,7 @@ namespace libra {
         vconcat(dst_top(rect_top), dst_bottom(rect_bottom), dst);
     }
 
-    void Utils::mat2WebPPicture(const cv::Mat &src, WebPPicture *pic, int quality) {
+    void Utils::mat2WebPPicture(const cv::Mat& src, WebPPicture* pic, int quality) {
         std::vector<uchar> buff;
 
         // 设置图片质量
@@ -179,7 +179,7 @@ namespace libra {
         WebPPictureAlloc(pic);
 
         int width, height;
-        uint8_t *p = WebPDecodeRGBA(buff.data(), buff.size(), &width, &height);
+        uint8_t* p = WebPDecodeRGBA(buff.data(), buff.size(), &width, &height);
         WebPPictureImportRGBA(pic, p, width * 4);
 
         WebPFree(p);
@@ -209,13 +209,15 @@ namespace libra {
 
         if (Y1 > 0) {
             Y11 = float(pow(Y1, float(1) / 3));
-        } else {
+        }
+        else {
             Y11 = -float(pow(-Y1, float(1) / 3));
         }
 
         if (Y2 > 0) {
             Y22 = float(pow(Y2, float(1) / 3));
-        } else {
+        }
+        else {
             Y22 = -float(pow(-Y2, float(1) / 3));
         }
 
@@ -239,7 +241,8 @@ namespace libra {
 
         if (x <= 0.5) {
             y = 2 * (1 - evaluate(x)) * maxTop;
-        } else {
+        }
+        else {
             y = 2 * (1 - evaluate(1.0f - x)) * maxTop;
         }
 
@@ -251,7 +254,8 @@ namespace libra {
 
         if (x <= 0.5) {
             y = 2 * (1 - evaluate(x)) * maxLeft;
-        } else {
+        }
+        else {
             y = 2 * (1 - evaluate(1.0f - x)) * maxLeft;
         }
 

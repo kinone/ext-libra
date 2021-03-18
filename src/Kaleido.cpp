@@ -9,7 +9,7 @@
 #include "Mux.h"
 
 namespace libra {
-    Kaleido::Kaleido(uint32_t w, uint32_t h, uint8_t d): Animate(w, h), direction(d), eachImageStay(1000) {
+    Kaleido::Kaleido(uint32_t w, uint32_t h, uint8_t d) : Animate(w, h), direction(d), eachImageStay(1000) {
     }
 
     Kaleido::~Kaleido() {
@@ -25,7 +25,7 @@ namespace libra {
         return true;
     }
 
-    bool Kaleido::generate(const std::string &result) {
+    bool Kaleido::generate(const std::string& result) {
         logger->info("Kaleido: generate started.");
         int count = files->size();
 
@@ -64,7 +64,7 @@ namespace libra {
             // 尺寸调整
             if (!checkWH(images[i])) {
                 logger->info("resize image: " + files->at(i));
-                Image *obj = new Image(images[i]);
+                Image* obj = new Image(images[i]);
                 obj->resize(width, height);
                 obj->exportTo(images[i]);
                 delete obj;
@@ -78,7 +78,7 @@ namespace libra {
             }
         }
 
-        Mux *mux = new Mux(width, height, loop);
+        Mux* mux = new Mux(width, height, loop);
 
         uint32_t eachFrameStay = animateTime / frameCount;
         WebPPicture pic;
@@ -101,7 +101,8 @@ namespace libra {
                 cv::Mat dst;
                 if (direction == Kaleido::Vertical) {
                     Utils::genFrameV(images[i], images[next], dst, j, frameCount);
-                } else {
+                }
+                else {
                     Utils::genFrameH(images[i], images[next], dst, j, frameCount);
                 }
                 Utils::mat2WebPPicture(dst, &pic, quality);

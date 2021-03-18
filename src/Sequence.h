@@ -13,13 +13,13 @@
 #include "Animate.h"
 
 namespace libra {
-    class Sequence: public Animate {
+    class Sequence : public Animate {
     public:
-        Sequence(uint32_t w, uint32_t h): Animate(w, h) {}
+        Sequence(uint32_t w, uint32_t h) : Animate(w, h) {}
 
-        ~Sequence(){}
+        ~Sequence() {}
 
-        bool generate(const std::string &result);
+        bool generate(const std::string& result);
     };
 }
 

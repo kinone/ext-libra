@@ -9,17 +9,17 @@
 #include "Utils.h"
 
 namespace libra {
-    bool Sequence::generate(const std::string &result) {
+    bool Sequence::generate(const std::string& result) {
         logger->info("Sequence: generate started.");
 
-        Mux *mux = new Mux(width, height, loop);
+        Mux* mux = new Mux(width, height, loop);
         int eachFrameStay = animateTime / frameCount;
 
         for (int i = 0; i < files->size(); i++) {
             logger->info("processing " + files->at(i));
             // 读取图片
             cv::Mat src, dst;
-            cv::Mat *ptr;
+            cv::Mat* ptr;
 
             src = cv::imread(files->at(i), cv::IMREAD_UNCHANGED);
             if (src.empty()) {
@@ -35,7 +35,7 @@ namespace libra {
             // 调整尺寸
             if (!checkWH(src)) {
                 logger->info("resize image: " + files->at(i));
-                Image *img = new Image(src);
+                Image* img = new Image(src);
                 img->resize(width, height);
                 img->exportTo(dst);
                 ptr = &dst;

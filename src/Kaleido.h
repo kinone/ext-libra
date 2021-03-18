@@ -13,7 +13,7 @@
 #include "Animate.h"
 
 namespace libra {
-    class Kaleido: public Animate {
+    class Kaleido : public Animate {
     public:
         static const uint8_t Horizontal = 0;
         static const uint8_t Vertical = 1;
@@ -22,7 +22,7 @@ namespace libra {
 
         ~Kaleido();
 
-        bool generate(const std::string &result);
+        bool generate(const std::string& result);
 
         bool setImageStay(uint32_t time);
 

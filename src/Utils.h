@@ -30,13 +30,13 @@ namespace libra {
         static float currentLeftRate(float x);
 
     public:
-        static void mat2WebPPicture(const cv::Mat &src, WebPPicture *pic, int quality = 100);
+        static void mat2WebPPicture(const cv::Mat& src, WebPPicture* pic, int quality = 100);
 
-        static void genFrameH(const cv::Mat &a, const cv::Mat &b, cv::Mat &dst, int step, int total);
+        static void genFrameH(const cv::Mat& a, const cv::Mat& b, cv::Mat& dst, int step, int total);
 
-        static void genFrameV(const cv::Mat &a, const cv::Mat &b, cv::Mat &dst, int step, int total);
+        static void genFrameV(const cv::Mat& a, const cv::Mat& b, cv::Mat& dst, int step, int total);
 
-        static void addAlpha(const cv::Mat &src, cv::Mat &dst);
+        static void addAlpha(const cv::Mat& src, cv::Mat& dst);
     };
 }
 

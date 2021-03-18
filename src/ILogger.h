@@ -12,22 +12,22 @@ namespace libra {
     public:
         virtual ~LoggerInterface() {};
 
-        virtual void debug(const std::string &message) = 0;
+        virtual void debug(const std::string& message) = 0;
 
-        virtual void info(const std::string &message) = 0;
+        virtual void info(const std::string& message) = 0;
 
-        virtual void error(const std::string &message) = 0;
+        virtual void error(const std::string& message) = 0;
     };
 
     class NullLogger : public LoggerInterface {
     public:
         virtual ~NullLogger() {}
 
-        virtual void debug(const std::string &message) {}
+        virtual void debug(const std::string& message) {}
 
-        virtual void info(const std::string &message) {}
+        virtual void info(const std::string& message) {}
 
-        virtual void error(const std::string &message) {}
+        virtual void error(const std::string& message) {}
     };
 }
 

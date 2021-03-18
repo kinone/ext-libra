@@ -9,7 +9,7 @@
 #include "Mux.h"
 
 namespace libra {
-    bool Roller::add(const std::string &image) {
+    bool Roller::add(const std::string& image) {
         if (files->size() >= 2) {
             return false;
         }
@@ -17,13 +17,13 @@ namespace libra {
         return Animate::add(image);
     }
 
-    bool Roller::generate(const std::string &dstUp, const std::string &dstDown) {
+    bool Roller::generate(const std::string& dstUp, const std::string& dstDown) {
         if (files->size() < 2) {
             return false;
         }
 
         cv::Mat images[2];
-        
+
         for (int i = 0; i < 2; i++) {
             logger->info("read file: " + files->at(i));
             images[i] = cv::imread(files->at(i), cv::IMREAD_UNCHANGED);
@@ -52,7 +52,7 @@ namespace libra {
             // 尺寸调整
             if (!checkWH(images[i])) {
                 logger->info("resize image: " + files->at(i));
-                Image *obj = new Image(images[i]);
+                Image* obj = new Image(images[i]);
                 obj->resize(width, height);
                 obj->exportTo(images[i]);
                 delete obj;
@@ -68,8 +68,8 @@ namespace libra {
 
         uint32_t dtime = animateTime / frameCount;
 
-        Mux *muxUp = new Mux(width, height, 1);
-        Mux *muxDown = new Mux(width, height, 1);
+        Mux* muxUp = new Mux(width, height, 1);
+        Mux* muxDown = new Mux(width, height, 1);
 
         // 生成中间帧
         WebPPicture pic[frameCount];

@@ -10,20 +10,20 @@
 namespace libra {
     class Container {
     public:
-        void setLogger(LoggerInterface *l);
+        void setLogger(LoggerInterface* l);
 
-        LoggerInterface *logger();
+        LoggerInterface* logger();
 
         ~Container();
 
-        static Container *instance();
+        static Container* instance();
 
     private:
         Container();
 
-        LoggerInterface *driver;
+        LoggerInterface* driver;
 
-        static Container *self;
+        static Container* self;
 
         class Garbo {
         public:

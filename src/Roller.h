@@ -10,15 +10,15 @@
 #include "Animate.h"
 
 namespace libra {
-    class Roller: public Animate {
+    class Roller : public Animate {
     public:
         Roller(uint32_t w, uint32_t h) : Animate(w, h) {}
 
         ~Roller() {}
 
-        bool add(const std::string &image);
+        bool add(const std::string& image);
 
-        bool generate(const std::string &dstUp, const std::string &dstDown);
+        bool generate(const std::string& dstUp, const std::string& dstDown);
     };
 }
 

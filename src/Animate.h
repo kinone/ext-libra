@@ -16,11 +16,11 @@ namespace libra {
         Animate(uint32_t width, uint32_t height);
         virtual ~Animate();
 
-        virtual bool add(const std::string &file);
+        virtual bool add(const std::string& file);
 
         virtual void clear();
 
-        const std::string &lastError() const;
+        const std::string& lastError() const;
 
         int lastErrorCode() const;
 
@@ -33,9 +33,9 @@ namespace libra {
         bool setAnimateTime(uint32_t time);
 
     protected:
-        bool checkWH(const cv::Mat &m) const;
+        bool checkWH(const cv::Mat& m) const;
 
-        std::vector<std::string> *files;
+        std::vector<std::string>* files;
         uint32_t width;
         uint32_t height;
         uint32_t loop;
@@ -46,7 +46,7 @@ namespace libra {
         int code;
         std::string message;
 
-        LoggerInterface *logger;
+        LoggerInterface* logger;
     };
 }
 
