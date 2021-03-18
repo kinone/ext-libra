@@ -30,7 +30,7 @@ namespace libra {
 
         bool setLoop(uint32_t l);
 
-        bool setAnimateTime(uint32_t time);
+        bool setDuration(uint32_t time);
 
     protected:
         bool checkWH(const cv::Mat& m) const;
@@ -41,7 +41,7 @@ namespace libra {
         uint32_t loop;
         uint32_t frameCount;
         uint32_t quality;
-        uint32_t animateTime;
+        uint32_t duration;
 
         int code;
         std::string message;

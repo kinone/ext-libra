@@ -15,12 +15,12 @@ namespace libra {
     Kaleido::~Kaleido() {
     }
 
-    bool Kaleido::setImageStay(uint32_t time) {
-        if (time < 100 || time > 5000) {
+    bool Kaleido::setImageStay(uint32_t d) {
+        if (d < 100 || d > 5000) {
             return false;
         }
 
-        eachImageStay = time;
+        eachImageStay = d;
 
         return true;
     }
@@ -80,7 +80,7 @@ namespace libra {
 
         Mux* mux = new Mux(width, height, loop);
 
-        uint32_t eachFrameStay = animateTime / frameCount;
+        uint32_t eachFrameStay = duration / frameCount;
         WebPPicture pic;
         bool r;
         for (int i = 0; i < count; i++) {

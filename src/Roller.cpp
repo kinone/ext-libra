@@ -66,7 +66,7 @@ namespace libra {
             }
         }
 
-        uint32_t dtime = animateTime / frameCount;
+        uint32_t dtime = duration / frameCount;
 
         Mux* muxUp = new Mux(width, height, 1);
         Mux* muxDown = new Mux(width, height, 1);

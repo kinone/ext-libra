@@ -12,7 +12,7 @@ namespace libra {
         loop(0),
         frameCount(10),
         quality(60),
-        animateTime(1000),
+        duration(1000),
         code(0),
         message("") {
         files = new std::vector<std::string>;
@@ -54,12 +54,12 @@ namespace libra {
         return true;
     }
 
-    bool Animate::setAnimateTime(uint32_t t) {
+    bool Animate::setDuration(uint32_t t) {
         if (t < 100 || t > 5000) {
             return false;
         }
 
-        animateTime = t;
+        duration = t;
 
         return true;
     }

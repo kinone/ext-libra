@@ -31,6 +31,10 @@ ZEND_BEGIN_ARG_INFO_EX(animate_frame_count, 0, 0, 1)
     ZEND_ARG_INFO(0, count)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_INFO_EX(animate_duration, 0, 0, 1)
+    ZEND_ARG_INFO(0, duration)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_INFO_EX(animate_add, 0, 0, 1)
     ZEND_ARG_INFO(0, file)
 ZEND_END_ARG_INFO()

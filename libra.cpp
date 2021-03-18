@@ -10,6 +10,7 @@
 #include "libra_kaleido.h"
 #include "libra_sequence.h"
 #include "libra_interface.h"
+#include "libra_animate.h"
 #include "libra_roller.h"
 
 /* For compatibility with older PHP versions */
@@ -54,6 +55,7 @@ PHP_MINIT_FUNCTION(libra)
 {
     LIBRA_STARTUP(logger_interface);
     LIBRA_STARTUP(animate_interface);
+    LIBRA_STARTUP(animate);
     LIBRA_STARTUP(container);
     LIBRA_STARTUP(kaleido);
     LIBRA_STARTUP(image);

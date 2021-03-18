@@ -13,7 +13,7 @@ namespace libra {
         logger->info("Sequence: generate started.");
 
         Mux* mux = new Mux(width, height, loop);
-        int eachFrameStay = animateTime / frameCount;
+        int eachFrameStay = duration / frameCount;
 
         for (int i = 0; i < files->size(); i++) {
             logger->info("processing " + files->at(i));
