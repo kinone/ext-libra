@@ -24,8 +24,7 @@ typedef struct {
     zend_object std;
 } libra_object;
 
-#define Z_LIBRA_T(zv)                   (libra_fetch_object(Z_OBJ(zv)))
-#define Z_LIBRA_P(zv)                   Z_LIBRA_T(*zv)
+#define Z_LIBRA_P(zv)                   (libra_fetch_object(Z_OBJ_P(zv)))
 #define Z_LIBRA_INNER_P(zv)             (Z_LIBRA_P(zv)->ptr)
 
 #ifdef ZTS
