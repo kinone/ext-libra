@@ -12,6 +12,7 @@
 #include "libra_interface.h"
 #include "libra_animate.h"
 #include "libra_roller.h"
+#include "libra_webp.h"
 
 /* For compatibility with older PHP versions */
 #ifndef ZEND_PARSE_PARAMETERS_NONE
@@ -61,6 +62,7 @@ PHP_MINIT_FUNCTION(libra)
     LIBRA_STARTUP(image);
     LIBRA_STARTUP(sequence);
     LIBRA_STARTUP(roller);
+    LIBRA_STARTUP(webp);
 
     return SUCCESS;
 }
