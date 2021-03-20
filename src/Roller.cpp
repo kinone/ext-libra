@@ -70,6 +70,14 @@ namespace libra {
 
         Mux* muxUp = new Mux(width, height, 1);
         Mux* muxDown = new Mux(width, height, 1);
+        // 前图、后图
+        WebPPicture front, back;
+        Utils::mat2WebPPicture(images[0], &front, quality);
+        Utils::mat2WebPPicture(images[1], &back, quality);
+
+        // 添加第一帧
+        muxUp->add(&front, dtime);
+        muxDown->add(&back, dtime);
 
         // 生成中间帧
         WebPPicture pic[frameCount];
@@ -82,6 +90,17 @@ namespace libra {
         for (int i = 0; i < frameCount; i++) {
             muxUp->add(&pic[frameCount - 1 - i], dtime);
             muxDown->add(&pic[i], dtime);
+        }
+
+        // 添加最后一帧
+        muxUp->add(&back, dtime);
+        muxDown->add(&front, dtime);
+
+        // 释放WebPPicture
+        WebPPictureFree(&front);
+        WebPPictureFree(&back);
+        for (int i = 0; i < frameCount; i++) {
+            WebPPictureFree(&pic[i]);
         }
 
         bool b1 = muxUp->save(dstUp);
