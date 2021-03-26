@@ -42,7 +42,7 @@ if test "$PHP_LIBRA" != "no"; then
   if test -x "$PKG_CONFIG" && $PKG_CONFIG --exists libwebp; then
     if $PKG_CONFIG libwebp --atleast-version 1.1.0; then
       LIBWEBP_CFLAGS=`$PKG_CONFIG libwebp --cflags`
-      LIBWEBP_LIBDIR=`$PKG_CONFIG libwebpmux --libs`
+      LIBWEBP_LIBDIR=`$PKG_CONFIG libwebpmux libwebpdemux --libs`
       LIBWEBP_VERSON=`$PKG_CONFIG libwebp --modversion`
       AC_MSG_RESULT(from pkgconfig: version $LIBWEBP_VERSON)
     else
